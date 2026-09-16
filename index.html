@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="一个面向 CTF 学习者的浏览器端网络安全工具箱 MVP。" />
+    <title>Hexforge / CTF 工具箱</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主导航">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true"><span>0x</span></div>
+          <div>
+            <p class="eyebrow">FIELD KIT · 01</p>
+            <h1>hexforge</h1>
+          </div>
+        </div>
+
+        <div class="sidebar-status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>本地运行 · 无数据上传</span>
+        </div>
+
+        <nav class="nav-stack" aria-label="工具分类">
+          <button class="nav-item is-active" type="button" data-category="all">
+            <span class="nav-glyph">⌂</span>
+            <span>工作台</span>
+            <span class="nav-count">06</span>
+          </button>
+          <button class="nav-item" type="button" data-category="encode">
+            <span class="nav-glyph">↔</span>
+            <span>编码 / 解码</span>
+            <span class="nav-count">04</span>
+          </button>
+          <button class="nav-item" type="button" data-category="analyze">
+            <span class="nav-glyph">⌁</span>
+            <span>分析 / 摘要</span>
+            <span class="nav-count">02</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-note">
+          <span class="note-kicker">TODAY'S SIGNAL</span>
+          <strong>先定位，再解题。</strong>
+          <p>把重复动作交给工具，把时间留给题目本身。</p>
+        </div>
+
+        <div class="sidebar-footer">
+          <span>v0.1.0 · MVP</span>
+          <a href="#about">关于项目</a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb"><span>workspace</span><span class="slash">/</span><strong>toolbox</strong></div>
+          <div class="topbar-actions">
+            <button class="icon-button" id="themeToggle" type="button" aria-label="切换界面亮度" title="切换界面亮度">◐</button>
+            <a class="text-button" href="#about">文档 <span aria-hidden="true">↗</span></a>
+          </div>
+        </header>
+
+        <section class="hero-section" aria-labelledby="page-title">
+          <div class="hero-copy">
+            <div class="section-kicker"><span class="pulse-line"></span> CTF utility layer</div>
+            <h2 id="page-title">把线索<br /><em>变成答案。</em></h2>
+            <p>一组快速、私密、在浏览器里完成的安全竞赛工具。粘贴输入，选择动作，立即得到可继续分析的结果。</p>
+          </div>
+          <div class="hero-readout" aria-label="工具箱状态">
+            <div class="readout-label">LOCAL PROCESSING</div>
+            <div class="readout-value">100<span>%</span></div>
+            <div class="readout-foot"><span class="signal-bars"><i></i><i></i><i></i><i></i></span> 数据不离开当前浏览器</div>
+          </div>
+        </section>
+
+        <section class="workspace-section" aria-labelledby="workspace-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">01 / PICK A TOOL</p>
+              <h3 id="workspace-title">选择你的工具</h3>
+            </div>
+            <label class="search-field">
+              <span aria-hidden="true">⌕</span>
+              <input id="toolSearch" type="search" placeholder="搜索工具或关键词" autocomplete="off" />
+              <kbd>/</kbd>
+            </label>
+          </div>
+
+          <div class="tool-grid" id="toolGrid">
+            <button class="tool-card is-selected" type="button" data-tool="base64" data-category="encode">
+              <span class="tool-card-top"><span class="tool-id">ENC-01</span><span class="tool-state">READY</span></span>
+              <span class="tool-icon">B64</span>
+              <strong>Base64</strong>
+              <span>编码与解码文本</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="url" data-category="encode">
+              <span class="tool-card-top"><span class="tool-id">ENC-02</span><span class="tool-state">READY</span></span>
+              <span class="tool-icon">%2F</span>
+              <strong>URL Encode</strong>
+              <span>处理 URL 特殊字符</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="hex" data-category="encode">
+              <span class="tool-card-top"><span class="tool-id">ENC-03</span><span class="tool-state">READY</span></span>
+              <span class="tool-icon">0x</span>
+              <strong>Hex</strong>
+              <span>文本与十六进制互转</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="rot13" data-category="encode">
+              <span class="tool-card-top"><span class="tool-id">ENC-04</span><span class="tool-state">READY</span></span>
+              <span class="tool-icon">ROT</span>
+              <strong>ROT13</strong>
+              <span>快速替换字母偏移</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="stats" data-category="analyze">
+              <span class="tool-card-top"><span class="tool-id">ANL-01</span><span class="tool-state">READY</span></span>
+              <span class="tool-icon">#</span>
+              <strong>Text Stats</strong>
+              <span>字符、单词与行统计</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="hash" data-category="analyze">
+              <span class="tool-card-top"><span class="tool-id">ANL-02</span><span class="tool-state">READY</span></span>
+              <span class="tool-icon">SHA</span>
+              <strong>Hash</strong>
+              <span>生成 SHA-256 摘要</span>
+            </button>
+          </div>
+
+          <p class="empty-state" id="emptyState" hidden>没有匹配的工具。试试 “base64”、 “hash” 或 “hex”。</p>
+        </section>
+
+        <section class="lab-section" aria-labelledby="lab-title">
+          <div class="section-heading lab-heading">
+            <div>
+              <p class="section-kicker">02 / RUN A TRANSFORM</p>
+              <h3 id="lab-title">处理工作台</h3>
+            </div>
+            <div class="lab-meta"><span class="live-dot"></span><span id="selectedToolLabel">Base64 encoder / decoder</span></div>
+          </div>
+
+          <div class="lab-panel">
+            <div class="panel-toolbar">
+              <div class="toolbar-left">
+                <span class="input-label">INPUT</span>
+                <button class="sample-button" id="sampleButton" type="button">填入示例</button>
+              </div>
+              <div class="toolbar-right">
+                <button class="small-action" id="clearButton" type="button">清空</button>
+                <button class="small-action" id="swapButton" type="button" title="交换输入与输出">交换 ↕</button>
+              </div>
+            </div>
+            <div class="editor-grid">
+              <div class="editor-column">
+                <label class="sr-only" for="inputText">输入文本</label>
+                <textarea id="inputText" spellcheck="false" placeholder="在这里粘贴一段字符串……"></textarea>
+                <div class="editor-foot"><span id="inputMeta">0 chars</span><span>Ctrl / ⌘ + Enter 运行</span></div>
+              </div>
+              <div class="transform-column">
+                <button class="run-button" id="runButton" type="button"><span>运行</span><span aria-hidden="true">→</span></button>
+                <span class="transform-hint">SAFE TO REPEAT</span>
+              </div>
+              <div class="editor-column output-column">
+                <div class="output-label-row"><span class="input-label">OUTPUT</span><button class="copy-button" id="copyButton" type="button">复制结果</button></div>
+                <textarea id="outputText" readonly spellcheck="false" placeholder="结果会出现在这里……"></textarea>
+                <div class="editor-foot"><span id="outputMeta">0 chars</span><span id="runStatus">WAITING</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="recent-section" aria-labelledby="recent-title">
+          <div class="section-heading compact-heading">
+            <div>
+              <p class="section-kicker">03 / TRACE</p>
+              <h3 id="recent-title">最近使用</h3>
+            </div>
+            <button class="small-action" id="clearRecentButton" type="button">清除记录</button>
+          </div>
+          <div class="recent-list" id="recentList">
+            <div class="recent-empty">运行一个工具后，最近操作会显示在这里。</div>
+          </div>
+        </section>
+
+        <section class="about-section" id="about" aria-labelledby="about-title">
+          <div>
+            <p class="section-kicker">ABOUT THE BUILD</p>
+            <h3 id="about-title">小而快，先把高频动作做好。</h3>
+          </div>
+          <p>Hexforge MVP 只处理浏览器端的低风险文本变换。后续可以接入更多 CTF 场景工具、题目收藏、账号体系，以及面向重度用户的会员功能。</p>
+        </section>
+
+        <footer class="footer"><span>hexforge / made for practice</span><span>LOCAL-FIRST · NO TRACKING IN MVP</span></footer>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
