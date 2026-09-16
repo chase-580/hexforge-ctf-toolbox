@@ -45,7 +45,34 @@
 - 每个工具页独立的标题、描述、canonical、hreflang、FAQ 和相关工具链接。
 - `robots.txt` 与 `sitemap.xml`。
 
-## 3. 运行方式
+## 3. 统计接入
+
+代码已经预留：
+
+- `analytics-config.js`：填入 Cloudflare Web Analytics beacon token。
+- `analytics.js`：只有配置了真实 token 时才加载 Cloudflare beacon，不会向线上发送占位符。
+- `privacy/` 与 `en/privacy/`：说明本地处理、localStorage 和匿名访问统计。
+- 首页、双语目录和所有工具页都加载统计入口。
+
+### Cloudflare Web Analytics
+
+在 Cloudflare Dashboard 中为 `hexforge-ctf-toolbox.pages.dev` 创建 Web Analytics site，复制生成的 token，填入：
+
+```js
+window.HEXFORGE_CONFIG = Object.freeze({
+  cloudflareWebAnalyticsToken: "你的真实 token",
+});
+```
+
+### Google Search Console
+
+推荐使用 Domain property，通过 DNS 验证 `pages.dev` 自定义域名；如果使用 URL-prefix property，也可以把 HTML tag 的 token 替换到所有页面的 `google-site-verification` meta 标签中。验证后提交：
+
+```text
+https://hexforge-ctf-toolbox.pages.dev/sitemap.xml
+```
+
+## 4. 运行方式
 
 直接双击 `index.html`，或用任意静态文件服务器打开目录。若浏览器禁止 `file://` 页面调用 Web Crypto，SHA-256 工具需要通过静态服务器访问；其余工具不受影响。
 
@@ -58,7 +85,7 @@
 
 当前版本只依赖浏览器原生 API，所有转换都在当前浏览器中完成。
 
-## 4. 后续迭代顺序
+## 5. 后续迭代顺序
 
 ### P0：验证使用频率
 
@@ -81,6 +108,6 @@
 - AdSense：只放在公开的内容页和工具介绍页，避免干扰实际工作台。
 - 付费前先验证高频功能，不要先做复杂支付系统。
 
-## 5. 安全边界
+## 6. 安全边界
 
 本 MVP 只提供浏览器端的文本转换和摘要计算，不执行用户输入，不发起网络请求，也不提供漏洞利用或攻击功能。后续加入文件解析、网络请求或第三方 API 时，需要单独设计输入限制、隐私说明和错误隔离。

@@ -52,6 +52,8 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .site-note h2 { max-width: 430px; margin: 8px 0 0; font-size: 29px; line-height: 1.08; letter-spacing: -.06em; }
 .site-note p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
 .site-footer { display: flex; justify-content: space-between; gap: 20px; padding: 19px 0; border-top: 1px solid var(--line); color: #929b94; font-family: Consolas, monospace; font-size: 9px; letter-spacing: .04em; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { color: var(--green-deep); }
 
 .tool-breadcrumb { padding-top: 30px; color: var(--muted); font-family: Consolas, monospace; font-size: 10px; }
 .tool-breadcrumb a { text-decoration: none; }
@@ -91,6 +93,13 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .faq-list details { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .faq-list summary { cursor: pointer; font-size: 13px; font-weight: 700; }
 .faq-list p { max-width: 730px; margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.legal-hero { padding: 72px 0 42px; }
+.legal-hero h1 { margin: 14px 0 10px; font-size: clamp(44px, 7vw, 76px); line-height: .95; letter-spacing: -.075em; }
+.legal-hero p:last-child { margin: 0; color: var(--muted); font-size: 12px; }
+.legal-copy { max-width: 760px; padding: 35px 0 65px; border-top: 1px solid var(--line); }
+.legal-copy h2 { margin: 27px 0 8px; font-size: 17px; letter-spacing: -.03em; }
+.legal-copy h2:first-child { margin-top: 0; }
+.legal-copy p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.85; }
 .file-input { display: none; }
 .toast { position: fixed; right: 22px; bottom: 22px; z-index: 5; max-width: 320px; padding: 12px 14px; border-left: 3px solid var(--green); color: #eff5eb; background: var(--dark); box-shadow: 0 12px 30px rgba(10, 12, 12, .2); font-size: 11px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
 .toast.is-visible { opacity: 1; transform: translateY(0); }
