@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/base64-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/base64-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/url-encoder-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/url-encoder-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/hex-converter/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/hex-converter/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/rot13-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/rot13-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/jwt-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/jwt-decoder/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/sha256-generator/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/sha256-generator/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/text-statistics/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/text-statistics/</loc></url>
+</urlset>

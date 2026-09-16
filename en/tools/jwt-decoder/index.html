@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Hexforge CTF browser tool" />
+    <meta name="robots" content="index,follow" />
+    <link rel="stylesheet" href="../../../site.css" />
+    <link rel="canonical" href="https://hexforge-ctf-toolbox.pages.dev/" />
+    <title>Hexforge CTF Tool</title>
+  </head>
+  <body data-locale="en">
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href="../../../">
+          <span class="site-brand-mark">0x</span>
+          <span><strong>hexforge</strong><small>CTF utility layer</small></span>
+        </a>
+        <nav class="site-nav" aria-label="Site navigation">
+          <a href="../../../">Workspace</a>
+          <a href="../../">Tool directory</a>
+          <span class="language-pair"><a href="../../../zh/tools/base64-decoder/">中文</a><a href="../../../en/tools/base64-decoder/">EN</a></span>
+        </nav>
+      </header>
+      <main class="site-main">
+        <div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../../">tools</a> / <span id="toolId">TOOL</span></div>
+        <section class="tool-layout">
+          <div class="tool-hero">
+            <p class="eyebrow">LOCAL CTF TOOL</p>
+            <h1 id="toolName">CTF tool</h1>
+            <p class="lede" id="toolLede">A small, fast tool for CTF practice.</p>
+            <div class="tool-workbench">
+              <div class="workbench-top"><span id="toolInputLabel">INPUT</span><span><button id="sampleTool" type="button">Use example</button> · <button id="clearTool" type="button">Clear</button></span></div>
+              <div class="workbench-grid">
+                <div class="workbench-pane"><textarea id="toolInput" spellcheck="false" placeholder="Enter input..."></textarea><div class="workbench-meta"><span id="toolInputCount">0 chars</span><span>Ctrl / Cmd + Enter</span></div></div>
+                <div class="workbench-middle"><button class="run-tool" id="runTool" type="button">Run <span>-&gt;</span></button><span class="run-hint">LOCAL ONLY</span></div>
+                <div class="workbench-pane output"><div class="output-head"><span id="toolOutputLabel">OUTPUT</span><button id="copyTool" type="button">Copy result</button></div><textarea id="toolOutput" readonly spellcheck="false" placeholder="Output appears here..."></textarea><div class="workbench-meta"><span id="toolOutputCount">0 chars</span><span id="toolStatus">WAITING</span></div></div>
+              </div>
+            </div>
+            <div class="tool-info-grid"><article class="info-block"><h2 id="toolShort">What this tool does</h2><p id="toolWhy">Process text locally in your browser.</p></article><article class="info-block"><h2 id="privacyTitle">Privacy first</h2><p id="privacyCopy">Input is processed in your current browser. This MVP does not upload the text to a server.</p></article></div>
+          </div>
+          <aside class="tool-aside"><h2 id="relatedTitle">Related tools</h2><ul><li><a href="../base64-decoder/">Base64</a></li><li><a href="../url-encoder-decoder/">URL Encode</a></li><li><a href="../hex-converter/">Hex Converter</a></li><li><a href="../jwt-decoder/">JWT Decoder</a></li><li><a href="../sha256-generator/">SHA-256</a></li></ul></aside>
+        </section>
+        <section class="faq-section"><h2 id="toolFaqTitle">Common questions</h2><div class="faq-list"><details open><summary id="toolFaqQuestion">How does this tool work?</summary><p id="toolFaqAnswer">The transformation runs in your browser.</p></details></div></section>
+      </main>
+      <div id="toolToast" class="toast"></div>
+    </div>
+    <script src="../../../tools-page.js"></script>
+  </body>
+</html>
+

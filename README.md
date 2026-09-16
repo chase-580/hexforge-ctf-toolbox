@@ -37,9 +37,24 @@
 - 最近 5 次操作保存在浏览器 `localStorage` 中。
 - 响应式布局、键盘快捷键和亮度模式切换。
 
+第二阶段已增加：
+
+- `/zh/` 中文工具目录。
+- `/en/` English tool directory。
+- 7 个双语独立工具页：Base64、URL、Hex、ROT13、JWT、SHA-256、文本统计。
+- 每个工具页独立的标题、描述、canonical、hreflang、FAQ 和相关工具链接。
+- `robots.txt` 与 `sitemap.xml`。
+
 ## 3. 运行方式
 
 直接双击 `index.html`，或用任意静态文件服务器打开目录。若浏览器禁止 `file://` 页面调用 Web Crypto，SHA-256 工具需要通过静态服务器访问；其余工具不受影响。
+
+主要路径：
+
+- `/zh/`
+- `/en/`
+- `/zh/tools/base64-decoder/`
+- `/en/tools/base64-decoder/`
 
 当前版本只依赖浏览器原生 API，所有转换都在当前浏览器中完成。
 
