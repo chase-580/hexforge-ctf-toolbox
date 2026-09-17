@@ -334,9 +334,9 @@ document.querySelectorAll(".tool-card").forEach((card) => {
   card.addEventListener("click", () => selectTool(card.dataset.tool));
 });
 
-document.querySelectorAll(".nav-item").forEach((item) => {
+document.querySelectorAll(".nav-item[data-category]").forEach((item) => {
   item.addEventListener("click", () => {
-    document.querySelectorAll(".nav-item").forEach((nav) => nav.classList.remove("is-active"));
+    document.querySelectorAll(".nav-item[data-category]").forEach((nav) => nav.classList.remove("is-active"));
     item.classList.add("is-active");
     const category = item.dataset.category;
     document.querySelectorAll(".tool-card").forEach((card) => {

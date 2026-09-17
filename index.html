@@ -45,6 +45,11 @@
             <span>分析 / 摘要</span>
             <span class="nav-count">05</span>
           </button>
+          <a class="nav-item nav-anchor" href="#toolchain">
+            <span class="nav-glyph">⛓</span>
+            <span>工具链</span>
+            <span class="nav-count">BETA</span>
+          </a>
         </nav>
 
         <div class="sidebar-note">
@@ -212,10 +217,53 @@
           </div>
         </section>
 
+        <section class="pipeline-section" id="toolchain" aria-labelledby="chain-title">
+          <div class="section-heading pipeline-heading">
+            <div>
+              <p class="section-kicker">03 / BUILD A PIPELINE</p>
+              <h3 id="chain-title">工具链</h3>
+            </div>
+            <div class="lab-meta"><span class="live-dot"></span><span id="chainSummary">2 STEPS · LOCAL</span></div>
+          </div>
+
+          <div class="chain-panel">
+            <div class="chain-builder">
+              <div class="chain-panel-head">
+                <div><span class="input-label">PIPELINE</span><strong>按顺序执行</strong></div>
+                <div><button class="small-action" id="addChainStep" type="button">＋ 添加步骤</button><button class="small-action" id="resetChain" type="button">重置</button></div>
+              </div>
+              <div class="chain-steps" id="chainSteps" aria-label="工具链步骤"></div>
+              <p class="chain-limit">最多 8 步。链路配置保存在当前浏览器。</p>
+            </div>
+
+            <div class="chain-console">
+              <div class="chain-field">
+                <div class="chain-field-head"><label for="chainInput">INPUT</label><span><button id="chainSample" type="button">填入示例</button> · <button id="chainClear" type="button">清空</button></span></div>
+                <textarea id="chainInput" spellcheck="false" placeholder="输入要经过整条工具链处理的文本……"></textarea>
+                <div class="chain-field-meta"><span id="chainInputCount">0 chars</span><span>Ctrl / Cmd + Enter</span></div>
+              </div>
+              <div class="chain-runbar">
+                <span id="chainStatus">WAITING</span>
+                <button class="chain-run" id="runChain" type="button"><span>运行工具链</span><span aria-hidden="true">→</span></button>
+              </div>
+              <div class="chain-field chain-output">
+                <div class="chain-field-head"><label for="chainOutput">OUTPUT</label><button id="copyChain" type="button">复制结果</button></div>
+                <textarea id="chainOutput" readonly spellcheck="false" placeholder="最终结果会显示在这里……"></textarea>
+                <div class="chain-field-meta"><span id="chainOutputCount">0 chars</span><span>FINAL RESULT</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chain-trace-wrap" id="chainTraceWrap" hidden>
+            <div class="chain-trace-head"><span class="input-label">EXECUTION TRACE</span><span id="chainDuration"></span></div>
+            <div class="chain-trace" id="chainTrace"></div>
+          </div>
+        </section>
+
         <section class="recent-section" aria-labelledby="recent-title">
           <div class="section-heading compact-heading">
             <div>
-              <p class="section-kicker">03 / TRACE</p>
+              <p class="section-kicker">04 / TRACE</p>
               <h3 id="recent-title">最近使用</h3>
             </div>
             <button class="small-action" id="clearRecentButton" type="button">清除记录</button>
@@ -241,6 +289,7 @@
     <script src="analytics-config.js"></script>
     <script src="analytics.js"></script>
     <script src="app.js"></script>
+    <script src="toolchain.js"></script>
   </body>
 </html>
 
