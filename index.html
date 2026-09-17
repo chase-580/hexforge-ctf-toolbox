@@ -32,17 +32,17 @@
           <button class="nav-item is-active" type="button" data-category="all">
             <span class="nav-glyph">⌂</span>
             <span>工作台</span>
-            <span class="nav-count">06</span>
+            <span class="nav-count">11</span>
           </button>
           <button class="nav-item" type="button" data-category="encode">
             <span class="nav-glyph">↔</span>
             <span>编码 / 解码</span>
-            <span class="nav-count">04</span>
+            <span class="nav-count">06</span>
           </button>
           <button class="nav-item" type="button" data-category="analyze">
             <span class="nav-glyph">⌁</span>
             <span>分析 / 摘要</span>
-            <span class="nav-count">02</span>
+            <span class="nav-count">05</span>
           </button>
         </nav>
 
@@ -118,17 +118,47 @@
               <strong>ROT13</strong>
               <span>快速替换字母偏移</span>
             </button>
+            <button class="tool-card" type="button" data-tool="binary" data-category="encode">
+              <span class="tool-card-top"><span class="tool-id">ENC-06</span><span class="tool-state">NEW</span></span>
+              <span class="tool-icon">01</span>
+              <strong>Binary</strong>
+              <span>文本与二进制字节互转</span>
+            </button>
             <button class="tool-card" type="button" data-tool="stats" data-category="analyze">
-              <span class="tool-card-top"><span class="tool-id">ANL-01</span><span class="tool-state">READY</span></span>
+              <span class="tool-card-top"><span class="tool-id">ANL-02</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">#</span>
               <strong>Text Stats</strong>
               <span>字符、单词与行统计</span>
             </button>
             <button class="tool-card" type="button" data-tool="hash" data-category="analyze">
-              <span class="tool-card-top"><span class="tool-id">ANL-02</span><span class="tool-state">READY</span></span>
+              <span class="tool-card-top"><span class="tool-id">ANL-01</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">SHA</span>
               <strong>Hash</strong>
               <span>生成 SHA-256 摘要</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="jwt" data-category="encode">
+              <span class="tool-card-top"><span class="tool-id">ENC-05</span><span class="tool-state">READY</span></span>
+              <span class="tool-icon">JWT</span>
+              <strong>JWT</strong>
+              <span>解析 Header 与 Payload</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="timestamp" data-category="analyze">
+              <span class="tool-card-top"><span class="tool-id">ANL-03</span><span class="tool-state">NEW</span></span>
+              <span class="tool-icon">UTC</span>
+              <strong>Timestamp</strong>
+              <span>Unix 时间戳与日期互转</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="regex" data-category="analyze">
+              <span class="tool-card-top"><span class="tool-id">ANL-04</span><span class="tool-state">NEW</span></span>
+              <span class="tool-icon">.*</span>
+              <strong>Regex</strong>
+              <span>测试正则表达式匹配</span>
+            </button>
+            <button class="tool-card" type="button" data-tool="filehash" data-category="analyze">
+              <span class="tool-card-top"><span class="tool-id">ANL-05</span><span class="tool-state">NEW</span></span>
+              <span class="tool-icon">FILE</span>
+              <strong>File Hash</strong>
+              <span>本地计算文件 SHA-256</span>
             </button>
           </div>
 
@@ -161,6 +191,11 @@
               <div class="editor-column">
                 <label class="sr-only" for="inputText">输入文本</label>
                 <textarea id="inputText" spellcheck="false" placeholder="在这里粘贴一段字符串……"></textarea>
+                <div class="file-control" id="fileControl" hidden>
+                  <label class="file-picker" for="fileInput">选择文件</label>
+                  <input id="fileInput" class="file-input" type="file" />
+                  <span id="selectedFileName">尚未选择文件</span>
+                </div>
                 <div class="editor-foot"><span id="inputMeta">0 chars</span><span>Ctrl / ⌘ + Enter 运行</span></div>
               </div>
               <div class="transform-column">

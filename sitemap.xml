@@ -19,4 +19,12 @@
   <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/sha256-generator/</loc></url>
   <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/text-statistics/</loc></url>
   <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/text-statistics/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/binary-converter/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/binary-converter/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/timestamp-converter/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/timestamp-converter/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/regex-tester/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/regex-tester/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/zh/tools/file-hash/</loc></url>
+  <url><loc>https://hexforge-ctf-toolbox.pages.dev/en/tools/file-hash/</loc></url>
 </urlset>

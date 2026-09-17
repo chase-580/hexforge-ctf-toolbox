@@ -61,9 +61,24 @@ const toolDefinitions = {
       });
     },
   },
+  binary: {
+    label: "Binary text converter",
+    id: "ENC-06",
+    sample: "01100011 01110100 01100110 01111011 01100010 01101001 01110100 01110011 01111101",
+    placeholder: "输入普通文本或 8 位二进制字节……",
+    run(value) {
+      const compact = value.replace(/\s+/g, "");
+      if (/^[01]+$/.test(compact)) {
+        if (compact.length % 8 !== 0) throw new Error("二进制长度必须是 8 的倍数");
+        const bytes = compact.match(/.{8}/g).map((byte) => parseInt(byte, 2));
+        return new TextDecoder("utf-8", { fatal: true }).decode(new Uint8Array(bytes));
+      }
+      return Array.from(new TextEncoder().encode(value)).map((byte) => byte.toString(2).padStart(8, "0")).join(" ");
+    },
+  },
   stats: {
     label: "Text statistics",
-    id: "ANL-01",
+    id: "ANL-02",
     sample: "The quick brown fox jumps over the lazy dog.\nctf{count_everything}",
     placeholder: "输入文本，查看字符、单词与行统计……",
     run(value) {
@@ -77,7 +92,7 @@ const toolDefinitions = {
   },
   hash: {
     label: "SHA-256 digest",
-    id: "ANL-02",
+    id: "ANL-01",
     sample: "ctf{local_first_toolbox}",
     placeholder: "输入需要生成 SHA-256 摘要的文本……",
     async run(value) {
@@ -85,6 +100,55 @@ const toolDefinitions = {
       const bytes = new TextEncoder().encode(value);
       const digest = await crypto.subtle.digest("SHA-256", bytes);
       return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    },
+  },
+  jwt: {
+    label: "JWT inspector",
+    id: "ENC-05",
+    sample: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjdGYtc3R1ZGVudCIsImFkbWluIjpmYWxzZX0.demo-signature",
+    placeholder: "输入由点号分隔的 JWT……",
+    run(value) {
+      const parts = value.trim().split(".");
+      if (parts.length < 2) throw new Error("JWT 至少需要 Header 和 Payload 两段");
+      return `header:\n${prettyJson(decodeBase64Url(parts[0]))}\n\npayload:\n${prettyJson(decodeBase64Url(parts[1]))}\n\nsignature:\n${parts[2] || "(none)"}`;
+    },
+  },
+  timestamp: {
+    label: "Unix timestamp converter",
+    id: "ANL-03",
+    sample: "1767225600",
+    placeholder: "输入 Unix 时间戳或日期，例如 1767225600 或 2026-01-01……",
+    run(value) {
+      const trimmed = value.trim();
+      let date;
+      if (/^-?\d+(?:\.\d+)?$/.test(trimmed)) {
+        const numeric = Number(trimmed);
+        date = new Date(Math.abs(numeric) < 1e12 ? numeric * 1000 : numeric);
+      } else {
+        date = new Date(trimmed);
+      }
+      if (Number.isNaN(date.getTime())) throw new Error("无法识别日期或时间戳");
+      return `ISO 8601: ${date.toISOString()}\nUTC: ${date.toUTCString()}\n本地时间: ${date.toLocaleString("zh-CN", { hour12: false })}\nUnix 秒: ${Math.floor(date.getTime() / 1000)}\nUnix 毫秒: ${date.getTime()}`;
+    },
+  },
+  regex: {
+    label: "Regular expression tester",
+    id: "ANL-04",
+    sample: "/flag\\{[^}]+\\}/gi\nnoise FLAG{first} ctf flag{second}",
+    placeholder: "第一行输入 /正则/flags，后续行输入待匹配文本……",
+    run: runRegex,
+  },
+  filehash: {
+    label: "File SHA-256",
+    id: "ANL-05",
+    sample: "",
+    placeholder: "选择文件后运行，文件不会上传……",
+    isFile: true,
+    async runFile(file) {
+      if (!globalThis.crypto?.subtle) throw new Error("当前浏览器不支持 Web Crypto");
+      const digest = await crypto.subtle.digest("SHA-256", await file.arrayBuffer());
+      const hash = Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+      return `file: ${file.name}\nsize: ${file.size} bytes\ntype: ${file.type || "unknown"}\nsha256: ${hash}`;
     },
   },
 };
@@ -105,6 +169,9 @@ const elements = {
   runStatus: document.querySelector("#runStatus"),
   recentList: document.querySelector("#recentList"),
   toast: document.querySelector("#toast"),
+  fileControl: document.querySelector("#fileControl"),
+  fileInput: document.querySelector("#fileInput"),
+  selectedFileName: document.querySelector("#selectedFileName"),
 };
 
 function encodeBase64(value) {
@@ -118,6 +185,29 @@ function decodeBase64(value) {
   const binary = atob(value.replace(/\s/g, ""));
   const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
   return new TextDecoder().decode(bytes);
+}
+
+function decodeBase64Url(value) {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(value.length / 4) * 4, "=");
+  return decodeBase64(normalized);
+}
+
+function prettyJson(value) {
+  try { return JSON.stringify(JSON.parse(value), null, 2); } catch { return value; }
+}
+
+function runRegex(value) {
+  const newline = value.indexOf("\n");
+  if (newline < 0) throw new Error("第一行填写 /正则/flags，第二行开始填写测试文本");
+  const expression = value.slice(0, newline).trim();
+  const text = value.slice(newline + 1);
+  const parsed = expression.match(/^\/(.*)\/([dgimsuvy]*)$/);
+  if (!parsed) throw new Error("正则格式应为 /pattern/flags");
+  const flags = parsed[2].includes("g") ? parsed[2] : `${parsed[2]}g`;
+  const regex = new RegExp(parsed[1], flags);
+  const matches = Array.from(text.matchAll(regex)).slice(0, 200);
+  if (!matches.length) return "No matches";
+  return matches.map((match, index) => `${index + 1}. [${match.index}] ${match[0]}`).join("\n");
 }
 
 function isPrintable(value) {
@@ -145,6 +235,21 @@ function clearStoredRecent() {
     localStorage.removeItem("hexforge-recent");
   } catch {
     // Nothing to clear when browser storage is blocked.
+  }
+}
+
+function recordToolMetric(toolId, result) {
+  try {
+    const metrics = JSON.parse(localStorage.getItem("hexforge-tool-metrics") || "{}");
+    const key = `${toolId}:${result}`;
+    metrics[key] = (metrics[key] || 0) + 1;
+    localStorage.setItem("hexforge-tool-metrics", JSON.stringify(metrics));
+    const slugMap = { base64: "base64-decoder", url: "url-encoder-decoder", hex: "hex-converter", rot13: "rot13-decoder", binary: "binary-converter", jwt: "jwt-decoder", hash: "sha256-generator", stats: "text-statistics", timestamp: "timestamp-converter", regex: "regex-tester", filehash: "file-hash" };
+    const slug = slugMap[toolId];
+    const recent = JSON.parse(localStorage.getItem("hexforge-recent-tools") || "[]").filter((item) => item !== slug);
+    localStorage.setItem("hexforge-recent-tools", JSON.stringify([slug, ...recent].slice(0, 11)));
+  } catch {
+    // Local metrics never block the tool.
   }
 }
 
@@ -184,27 +289,31 @@ function selectTool(toolId) {
   document.querySelectorAll(".tool-card").forEach((card) => card.classList.toggle("is-selected", card.dataset.tool === toolId));
   elements.selectedToolLabel.textContent = tool.label;
   elements.inputText.placeholder = tool.placeholder;
+  elements.fileControl.hidden = !tool.isFile;
+  elements.inputText.closest(".editor-column").classList.toggle("is-file-mode", Boolean(tool.isFile));
   elements.runStatus.textContent = "WAITING";
 }
 
 async function runTool() {
   const tool = toolDefinitions[state.selectedTool];
   const value = elements.inputText.value;
-  if (!value) {
-    showToast("先输入一段文本，再运行工具。");
-    elements.inputText.focus();
+  const file = elements.fileInput.files[0];
+  if (tool.isFile ? !file : !value) {
+    showToast(tool.isFile ? "请先选择一个文件。" : "先输入一段文本，再运行工具。");
+    (tool.isFile ? elements.fileInput : elements.inputText).focus();
     return;
   }
   elements.runStatus.textContent = "WORKING";
   try {
-    elements.outputText.value = await tool.run(value);
+    elements.outputText.value = tool.isFile ? await tool.runFile(file) : await tool.run(value);
     elements.runStatus.textContent = "DONE";
+    recordToolMetric(state.selectedTool, "success");
     updateMeta();
     state.recent.unshift({
       id: globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`,
       toolId: tool.id,
-      preview: value.slice(0, 90).replace(/\n/g, " "),
-      input: value,
+      preview: tool.isFile ? file.name : value.slice(0, 90).replace(/\n/g, " "),
+      input: tool.isFile ? "" : value,
       output: elements.outputText.value,
       tool: state.selectedTool,
       time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }),
@@ -217,6 +326,7 @@ async function runTool() {
     elements.runStatus.textContent = "ERROR";
     updateMeta();
     showToast("输入格式不符合当前工具要求。");
+    recordToolMetric(state.selectedTool, "error");
   }
 }
 
@@ -248,7 +358,9 @@ elements.toolSearch.addEventListener("input", (event) => {
 });
 
 document.querySelector("#sampleButton").addEventListener("click", () => {
-  elements.inputText.value = toolDefinitions[state.selectedTool].sample;
+  const tool = toolDefinitions[state.selectedTool];
+  if (tool.isFile) return showToast("文件工具需要从设备选择一个文件。");
+  elements.inputText.value = tool.sample;
   updateMeta();
   elements.inputText.focus();
 });
@@ -262,16 +374,24 @@ elements.inputText.addEventListener("keydown", (event) => {
 document.querySelector("#clearButton").addEventListener("click", () => {
   elements.inputText.value = "";
   elements.outputText.value = "";
+  elements.fileInput.value = "";
+  elements.selectedFileName.textContent = "尚未选择文件";
   elements.runStatus.textContent = "WAITING";
   updateMeta();
 });
 
 document.querySelector("#swapButton").addEventListener("click", () => {
+  if (toolDefinitions[state.selectedTool].isFile) return showToast("文件哈希结果不能交换到输入区。");
   const input = elements.inputText.value;
   elements.inputText.value = elements.outputText.value;
   elements.outputText.value = input;
   elements.runStatus.textContent = "SWAPPED";
   updateMeta();
+});
+
+elements.fileInput.addEventListener("change", () => {
+  const file = elements.fileInput.files[0];
+  elements.selectedFileName.textContent = file ? `${file.name} · ${file.size} bytes` : "尚未选择文件";
 });
 
 document.querySelector("#copyButton").addEventListener("click", async () => {

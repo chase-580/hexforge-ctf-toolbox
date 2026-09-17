@@ -112,6 +112,12 @@ kbd { min-width: 19px; padding: 2px 5px; border: 1px solid var(--line); color: v
 .editor-column { display: flex; flex-direction: column; min-width: 0; padding: 17px 16px 13px; }
 .editor-column textarea { flex: 1; min-height: 180px; resize: vertical; border: 0; outline: 0; color: #e9efe8; background: transparent; font-family: "Consolas", "SFMono-Regular", monospace; font-size: 13px; line-height: 1.7; }
 .editor-column textarea::placeholder { color: #64706a; }
+.editor-column.is-file-mode textarea { display: none; }
+.file-control { margin: auto 0; color: #9eaaa1; font-family: "Consolas", monospace; font-size: 10px; line-height: 1.6; }
+.file-input { display: none; }
+.file-picker { display: inline-flex; margin-bottom: 12px; padding: 10px 13px; color: var(--dark); background: var(--green); font-family: "Segoe UI", "Noto Sans SC", Arial, sans-serif; font-size: 12px; font-weight: 800; cursor: pointer; }
+.file-picker:hover { background: #b8e683; }
+.file-control > span { display: block; overflow-wrap: anywhere; }
 .editor-foot { display: flex; justify-content: space-between; gap: 10px; padding-top: 12px; color: #627069; font-family: "Consolas", monospace; font-size: 9px; }
 .transform-column { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 13px; border-right: 1px solid #303839; border-left: 1px solid #303839; }
 .run-button { display: flex; justify-content: space-between; align-items: center; gap: 25px; min-width: 74px; padding: 11px 12px; border: 0; color: var(--dark); background: var(--green); font-size: 12px; font-weight: 800; }

@@ -68,6 +68,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .tool-workbench { overflow: hidden; border: 1px solid #2f3738; background: var(--dark); box-shadow: 0 18px 50px rgba(30, 37, 35, .12); }
 .workbench-top { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #303839; color: #9eaaa1; font-family: Consolas, monospace; font-size: 9px; letter-spacing: .12em; }
 .workbench-top button, .workbench-top a { border: 0; color: var(--blue); background: transparent; font-size: 10px; text-decoration: none; letter-spacing: 0; cursor: pointer; }
+.favorite-tool { margin-right: 2px; }
 .workbench-grid { display: grid; grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1fr); min-height: 310px; }
 .workbench-pane { display: flex; flex-direction: column; min-width: 0; padding: 16px; }
 .workbench-pane.output { background: #1b2022; }
@@ -101,6 +102,15 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .legal-copy h2:first-child { margin-top: 0; }
 .legal-copy p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.85; }
 .file-input { display: none; }
+.tool-file-control { margin: auto 0; color: #9eaaa1; font-family: Consolas, monospace; font-size: 10px; line-height: 1.6; }
+.tool-file-control .file-picker { display: inline-flex; margin-bottom: 12px; padding: 10px 13px; color: var(--dark); background: var(--green); font-family: "Segoe UI", "Noto Sans SC", Arial, sans-serif; font-size: 12px; font-weight: 800; cursor: pointer; }
+.tool-file-control .file-picker:hover { background: #b8e683; }
+.tool-file-control > span { display: block; overflow-wrap: anywhere; }
+.tool-directory.has-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.tool-entry { position: relative; min-width: 0; }
+.tool-entry .tool-link { height: 100%; }
+.directory-favorite { position: absolute; top: 12px; right: 12px; z-index: 1; width: 28px; height: 28px; padding: 0; border: 1px solid var(--line); color: var(--muted); background: var(--paper); cursor: pointer; }
+.directory-favorite:hover, .directory-favorite[aria-pressed="true"] { border-color: var(--green-deep); color: var(--green-deep); }
 .toast { position: fixed; right: 22px; bottom: 22px; z-index: 5; max-width: 320px; padding: 12px 14px; border-left: 3px solid var(--green); color: #eff5eb; background: var(--dark); box-shadow: 0 12px 30px rgba(10, 12, 12, .2); font-size: 11px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
 .toast.is-visible { opacity: 1; transform: translateY(0); }
 
@@ -112,7 +122,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
   .site-hero, .tool-layout { display: block; }
   .site-hero { padding: 59px 0 55px; }
   .hero-aside, .tool-aside { margin-top: 35px; padding-left: 0; border-left: 0; }
-  .tool-directory, .tool-info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tool-directory, .tool-directory.has-controls, .tool-info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tool-layout { padding-top: 45px; }
   .workbench-grid { display: block; }
   .workbench-middle { flex-direction: row; justify-content: space-between; padding: 13px 16px; border-top: 1px solid #303839; border-bottom: 1px solid #303839; }
@@ -125,6 +135,6 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
   .site-brand small { display: none; }
   .site-nav { font-size: 10px; }
   .site-hero h1, .tool-hero h1 { font-size: 47px; }
-  .tool-directory, .tool-info-grid { grid-template-columns: 1fr; }
+  .tool-directory, .tool-directory.has-controls, .tool-info-grid { grid-template-columns: 1fr; }
   .site-footer { display: block; line-height: 1.9; }
 }

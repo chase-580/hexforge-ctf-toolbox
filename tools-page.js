@@ -33,6 +33,13 @@ const pageTools = {
     run(value) { return value.replace(/[a-zA-Z]/g, (char) => { const base = char <= "Z" ? 65 : 97; return String.fromCharCode(((char.charCodeAt(0) - base + 13) % 26) + base); }); },
     faq: { zh: ["ROT13 是加密吗？", "不是。它是可逆的简单替换，不能提供安全性，只适合隐藏文本或练习题中的线索。"], en: ["Is ROT13 encryption?", "No. It is a reversible substitution with no meaningful security, useful only for obscuring text or solving puzzles."] },
   },
+  binary: {
+    id: "ENC-06",
+    zh: { name: "Binary 二进制转换器", short: "文本与二进制字节互转", lede: "在 UTF-8 文本和 8 位二进制字节之间转换，快速识别 CTF 题目中的 0/1 数据。", sample: "01100011 01110100 01100110 01111011 01100010 01101001 01110100 01110011 01111101", placeholder: "输入普通文本或 8 位二进制字节……", why: "二进制数据通常按 8 位组成一个字节。工具会自动判断输入是二进制还是普通文本。" },
+    en: { name: "Binary Converter", short: "Convert text and binary bytes", lede: "Convert between UTF-8 text and 8-bit binary bytes while inspecting CTF clues.", sample: "01100011 01110100 01100110 01111011 01100010 01101001 01110100 01110011 01111101", placeholder: "Enter text or 8-bit binary bytes...", why: "Binary data is commonly grouped into 8-bit bytes. This tool automatically detects binary input and otherwise encodes text." },
+    run(value) { const compact = value.replace(/\s+/g, ""); if (/^[01]+$/.test(compact)) { if (compact.length % 8 !== 0) throw new Error("Binary length must be divisible by 8"); return new TextDecoder("utf-8", { fatal: true }).decode(new Uint8Array(compact.match(/.{8}/g).map((byte) => parseInt(byte, 2)))); } return Array.from(new TextEncoder().encode(value)).map((byte) => byte.toString(2).padStart(8, "0")).join(" "); },
+    faq: { zh: ["为什么要求 8 位一组？", "一个字节包含 8 位。解码时，工具会忽略空格和换行，再按字节读取数据。"], en: ["Why are bits grouped by eight?", "One byte contains eight bits. Whitespace is ignored before the input is decoded byte by byte."] },
+  },
   jwt: {
     id: "ENC-05",
     zh: { name: "JWT 解码器", short: "查看 JSON Web Token 内容", lede: "在浏览器本地解析 JWT 的 Header 和 Payload，帮助学习认证结构和检查题目中的令牌线索。", sample: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjdGYtc3R1ZGVudCIsImFkbWluIjpmYWxzZX0.demo-signature", placeholder: "输入由点号分隔的 JWT……", why: "JWT 通常由 Header、Payload 和 Signature 三段组成。解码 Header 和 Payload 不等于验证签名，也不会证明令牌可信。" },
@@ -54,17 +61,40 @@ const pageTools = {
     run(value) { const chars = value.length; const noSpace = value.replace(/\s/g, "").length; const words = value.trim() ? value.trim().split(/\s+/).length : 0; const lines = value ? value.split(/\r?\n/).length : 0; const unique = new Set(value.replace(/\s/g, "").toLowerCase()).size; return `characters: ${chars}\nnon-space: ${noSpace}\nwords: ${words}\nlines: ${lines}\nunique chars: ${unique}`; },
     faq: { zh: ["文本统计会上传内容吗？", "不会。统计过程在当前浏览器中完成，页面不会向服务器发送输入文本。"], en: ["Is my text uploaded for statistics?", "No. The calculation runs in your browser and the page does not send the input text to a server."] },
   },
+  timestamp: {
+    id: "ANL-03",
+    zh: { name: "Unix 时间戳转换器", short: "时间戳与可读日期互转", lede: "将 Unix 秒、毫秒时间戳或日期文本转换为 ISO、UTC 和本地时间。", sample: "1767225600", placeholder: "输入 Unix 时间戳或日期，例如 1767225600……", why: "日志、令牌和取证数据经常使用 Unix 时间戳。10 位通常表示秒，13 位通常表示毫秒。" },
+    en: { name: "Unix Timestamp Converter", short: "Convert timestamps and readable dates", lede: "Convert Unix seconds, milliseconds, or date text into ISO, UTC, and local time.", sample: "1767225600", placeholder: "Enter a Unix timestamp or date, such as 1767225600...", why: "Logs, tokens, and forensic data frequently use Unix timestamps. Ten digits usually represent seconds and thirteen digits milliseconds." },
+    run(value) { const trimmed = value.trim(); const numeric = /^-?\d+(?:\.\d+)?$/.test(trimmed); const number = numeric ? Number(trimmed) : NaN; const date = numeric ? new Date(Math.abs(number) < 1e12 ? number * 1000 : number) : new Date(trimmed); if (Number.isNaN(date.getTime())) throw new Error("Unrecognized date or timestamp"); return `ISO 8601: ${date.toISOString()}\nUTC: ${date.toUTCString()}\nLocal: ${date.toLocaleString(locale === "en" ? "en" : "zh-CN", { hour12: false })}\nUnix seconds: ${Math.floor(date.getTime() / 1000)}\nUnix milliseconds: ${date.getTime()}`; },
+    faq: { zh: ["如何区分秒和毫秒时间戳？", "工具将绝对值小于一万亿的数字按秒处理，更大的数字按毫秒处理。"], en: ["How are seconds and milliseconds detected?", "Numbers with an absolute value below one trillion are treated as seconds; larger values are treated as milliseconds."] },
+  },
+  regex: {
+    id: "ANL-04",
+    zh: { name: "正则表达式测试器", short: "检查 JavaScript 正则匹配", lede: "第一行填写正则表达式，后续行填写测试文本，快速查看匹配内容和位置。", sample: "/flag\\{[^}]+\\}/gi\nnoise FLAG{first} ctf flag{second}", placeholder: "第一行输入 /正则/flags，后续行输入测试文本……", why: "正则表达式适合从日志、题目输出和长文本中定位具有固定结构的内容。最多显示前 200 个匹配。" },
+    en: { name: "Regular Expression Tester", short: "Inspect JavaScript regex matches", lede: "Put a regular expression on the first line and test text below it to inspect matches and positions.", sample: "/flag\\{[^}]+\\}/gi\nnoise FLAG{first} ctf flag{second}", placeholder: "Enter /pattern/flags on line one and test text below...", why: "Regular expressions help locate structured values inside logs, challenge output, and long text. Up to 200 matches are displayed." },
+    run: runRegex,
+    faq: { zh: ["支持哪些正则标志？", "支持当前浏览器实现的 JavaScript 标志，例如 g、i、m、s、u 和 y。"], en: ["Which regex flags are supported?", "The JavaScript flags implemented by your browser are supported, including g, i, m, s, u, and y."] },
+  },
+  filehash: {
+    id: "ANL-05",
+    zh: { name: "文件 SHA-256 校验", short: "在本地计算文件哈希", lede: "选择本地文件并在浏览器中计算 SHA-256，不上传文件内容。", sample: "", placeholder: "选择一个文件后运行……", why: "文件哈希可以用于验证下载完整性、对比取证样本或确认两个文件是否一致。" },
+    en: { name: "File SHA-256 Checksum", short: "Hash a file locally", lede: "Select a local file and calculate its SHA-256 digest in the browser without uploading its contents.", sample: "", placeholder: "Select a file, then run the tool...", why: "File hashes help verify download integrity, compare forensic samples, or confirm whether two files are identical." },
+    isFile: true,
+    async runFile(file) { if (!globalThis.crypto?.subtle) throw new Error("Web Crypto is unavailable"); const digest = await crypto.subtle.digest("SHA-256", await file.arrayBuffer()); const hash = Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join(""); return `file: ${file.name}\nsize: ${file.size} bytes\ntype: ${file.type || "unknown"}\nsha256: ${hash}`; },
+    faq: { zh: ["文件会上传到服务器吗？", "不会。浏览器直接读取所选文件并计算摘要，页面不会上传文件内容。"], en: ["Is the file uploaded?", "No. Your browser reads the selected file and calculates the digest locally without uploading its contents."] },
+  },
 };
 
 function encodeBase64(value) { const bytes = new TextEncoder().encode(value); let binary = ""; bytes.forEach((byte) => { binary += String.fromCharCode(byte); }); return btoa(binary); }
 function decodeBase64(value) { const binary = atob(value.replace(/\s/g, "").replace(/-/g, "+").replace(/_/g, "/")); return new TextDecoder().decode(Uint8Array.from(binary, (char) => char.charCodeAt(0))); }
 function isPrintable(value) { return Array.from(value).every((char) => char === "\n" || char === "\r" || char === "\t" || char.charCodeAt(0) >= 32); }
 function prettyJson(value) { try { return JSON.stringify(JSON.parse(value), null, 2); } catch { return value; } }
+function runRegex(value) { const newline = value.indexOf("\n"); if (newline < 0) throw new Error("Put /pattern/flags on the first line and test text below it"); const expression = value.slice(0, newline).trim(); const text = value.slice(newline + 1); const parsed = expression.match(/^\/(.*)\/([dgimsuvy]*)$/); if (!parsed) throw new Error("Use the format /pattern/flags"); const flags = parsed[2].includes("g") ? parsed[2] : `${parsed[2]}g`; const matches = Array.from(text.matchAll(new RegExp(parsed[1], flags))).slice(0, 200); return matches.length ? matches.map((match, index) => `${index + 1}. [${match.index}] ${match[0]}`).join("\n") : "No matches"; }
 function showToast(message) { const toast = document.querySelector("#toolToast"); toast.textContent = message; toast.classList.add("is-visible"); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove("is-visible"), 2300); }
 
 const locale = document.body.dataset.locale === "en" ? "en" : "zh";
-const slug = location.pathname.split("/").filter(Boolean).at(-2) || "base64-decoder";
-const slugMap = { "base64-decoder": "base64", "url-encoder-decoder": "url", "hex-converter": "hex", "rot13-decoder": "rot13", "jwt-decoder": "jwt", "sha256-generator": "hash", "text-statistics": "stats" };
+const slug = location.pathname.split("/").filter(Boolean).at(-1) || "base64-decoder";
+const slugMap = { "base64-decoder": "base64", "url-encoder-decoder": "url", "hex-converter": "hex", "rot13-decoder": "rot13", "jwt-decoder": "jwt", "sha256-generator": "hash", "text-statistics": "stats", "binary-converter": "binary", "timestamp-converter": "timestamp", "regex-tester": "regex", "file-hash": "filehash" };
 const tool = pageTools[slugMap[slug]] || pageTools.base64;
 const copy = tool[locale];
 const input = document.querySelector("#toolInput");
@@ -91,6 +121,7 @@ const alternateLinks = [
   ["en", `${location.origin}/en/tools/${slug}/`],
 ];
 alternateLinks.forEach(([hreflang, href]) => {
+  if (document.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`)) return;
   const link = document.createElement("link");
   link.rel = "alternate";
   link.hreflang = hreflang;
@@ -103,7 +134,8 @@ document.querySelector("#toolLede").textContent = copy.lede;
 document.querySelector("#toolWhy").textContent = copy.why;
 document.querySelector("#toolInputLabel").textContent = locale === "en" ? "INPUT" : "输入";
 document.querySelector("#toolOutputLabel").textContent = locale === "en" ? "OUTPUT" : "输出";
-document.querySelector("#toolInputHint").textContent = copy.placeholder;
+const inputHint = document.querySelector("#toolInputHint");
+if (inputHint) inputHint.textContent = copy.placeholder;
 document.querySelector("#toolId").textContent = tool.id;
 document.querySelector("#runTool").innerHTML = locale === "en" ? "Run <span>→</span>" : "运行 <span>→</span>";
 document.querySelector("#sampleTool").textContent = locale === "en" ? "Use example" : "填入示例";
@@ -113,16 +145,41 @@ document.querySelector("#toolFaqTitle").textContent = locale === "en" ? "Common 
 document.querySelector("#toolFaqQuestion").textContent = tool.faq[locale][0];
 document.querySelector("#toolFaqAnswer").textContent = tool.faq[locale][1];
 document.querySelector("#privacyTitle").textContent = locale === "en" ? "Privacy first" : "隐私优先";
-document.querySelector("#privacyCopy").textContent = locale === "en" ? "Input is processed in your current browser. This MVP does not upload the text to a server." : "输入内容在当前浏览器中处理。这个 MVP 不会把文本上传到服务器。";
+document.querySelector("#privacyCopy").textContent = tool.isFile
+  ? (locale === "en" ? "The selected file is hashed in your browser and is never uploaded." : "所选文件只在浏览器中计算哈希，不会上传到服务器。")
+  : (locale === "en" ? "Input is processed in your current browser. This MVP does not upload the text to a server." : "输入内容在当前浏览器中处理。这个 MVP 不会把文本上传到服务器。");
 document.querySelector("#relatedTitle").textContent = locale === "en" ? "Related tools" : "相关工具";
 input.placeholder = copy.placeholder;
 
+const fileControl = document.createElement("div");
+fileControl.className = "tool-file-control";
+fileControl.hidden = !tool.isFile;
+fileControl.innerHTML = `<label class="file-picker" for="toolFile">${locale === "en" ? "Choose file" : "选择文件"}</label><input class="file-input" id="toolFile" type="file"><span id="toolFileName">${locale === "en" ? "No file selected" : "尚未选择文件"}</span>`;
+input.insertAdjacentElement("afterend", fileControl);
+input.hidden = Boolean(tool.isFile);
+const fileInput = document.querySelector("#toolFile");
+const fileName = document.querySelector("#toolFileName");
+
+function readList(key) { try { const value = JSON.parse(localStorage.getItem(key) || "[]"); return Array.isArray(value) ? value : []; } catch { return []; } }
+function writeList(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage is optional. */ } }
+const recentTools = readList("hexforge-recent-tools").filter((item) => item !== slug);
+writeList("hexforge-recent-tools", [slug, ...recentTools].slice(0, 11));
+const favoriteButton = document.createElement("button");
+favoriteButton.type = "button";
+favoriteButton.className = "favorite-tool";
+function renderFavorite() { const active = readList("hexforge-favorites").includes(slug); favoriteButton.textContent = active ? (locale === "en" ? "★ Favorited" : "★ 已收藏") : (locale === "en" ? "☆ Favorite" : "☆ 收藏"); favoriteButton.setAttribute("aria-pressed", String(active)); }
+favoriteButton.addEventListener("click", () => { const favorites = readList("hexforge-favorites"); const next = favorites.includes(slug) ? favorites.filter((item) => item !== slug) : [slug, ...favorites]; writeList("hexforge-favorites", next); renderFavorite(); showToast(locale === "en" ? "Favorites updated." : "收藏已更新。"); });
+document.querySelector(".workbench-top > span:last-child").prepend(favoriteButton, " · ");
+renderFavorite();
+
 function updateCount() { inputCount.textContent = `${input.value.length} chars`; outputCount.textContent = `${output.value.length} chars`; }
-async function run() { if (!input.value) { showToast(locale === "en" ? "Enter some text first." : "请先输入一段文本。"); input.focus(); return; } status.textContent = "WORKING"; try { output.value = await tool.run(input.value); status.textContent = "DONE"; updateCount(); } catch (error) { output.value = error.message; status.textContent = "ERROR"; updateCount(); } }
+async function run() { const file = fileInput.files[0]; if (tool.isFile ? !file : !input.value) { showToast(tool.isFile ? (locale === "en" ? "Choose a file first." : "请先选择一个文件。") : (locale === "en" ? "Enter some text first." : "请先输入一段文本。")); (tool.isFile ? fileInput : input).focus(); return; } status.textContent = "WORKING"; try { output.value = tool.isFile ? await tool.runFile(file) : await tool.run(input.value); status.textContent = "DONE"; updateCount(); incrementToolMetric(slug, "success"); } catch (error) { output.value = error.message; status.textContent = "ERROR"; updateCount(); incrementToolMetric(slug, "error"); } }
+function incrementToolMetric(toolSlug, result) { try { const metrics = JSON.parse(localStorage.getItem("hexforge-tool-metrics") || "{}"); const key = `${toolSlug}:${result}`; metrics[key] = (metrics[key] || 0) + 1; localStorage.setItem("hexforge-tool-metrics", JSON.stringify(metrics)); } catch { /* Metrics never block the tool. */ } }
 document.querySelector("#runTool").addEventListener("click", run);
-document.querySelector("#sampleTool").addEventListener("click", () => { input.value = copy.sample; updateCount(); input.focus(); });
-document.querySelector("#clearTool").addEventListener("click", () => { input.value = ""; output.value = ""; status.textContent = "WAITING"; updateCount(); });
+document.querySelector("#sampleTool").addEventListener("click", () => { if (tool.isFile) return showToast(locale === "en" ? "Choose a file from your device." : "请从设备中选择文件。"); input.value = copy.sample; updateCount(); input.focus(); });
+document.querySelector("#clearTool").addEventListener("click", () => { input.value = ""; output.value = ""; fileInput.value = ""; fileName.textContent = locale === "en" ? "No file selected" : "尚未选择文件"; status.textContent = "WAITING"; updateCount(); });
 document.querySelector("#copyTool").addEventListener("click", async () => { if (!output.value) return showToast(locale === "en" ? "There is no result to copy." : "当前没有可复制的结果。"); try { await navigator.clipboard.writeText(output.value); showToast(locale === "en" ? "Copied to clipboard." : "结果已复制到剪贴板。"); } catch { output.select(); document.execCommand("copy"); showToast(locale === "en" ? "Copied to clipboard." : "结果已复制到剪贴板。"); } });
 input.addEventListener("input", updateCount);
 input.addEventListener("keydown", (event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") run(); });
+fileInput.addEventListener("change", () => { const file = fileInput.files[0]; fileName.textContent = file ? `${file.name} · ${file.size} bytes` : (locale === "en" ? "No file selected" : "尚未选择文件"); });
 updateCount();
