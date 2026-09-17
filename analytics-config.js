@@ -1,4 +1,3 @@
 window.HEXFORGE_CONFIG = Object.freeze({
-  // Replace this value with the token from Cloudflare Web Analytics.
-  cloudflareWebAnalyticsToken: "REPLACE_WITH_CLOUDFLARE_WEB_ANALYTICS_TOKEN",
+  cloudflareWebAnalyticsToken: "040c7cc6bb174608a7f04efcf7ad839c",
 });
