@@ -59,7 +59,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .text-button { color: var(--muted); font-size: 10px; text-decoration: none; }
 .text-button:hover { color: var(--action); }
 
-.hero-section, .workspace-section, .lab-section, .pipeline-section, .recent-section, .about-section, .footer { max-width: 1280px; margin: 0 auto; padding-right: 5vw; padding-left: 5vw; }
+.hero-section, .workspace-section, .lab-section, .pipeline-section, .challenge-section, .recent-section, .about-section, .footer { max-width: 1280px; margin: 0 auto; padding-right: 5vw; padding-left: 5vw; }
 .hero-section { display: grid; grid-template-columns: minmax(0, 1fr) 220px; align-items: end; gap: 70px; padding-top: 76px; padding-bottom: 66px; }
 .hero-copy { max-width: 640px; }
 .section-kicker { color: var(--signal-deep); }
@@ -76,7 +76,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .signal-bars i { display: block; width: 2px; background: var(--signal-deep); }
 .signal-bars i:nth-child(1) { height: 4px; opacity: .45; }.signal-bars i:nth-child(2) { height: 7px; opacity: .65; }.signal-bars i:nth-child(3) { height: 9px; opacity: .82; }.signal-bars i:nth-child(4) { height: 12px; }
 
-.workspace-section, .lab-section, .pipeline-section, .recent-section { padding-top: 34px; padding-bottom: 38px; border-top: 1px solid var(--line); }
+.workspace-section, .lab-section, .pipeline-section, .challenge-section, .recent-section { padding-top: 34px; padding-bottom: 38px; border-top: 1px solid var(--line); }
 .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 22px; margin-bottom: 20px; }
 .section-heading h3 { margin: 7px 0 0; font-family: "Bahnschrift SemiCondensed", "Noto Sans SC", sans-serif; font-size: 24px; font-weight: 600; }
 .search-field { display: flex; align-items: center; gap: 9px; width: min(278px, 100%); padding: 8px 0; border-bottom: 1px solid #8d938c; color: var(--muted); }
@@ -112,6 +112,8 @@ kbd { min-width: 19px; padding: 2px 5px; border: 1px solid var(--line); color: v
 .lab-panel { overflow: hidden; border: 1px solid #2e342e; background: var(--dark); box-shadow: var(--shadow); }
 .panel-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #303630; }
 .toolbar-left, .toolbar-right, .output-label-row { display: flex; align-items: center; gap: 13px; }
+.output-label-row { justify-content: space-between; }
+.output-actions { display: flex; align-items: center; gap: 13px; }
 .input-label { color: #9da69d; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; font-weight: 700; }
 .sample-button, .small-action, .copy-button { padding: 0; border: 0; color: #9da69d; background: transparent; font-size: 10px; }
 .sample-button:hover, .small-action:hover, .copy-button:hover { color: var(--signal); }
@@ -177,6 +179,79 @@ kbd { min-width: 19px; padding: 2px 5px; border: 1px solid var(--line); color: v
 .trace-step.is-error { border-top: 2px solid var(--alert); }
 .trace-step.is-error .trace-step-head strong { color: var(--alert); }
 
+.challenge-heading { margin-bottom: 15px; }
+.challenge-heading-actions { display: flex; align-items: center; gap: 18px; }
+.new-challenge-button { display: inline-flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--signal-deep); color: var(--dark); background: var(--signal); font-size: 10px; font-weight: 700; }
+.new-challenge-button:hover { color: var(--signal); background: var(--dark); }
+.challenge-workbench { display: grid; grid-template-columns: 260px minmax(0, 1fr); min-height: 500px; border: 1px solid #2e342e; background: var(--dark); box-shadow: var(--shadow); }
+.challenge-index { min-width: 0; border-right: 1px solid #303630; }
+.challenge-index-head { display: flex; justify-content: space-between; align-items: center; min-height: 48px; padding: 0 14px; border-bottom: 1px solid #303630; color: #6f786f; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; }
+.challenge-list { display: grid; }
+.challenge-list-empty { padding: 24px 14px; color: #687168; font-size: 9px; line-height: 1.7; }
+.challenge-list-item { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 10px; width: 100%; padding: 13px 14px; border: 0; border-bottom: 1px solid #292e29; color: #dce1d8; background: transparent; text-align: left; }
+.challenge-list-item:hover { background: #181c18; }
+.challenge-list-item.is-active { background: #1b2117; }
+.challenge-list-marker { width: 6px; height: 6px; margin-top: 5px; border: 1px solid #667066; }
+.challenge-list-item.is-active .challenge-list-marker { border-color: var(--signal); background: var(--signal); box-shadow: 0 0 0 3px rgba(184, 217, 86, .1); }
+.challenge-list-item.is-solved .challenge-list-marker { border-color: var(--signal); background: var(--signal); }
+.challenge-list-copy { min-width: 0; }
+.challenge-list-copy strong { display: block; overflow: hidden; font-size: 11px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.challenge-list-meta { display: flex; justify-content: space-between; gap: 10px; margin-top: 6px; color: #788178; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; text-transform: uppercase; }
+.challenge-empty { display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 54px 24px; text-align: center; }
+.challenge-empty[hidden], .challenge-editor[hidden] { display: none; }
+.challenge-empty-mark { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 18px; border: 1px solid #465046; color: var(--signal); font-family: "Cascadia Code", Consolas, monospace; font-size: 17px; }
+.challenge-empty strong { color: #edf0e9; font-size: 14px; }
+.challenge-empty p { max-width: 370px; margin: 10px 0 18px; color: #7f887f; font-size: 10px; line-height: 1.75; }
+.challenge-empty .small-action { color: var(--signal); }
+.challenge-editor { min-width: 0; }
+.challenge-editor-head { display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 82px; padding: 14px 16px; border-bottom: 1px solid #303630; }
+.challenge-editor-head > div:first-child { display: grid; flex: 1; gap: 7px; min-width: 0; }
+.challenge-title-input { width: 100%; border: 0; outline: 0; color: #edf0e9; background: transparent; font-family: "Bahnschrift SemiCondensed", "Noto Sans SC", sans-serif; font-size: 22px; font-weight: 600; }
+.challenge-title-input:focus { box-shadow: inset 0 -1px 0 var(--signal); }
+.challenge-editor-actions { display: flex; align-items: center; gap: 8px; }
+.challenge-status-button { padding: 8px 10px; border: 1px solid #59654a; color: var(--signal); background: transparent; font-size: 9px; }
+.challenge-status-button:hover, .challenge-status-button.is-solved { color: var(--dark); background: var(--signal); }
+.icon-action { display: grid; place-items: center; width: 31px; height: 31px; padding: 0; border: 1px solid #4b524b; color: #a8b0a6; background: transparent; font-family: "Cascadia Code", Consolas, monospace; font-size: 14px; }
+.icon-action:hover { border-color: var(--signal); color: var(--signal); }
+.danger-action:hover { border-color: var(--alert); color: var(--alert); }
+.challenge-meta-grid { display: grid; grid-template-columns: 130px 130px minmax(180px, 1fr); border-bottom: 1px solid #303630; }
+.challenge-meta-grid label { display: grid; gap: 7px; min-width: 0; padding: 12px 14px; border-right: 1px solid #303630; color: #7f887f; font-size: 8px; }
+.challenge-meta-grid label:last-child { border-right: 0; }
+.challenge-meta-grid select, .challenge-meta-grid input, .challenge-flag-field input { width: 100%; min-width: 0; height: 28px; padding: 0; border: 0; border-bottom: 1px solid #414841; border-radius: 0; outline: 0; color: #dfe4db; background: transparent; font-family: "Cascadia Code", Consolas, monospace; font-size: 10px; }
+.challenge-meta-grid select:focus, .challenge-meta-grid input:focus, .challenge-flag-field input:focus { border-color: var(--signal); }
+.challenge-meta-grid select { color-scheme: dark; }
+.challenge-body-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, .72fr); min-height: 330px; }
+.challenge-notes-field { display: flex; min-width: 0; flex-direction: column; padding: 15px 16px 12px; border-right: 1px solid #303630; }
+.challenge-notes-field textarea { flex: 1; min-height: 240px; margin-top: 12px; resize: vertical; border: 0; outline: 0; color: #dfe4db; background: transparent; font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; line-height: 1.75; }
+.challenge-notes-field textarea::placeholder { color: #5f685f; }
+.challenge-notes-field small { color: #626b62; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
+.challenge-side-notes { display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+.challenge-flag-field { display: grid; gap: 9px; padding: 15px 14px; border-bottom: 1px solid #303630; }
+.challenge-artifacts-block { min-width: 0; padding: 14px; }
+.challenge-artifacts-head { display: flex; justify-content: space-between; align-items: center; color: #697269; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
+.challenge-artifacts { display: grid; margin-top: 8px; }
+.challenge-artifacts-empty { padding: 22px 0; color: #687168; font-size: 9px; line-height: 1.65; }
+.challenge-artifact { min-width: 0; padding: 11px 0; border-top: 1px solid #303630; }
+.challenge-artifact-head { display: flex; justify-content: space-between; gap: 10px; }
+.challenge-artifact-head strong { overflow: hidden; color: var(--signal); font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.challenge-artifact-head button { padding: 0; border: 0; color: #697269; background: transparent; font-size: 11px; }
+.challenge-artifact-head button:hover { color: var(--alert); }
+.challenge-artifact pre { max-height: 86px; overflow: auto; margin: 8px 0 0; color: #aeb6ad; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.challenge-artifact time { display: block; margin-top: 6px; color: #5f685f; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
+
+.challenge-dialog { width: min(470px, calc(100vw - 32px)); padding: 0; border: 1px solid #454d45; border-radius: 0; color: #dfe4db; background: var(--dark); box-shadow: 0 30px 90px rgba(0, 0, 0, .4); }
+.challenge-dialog::backdrop { background: rgba(10, 12, 10, .72); backdrop-filter: blur(3px); }
+.challenge-dialog form { padding: 18px; }
+.dialog-head { display: flex; justify-content: space-between; align-items: start; gap: 20px; padding-bottom: 16px; border-bottom: 1px solid #303630; }
+.dialog-head h2 { margin: 7px 0 0; font-family: "Bahnschrift SemiCondensed", "Noto Sans SC", sans-serif; font-size: 22px; font-weight: 600; }
+.dialog-field { display: grid; gap: 8px; margin-top: 16px; color: #919a91; font-size: 9px; }
+.dialog-field input, .dialog-field select { width: 100%; height: 36px; padding: 0 9px; border: 1px solid #414841; border-radius: 0; outline: 0; color: #edf0e9; background: #181c18; font-size: 11px; }
+.dialog-field input:focus, .dialog-field select:focus { border-color: var(--signal); }
+.dialog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.dialog-actions { display: flex; justify-content: flex-end; align-items: center; gap: 18px; margin-top: 22px; padding-top: 15px; border-top: 1px solid #303630; }
+.dialog-submit { padding: 10px 13px; border: 1px solid var(--signal); color: var(--dark); background: var(--signal); font-size: 10px; font-weight: 700; }
+.dialog-submit:hover { color: var(--signal); background: transparent; }
+
 .compact-heading { margin-bottom: 16px; }
 .recent-list { display: grid; border-top: 1px solid var(--line); }
 .recent-empty { padding: 17px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 10px; }
@@ -216,7 +291,7 @@ body.is-light .tool-card.is-selected > span:last-child, body.is-light .tool-card
   .sidebar-status, .sidebar-note, .sidebar-footer { display: none; }
   .nav-stack { grid-column: 1 / -1; display: flex; overflow-x: auto; gap: 5px; margin: 0 -3px -2px; padding-bottom: 2px; }
   .nav-item { flex: 0 0 auto; width: auto; grid-template-columns: 18px auto auto; padding: 8px 9px; }
-  .hero-section, .workspace-section, .lab-section, .pipeline-section, .recent-section, .about-section, .footer, .topbar { padding-right: 18px; padding-left: 18px; }
+  .hero-section, .workspace-section, .lab-section, .pipeline-section, .challenge-section, .recent-section, .about-section, .footer, .topbar { padding-right: 18px; padding-left: 18px; }
   .hero-section { display: block; padding-top: 48px; padding-bottom: 48px; }
   .hero-copy h2 { font-size: clamp(44px, 13vw, 62px); }
   .hero-readout { margin-top: 34px; padding-left: 0; border-left: 0; }
@@ -235,6 +310,15 @@ body.is-light .tool-card.is-selected > span:last-child, body.is-light .tool-card
   .chain-field textarea { min-height: 150px; }
   .chain-runbar { flex-direction: row; justify-content: space-between; padding: 12px 16px; border: 0; border-top: 1px solid #303630; border-bottom: 1px solid #303630; }
   .chain-trace { grid-template-columns: 1fr; }
+  .challenge-heading-actions { width: 100%; justify-content: space-between; }
+  .challenge-workbench { display: block; }
+  .challenge-index { border-right: 0; border-bottom: 1px solid #303630; }
+  .challenge-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .challenge-list-item { border-right: 1px solid #292e29; }
+  .challenge-meta-grid { grid-template-columns: 1fr 1fr; }
+  .challenge-tags-field { grid-column: 1 / -1; border-top: 1px solid #303630; }
+  .challenge-body-grid { display: block; }
+  .challenge-notes-field { min-height: 300px; border-right: 0; border-bottom: 1px solid #303630; }
   .about-section { display: block; }
   .about-section > p { max-width: 530px; margin-top: 20px; }
 }
@@ -242,6 +326,14 @@ body.is-light .tool-card.is-selected > span:last-child, body.is-light .tool-card
   .topbar-actions .text-button { display: none; }
   .hero-copy p { font-size: 13px; }
   .tool-card { padding: 12px 10px; }
+  .challenge-heading-actions { align-items: flex-start; flex-direction: column; }
+  .challenge-list { display: block; max-height: 250px; overflow: auto; }
+  .challenge-meta-grid { display: block; }
+  .challenge-meta-grid label { border-right: 0; border-bottom: 1px solid #303630; }
+  .challenge-tags-field { border-top: 0; }
+  .challenge-editor-head { align-items: flex-start; flex-direction: column; }
+  .challenge-editor-actions { width: 100%; justify-content: space-between; }
+  .dialog-grid { display: block; }
   .recent-row { grid-template-columns: 68px 1fr; gap: 7px; }
   .recent-time { grid-column: 2; }
   .footer { display: block; line-height: 1.9; }

@@ -50,6 +50,11 @@
             <span>工具链</span>
             <span class="nav-count">BETA</span>
           </a>
+          <a class="nav-item nav-anchor" href="#challengeWorkspace">
+            <span class="nav-glyph">▣</span>
+            <span>题目工作区</span>
+            <span class="nav-count" id="workspaceNavCount">00</span>
+          </a>
         </nav>
 
         <div class="sidebar-note">
@@ -209,7 +214,7 @@
                 <span class="transform-hint">SAFE TO REPEAT</span>
               </div>
               <div class="editor-column output-column">
-                <div class="output-label-row"><span class="input-label">OUTPUT</span><button class="copy-button" id="copyButton" type="button">复制结果</button></div>
+                <div class="output-label-row"><span class="input-label">OUTPUT</span><span class="output-actions"><button class="copy-button" id="saveToolResult" type="button">存入题目</button><button class="copy-button" id="copyButton" type="button">复制结果</button></span></div>
                 <textarea id="outputText" readonly spellcheck="false" placeholder="结果会出现在这里……"></textarea>
                 <div class="editor-foot"><span id="outputMeta">0 chars</span><span id="runStatus">WAITING</span></div>
               </div>
@@ -247,7 +252,7 @@
                 <button class="chain-run" id="runChain" type="button"><span>运行工具链</span><span aria-hidden="true">→</span></button>
               </div>
               <div class="chain-field chain-output">
-                <div class="chain-field-head"><label for="chainOutput">OUTPUT</label><button id="copyChain" type="button">复制结果</button></div>
+                <div class="chain-field-head"><label for="chainOutput">OUTPUT</label><span><button id="saveChainResult" type="button">存入题目</button> · <button id="copyChain" type="button">复制结果</button></span></div>
                 <textarea id="chainOutput" readonly spellcheck="false" placeholder="最终结果会显示在这里……"></textarea>
                 <div class="chain-field-meta"><span id="chainOutputCount">0 chars</span><span>FINAL RESULT</span></div>
               </div>
@@ -260,10 +265,67 @@
           </div>
         </section>
 
+        <section class="challenge-section" id="challengeWorkspace" aria-labelledby="challenge-title">
+          <div class="section-heading challenge-heading">
+            <div>
+              <p class="section-kicker">04 / ORGANIZE A CASE</p>
+              <h3 id="challenge-title">题目工作区</h3>
+            </div>
+            <div class="challenge-heading-actions">
+              <div class="lab-meta"><span class="live-dot"></span><span id="challengeSummary">0 CHALLENGES · LOCAL</span></div>
+              <button class="new-challenge-button" id="newChallengeButton" type="button"><span aria-hidden="true">＋</span><span>新建题目</span></button>
+            </div>
+          </div>
+
+          <div class="challenge-workbench">
+            <aside class="challenge-index" aria-label="题目列表">
+              <div class="challenge-index-head"><span class="input-label">CASES</span><span id="challengeSolvedCount">0 / 0 SOLVED</span></div>
+              <div class="challenge-list" id="challengeList"></div>
+            </aside>
+
+            <div class="challenge-empty" id="challengeEmpty">
+              <span class="challenge-empty-mark" aria-hidden="true">▣</span>
+              <strong>还没有题目记录</strong>
+              <p>为当前题目建立一个本地档案，再把工具结果和解题笔记集中到这里。</p>
+              <button class="small-action" id="emptyNewChallenge" type="button">＋ 创建第一个题目</button>
+            </div>
+
+            <article class="challenge-editor" id="challengeEditor" hidden>
+              <header class="challenge-editor-head">
+                <div>
+                  <span class="input-label">ACTIVE CASE</span>
+                  <input class="challenge-title-input" id="challengeName" type="text" maxlength="80" aria-label="题目名称" />
+                </div>
+                <div class="challenge-editor-actions">
+                  <button class="challenge-status-button" id="challengeStatusButton" type="button">标记已解</button>
+                  <button class="icon-action danger-action" id="deleteChallengeButton" type="button" aria-label="删除题目" title="删除题目">×</button>
+                </div>
+              </header>
+
+              <div class="challenge-meta-grid">
+                <label><span>分类</span><select id="challengeCategory"><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
+                <label><span>难度</span><select id="challengeDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Insane</option></select></label>
+                <label class="challenge-tags-field"><span>标签</span><input id="challengeTags" type="text" maxlength="160" placeholder="base64, web, jwt" /></label>
+              </div>
+
+              <div class="challenge-body-grid">
+                <label class="challenge-notes-field"><span class="input-label">NOTES</span><textarea id="challengeNotes" maxlength="50000" spellcheck="false" placeholder="记录思路、线索、尝试过的方法和下一步……"></textarea><small id="challengeSaveState">LOCAL AUTOSAVE</small></label>
+                <div class="challenge-side-notes">
+                  <label class="challenge-flag-field"><span class="input-label">FLAG</span><input id="challengeFlag" type="text" maxlength="500" spellcheck="false" placeholder="flag{...}" /></label>
+                  <div class="challenge-artifacts-block">
+                    <div class="challenge-artifacts-head"><span class="input-label">SAVED RESULTS</span><span id="artifactCount">0 ITEMS</span></div>
+                    <div class="challenge-artifacts" id="challengeArtifacts"></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section class="recent-section" aria-labelledby="recent-title">
           <div class="section-heading compact-heading">
             <div>
-              <p class="section-kicker">04 / TRACE</p>
+              <p class="section-kicker">05 / TRACE</p>
               <h3 id="recent-title">最近使用</h3>
             </div>
             <button class="small-action" id="clearRecentButton" type="button">清除记录</button>
@@ -278,7 +340,7 @@
             <p class="section-kicker">ABOUT THE BUILD</p>
             <h3 id="about-title">小而快，先把高频动作做好。</h3>
           </div>
-          <p>Hexforge MVP 只处理浏览器端的低风险文本变换。后续可以接入更多 CTF 场景工具、题目收藏、账号体系，以及面向重度用户的会员功能。</p>
+          <p>Hexforge MVP 只处理浏览器端的低风险文本变换，并把题目档案保存在当前设备。后续可以接入更多 CTF 场景工具、跨设备同步、账号体系，以及面向重度用户的会员功能。</p>
         </section>
 
         <footer class="footer"><span>hexforge / made for practice</span><span><a href="privacy/">隐私说明</a> · LOCAL-FIRST</span></footer>
@@ -286,10 +348,26 @@
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <dialog class="challenge-dialog" id="challengeDialog" aria-labelledby="challenge-dialog-title">
+      <form method="dialog" id="challengeForm">
+        <div class="dialog-head">
+          <div><span class="input-label">NEW CASE</span><h2 id="challenge-dialog-title">建立题目档案</h2></div>
+          <button class="icon-action" value="cancel" type="submit" aria-label="关闭" title="关闭">×</button>
+        </div>
+        <label class="dialog-field"><span>题目名称</span><input id="newChallengeName" type="text" maxlength="80" required placeholder="例如：JWT 授权绕过" /></label>
+        <div class="dialog-grid">
+          <label class="dialog-field"><span>分类</span><select id="newChallengeCategory"><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
+          <label class="dialog-field"><span>难度</span><select id="newChallengeDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Insane</option></select></label>
+        </div>
+        <label class="dialog-field"><span>标签</span><input id="newChallengeTags" type="text" maxlength="160" placeholder="可选，用逗号分隔" /></label>
+        <div class="dialog-actions"><button class="small-action" value="cancel" type="submit">取消</button><button class="dialog-submit" id="createChallengeButton" value="default" type="submit">创建并打开</button></div>
+      </form>
+    </dialog>
     <script src="analytics-config.js"></script>
     <script src="analytics.js"></script>
     <script src="app.js"></script>
     <script src="toolchain.js"></script>
+    <script src="workspace.js"></script>
   </body>
 </html>
 
