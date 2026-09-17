@@ -64,7 +64,7 @@
         </div>
 
         <div class="sidebar-footer">
-          <span>v0.1.0 · MVP</span>
+          <span>v0.2.0 · WORKSPACE</span>
           <a href="#about">关于项目</a>
         </div>
       </aside>
@@ -273,6 +273,7 @@
             </div>
             <div class="challenge-heading-actions">
               <div class="lab-meta"><span class="live-dot"></span><span id="challengeSummary">0 CHALLENGES · LOCAL</span></div>
+              <div class="challenge-data-actions"><button class="small-action" id="importWorkspaceButton" type="button">导入</button><button class="small-action" id="exportWorkspaceButton" type="button">导出</button></div>
               <button class="new-challenge-button" id="newChallengeButton" type="button"><span aria-hidden="true">＋</span><span>新建题目</span></button>
             </div>
           </div>
@@ -280,6 +281,13 @@
           <div class="challenge-workbench">
             <aside class="challenge-index" aria-label="题目列表">
               <div class="challenge-index-head"><span class="input-label">CASES</span><span id="challengeSolvedCount">0 / 0 SOLVED</span></div>
+              <div class="challenge-filters">
+                <label class="challenge-search"><span aria-hidden="true">⌕</span><input id="challengeSearch" type="search" placeholder="搜索题目或标签" autocomplete="off" /></label>
+                <div class="challenge-filter-row">
+                  <label><span class="sr-only">按分类筛选</span><select id="challengeCategoryFilter"><option value="all">全部分类</option><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
+                  <label><span class="sr-only">按状态筛选</span><select id="challengeStatusFilter"><option value="all">全部状态</option><option value="active">进行中</option><option value="solved">已解决</option></select></label>
+                </div>
+              </div>
               <div class="challenge-list" id="challengeList"></div>
             </aside>
 
@@ -315,6 +323,11 @@
                   <div class="challenge-artifacts-block">
                     <div class="challenge-artifacts-head"><span class="input-label">SAVED RESULTS</span><span id="artifactCount">0 ITEMS</span></div>
                     <div class="challenge-artifacts" id="challengeArtifacts"></div>
+                  </div>
+                  <div class="challenge-attachments-block">
+                    <div class="challenge-attachments-head"><span class="input-label">FILES &amp; SCREENSHOTS</span><span id="attachmentCount">0 / 12</span></div>
+                    <div class="challenge-attachment-actions"><button class="small-action" id="addAttachmentButton" type="button">＋ 附件</button><button class="small-action" id="addScreenshotButton" type="button">▧ 截图</button></div>
+                    <div class="challenge-attachments" id="challengeAttachments"></div>
                   </div>
                 </div>
               </div>
@@ -363,6 +376,8 @@
         <div class="dialog-actions"><button class="small-action" value="cancel" type="submit">取消</button><button class="dialog-submit" id="createChallengeButton" value="default" type="submit">创建并打开</button></div>
       </form>
     </dialog>
+    <input id="importWorkspaceInput" type="file" accept="application/json,.json" hidden />
+    <input id="workspaceAttachmentInput" type="file" hidden />
     <script src="analytics-config.js"></script>
     <script src="analytics.js"></script>
     <script src="app.js"></script>

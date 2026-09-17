@@ -181,11 +181,19 @@ kbd { min-width: 19px; padding: 2px 5px; border: 1px solid var(--line); color: v
 
 .challenge-heading { margin-bottom: 15px; }
 .challenge-heading-actions { display: flex; align-items: center; gap: 18px; }
+.challenge-data-actions { display: flex; gap: 12px; padding-right: 2px; border-right: 1px solid var(--line); }
 .new-challenge-button { display: inline-flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--signal-deep); color: var(--dark); background: var(--signal); font-size: 10px; font-weight: 700; }
 .new-challenge-button:hover { color: var(--signal); background: var(--dark); }
 .challenge-workbench { display: grid; grid-template-columns: 260px minmax(0, 1fr); min-height: 500px; border: 1px solid #2e342e; background: var(--dark); box-shadow: var(--shadow); }
 .challenge-index { min-width: 0; border-right: 1px solid #303630; }
 .challenge-index-head { display: flex; justify-content: space-between; align-items: center; min-height: 48px; padding: 0 14px; border-bottom: 1px solid #303630; color: #6f786f; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; }
+.challenge-filters { display: grid; gap: 8px; padding: 11px 14px; border-bottom: 1px solid #303630; }
+.challenge-search { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #414841; color: #687168; }
+.challenge-search input { width: 100%; min-width: 0; height: 28px; border: 0; outline: 0; color: #dfe4db; background: transparent; font-size: 9px; }
+.challenge-search input::placeholder { color: #687168; }
+.challenge-search:focus-within { border-color: var(--signal); }
+.challenge-filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.challenge-filter-row select { width: 100%; min-width: 0; height: 27px; padding: 0 5px; border: 1px solid #3b423b; border-radius: 0; color: #98a198; background: #181c18; font-size: 8px; }
 .challenge-list { display: grid; }
 .challenge-list-empty { padding: 24px 14px; color: #687168; font-size: 9px; line-height: 1.7; }
 .challenge-list-item { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 10px; width: 100%; padding: 13px 14px; border: 0; border-bottom: 1px solid #292e29; color: #dce1d8; background: transparent; text-align: left; }
@@ -227,7 +235,7 @@ kbd { min-width: 19px; padding: 2px 5px; border: 1px solid var(--line); color: v
 .challenge-notes-field small { color: #626b62; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
 .challenge-side-notes { display: grid; grid-template-rows: auto 1fr; min-width: 0; }
 .challenge-flag-field { display: grid; gap: 9px; padding: 15px 14px; border-bottom: 1px solid #303630; }
-.challenge-artifacts-block { min-width: 0; padding: 14px; }
+.challenge-artifacts-block { min-width: 0; padding: 14px; border-bottom: 1px solid #303630; }
 .challenge-artifacts-head { display: flex; justify-content: space-between; align-items: center; color: #697269; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
 .challenge-artifacts { display: grid; margin-top: 8px; }
 .challenge-artifacts-empty { padding: 22px 0; color: #687168; font-size: 9px; line-height: 1.65; }
@@ -238,6 +246,24 @@ kbd { min-width: 19px; padding: 2px 5px; border: 1px solid var(--line); color: v
 .challenge-artifact-head button:hover { color: var(--alert); }
 .challenge-artifact pre { max-height: 86px; overflow: auto; margin: 8px 0 0; color: #aeb6ad; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
 .challenge-artifact time { display: block; margin-top: 6px; color: #5f685f; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
+.challenge-attachments-block { min-width: 0; padding: 14px; }
+.challenge-attachments-head, .challenge-attachment-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.challenge-attachments-head { color: #697269; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
+.challenge-attachment-actions { justify-content: flex-start; margin-top: 10px; }
+.challenge-attachment-actions .small-action { color: #8ca2ff; }
+.challenge-attachment-actions .small-action:hover { color: #c1ccff; }
+.challenge-attachments { display: grid; margin-top: 8px; }
+.challenge-attachments-empty { padding: 16px 0 5px; color: #687168; font-size: 9px; line-height: 1.65; }
+.challenge-attachment { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 9px; min-width: 0; padding: 9px 0; border-top: 1px solid #303630; }
+.challenge-attachment-preview { display: grid; place-items: center; width: 40px; height: 40px; overflow: hidden; border: 1px solid #3d453d; color: #778077; background: #181c18; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
+.challenge-attachment-preview img { width: 100%; height: 100%; object-fit: cover; }
+.challenge-attachment-copy { min-width: 0; }
+.challenge-attachment-copy strong { display: block; overflow: hidden; color: #cbd2c8; font-size: 9px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.challenge-attachment-copy span { display: block; margin-top: 5px; color: #606960; font-family: "Cascadia Code", Consolas, monospace; font-size: 7px; }
+.challenge-attachment-controls { display: flex; gap: 6px; }
+.challenge-attachment-controls button { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 1px solid transparent; color: #707970; background: transparent; font-size: 10px; }
+.challenge-attachment-controls button:hover { border-color: #485048; color: var(--signal); }
+.challenge-attachment-controls .remove-attachment:hover { border-color: var(--alert); color: var(--alert); }
 
 .challenge-dialog { width: min(470px, calc(100vw - 32px)); padding: 0; border: 1px solid #454d45; border-radius: 0; color: #dfe4db; background: var(--dark); box-shadow: 0 30px 90px rgba(0, 0, 0, .4); }
 .challenge-dialog::backdrop { background: rgba(10, 12, 10, .72); backdrop-filter: blur(3px); }
@@ -327,6 +353,7 @@ body.is-light .tool-card.is-selected > span:last-child, body.is-light .tool-card
   .hero-copy p { font-size: 13px; }
   .tool-card { padding: 12px 10px; }
   .challenge-heading-actions { align-items: flex-start; flex-direction: column; }
+  .challenge-data-actions { border-right: 0; }
   .challenge-list { display: block; max-height: 250px; overflow: auto; }
   .challenge-meta-grid { display: block; }
   .challenge-meta-grid label { border-right: 0; border-bottom: 1px solid #303630; }
