@@ -16,6 +16,7 @@
   };
 
   const links = Array.from(directory.querySelectorAll(".tool-link"));
+  const search = document.querySelector("#directorySearch");
   links.forEach((link, index) => {
     const slug = link.getAttribute("href").split("/").filter(Boolean).at(-1);
     const entry = document.createElement("div");
@@ -58,5 +59,11 @@
       return Number(a.dataset.order) - Number(b.dataset.order);
     }).forEach((entry) => directory.append(entry));
   }
+  search?.addEventListener("input", () => {
+    const query = search.value.trim().toLocaleLowerCase(locale === "en" ? "en" : "zh-CN");
+    directory.querySelectorAll(".tool-entry").forEach((entry) => {
+      entry.hidden = Boolean(query) && !entry.textContent.toLocaleLowerCase(locale === "en" ? "en" : "zh-CN").includes(query);
+    });
+  });
   render();
 })();
