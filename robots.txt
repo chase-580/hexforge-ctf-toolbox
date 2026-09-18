@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hexforge-ctf-toolbox.pages.dev/sitemap.xml
+Sitemap: https://hexforgectf.cn/sitemap.xml

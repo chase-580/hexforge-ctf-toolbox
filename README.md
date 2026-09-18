@@ -76,7 +76,7 @@
 
 对于 Cloudflare Pages 项目，优先进入 `Workers & Pages > hexforge-ctf-toolbox > Metrics`，在 Web Analytics 区域选择 Enable。Cloudflare 会在下一次部署时自动注入 beacon。
 
-如果改用 Web Analytics 页面手动添加站点，主机名填写 `hexforge-ctf-toolbox.pages.dev`，不要包含 `https://` 或路径。创建后可将生成的 token 填入：
+如果改用 Web Analytics 页面手动添加站点，主机名填写 `hexforgectf.cn`，不要包含 `https://` 或路径。创建后可将生成的 token 填入：
 
 ```js
 window.HEXFORGE_CONFIG = Object.freeze({
@@ -86,10 +86,10 @@ window.HEXFORGE_CONFIG = Object.freeze({
 
 ### Google Search Console
 
-当前使用的是 Cloudflare 提供的 `pages.dev` 子域名，推荐在 Search Console 添加 URL-prefix property：`https://hexforge-ctf-toolbox.pages.dev/`，并使用 HTML tag 验证。验证后提交：
+正式站点使用 `https://hexforgectf.cn/`。推荐在 Search Console 添加 Domain property `hexforgectf.cn` 并通过 Cloudflare DNS TXT 记录验证。验证后提交：
 
 ```text
-https://hexforge-ctf-toolbox.pages.dev/sitemap.xml
+https://hexforgectf.cn/sitemap.xml
 ```
 
 ## 4. 运行方式
