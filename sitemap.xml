@@ -27,4 +27,19 @@
   <url><loc>https://hexforgectf.cn/en/tools/regex-tester/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/tools/file-hash/</loc></url>
   <url><loc>https://hexforgectf.cn/en/tools/file-hash/</loc></url>
+  <url><loc>https://hexforgectf.cn/about/</loc></url>
+  <url><loc>https://hexforgectf.cn/contact/</loc></url>
+  <url><loc>https://hexforgectf.cn/terms/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/about/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/contact/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/terms/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/base64-identification/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/jwt-analysis/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/encoding-chain/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/hash-comparison/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/file-forensics-workflow/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/url-encoding-ctf/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/timestamp-tracing/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/regex-extraction/</loc></url>
 </urlset>

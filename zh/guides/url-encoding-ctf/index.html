@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="理解 URL 百分号编码、UTF-8 字节、加号与空格、双重编码和路径参数差异，并用于 CTF Web 题分析。" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/url-encoding-ctf/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>URL 编码在 CTF 中怎么分析 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"URL 编码在 CTF 中怎么分析","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / url-encoding</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 06 / WEB</p><h1>URL 编码实战</h1><p class="guide-deck">百分号编码处理的是字节表示，不是安全过滤。分析 Web 题时，关键是弄清每一层组件在什么时候解码、解码几次。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门至中等<br />场景：Web<br />更新：2026-09-18</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="bytes">百分号后面是一个字节</h2><p><code>%2F</code> 表示十六进制字节 <code>2F</code>，对应 ASCII 斜杠。非 ASCII 字符通常先编码为 UTF-8 多字节，再逐字节写成百分号形式。例如中文字符会对应多个 <code>%xx</code> 片段。</p>
+      <table><thead><tr><th>原字符</th><th>常见编码</th><th>含义</th></tr></thead><tbody><tr><td>空格</td><td>%20</td><td>通用百分号编码</td></tr><tr><td>空格</td><td>+</td><td>表单查询编码中常见</td></tr><tr><td>/</td><td>%2F</td><td>路径分隔符</td></tr><tr><td>?</td><td>%3F</td><td>查询起始符</td></tr><tr><td>=</td><td>%3D</td><td>参数名值分隔</td></tr><tr><td>%</td><td>%25</td><td>再次编码的关键线索</td></tr></tbody></table>
+      <h2 id="context">路径、查询和表单不是同一语境</h2><p>在 URL 查询参数中，某些解析器把 <code>+</code> 当空格；在路径中它可能只是加号。把整条 URL 一次性解码会破坏边界，因此应分别保存 scheme、host、path、query 和 fragment。</p>
+      <pre><code>/download?name=report%2F2026.txt
+path:  /download
+name:  report/2026.txt</code></pre>
+      <p>如果服务端先解码参数，再把结果拼进文件路径，编码后的斜杠可能影响路径结构。这是理解题目数据流的信号，不代表可以在未授权系统中测试。</p>
+      <h2 id="double">识别双重编码</h2><p><code>%252F</code> 第一次解码得到 <code>%2F</code>，第二次才得到 <code>/</code>。看到大量 <code>%25</code> 时，应怀疑当前字符串包裹了另一层百分号编码。</p>
+      <div class="guide-callout"><strong>解码次数必须来自证据</strong><p>代理、框架、路由器和业务代码可能各解码一次。CTF 中要结合请求与响应确定实际层数，而不是默认“解到没有百分号为止”。</p></div>
+      <h2 id="ctf">CTF 排查方法</h2><ol><li>保留浏览器发送前的原始字符串。</li><li>在代理中查看线上的原始请求行。</li><li>单独解码目标参数，不改变其他 URL 组件。</li><li>比较一次和两次解码结果。</li><li>观察服务器返回的路径、错误信息或反射内容。</li><li>记录每个组件可能执行解码的位置。</li></ol>
+      <h2 id="mistakes">常见错误</h2><ul><li>把 <code>decodeURI</code> 和 <code>decodeURIComponent</code> 当成完全相同。</li><li>忽略非法百分号序列会让不同语言或框架产生不同结果。</li><li>对已经解码的值再次解码，导致路径或过滤逻辑改变。</li><li>认为 URL 编码可以防止 XSS、SQL 注入或路径遍历；安全性取决于最终语境的验证和转义。</li></ul>
+    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#bytes">字节表示</a></li><li><a href="#context">不同语境</a></li><li><a href="#double">双重编码</a></li><li><a href="#ctf">排查方法</a></li><li><a href="#mistakes">常见错误</a></li></ol><a class="guide-tool-link" href="../../tools/url-encoder-decoder/"><span>OPEN TOOL</span><strong>URL 编码解码器</strong></a></aside></div>
+  </main><footer class="site-footer"><span>hexforge / guide 06</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

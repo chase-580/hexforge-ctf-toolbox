@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="CTF JWT 分析清单：读取 Header、Payload、Signature，理解常见声明、Base64URL 和签名验证边界。" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/jwt-analysis/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>JWT 分析清单：解码不等于可信 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"JWT 分析清单：解码不等于可信","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / jwt</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 02 / WEB</p><h1>JWT 分析清单</h1><p class="guide-deck">JWT 可以被任何人解码，真正提供完整性保证的是签名验证。分析时要把“读到了内容”和“内容可信”分开。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门至中等<br />场景：Web<br />更新：2026-09-18</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="shape">先确认结构</h2><p>常见的 JWS 形式 JWT 由三个点号分隔的 Base64URL 段组成：</p><pre><code>header.payload.signature</code></pre><p>Header 描述算法与令牌类型，Payload 放置声明，Signature 用于验证前两段未被篡改。Base64URL 只负责表示字节，因此前两段可读并不意味着签名有效。</p>
+      <h2 id="header">检查 Header</h2><pre><code>{
+  "alg": "HS256",
+  "typ": "JWT"
+}</code></pre><p>重点关注 <code>alg</code>，以及可能出现的 <code>kid</code>、<code>jku</code>、<code>x5u</code> 等密钥选择字段。CTF 题目可能围绕算法混淆、错误接受 <code>none</code>、不安全密钥选择或弱 HMAC 密钥展开，但只有在题目环境或明确授权系统中才能测试。</p>
+      <h2 id="payload">检查 Payload</h2><table><thead><tr><th>声明</th><th>含义</th><th>检查点</th></tr></thead><tbody><tr><td>exp</td><td>过期时间</td><td>通常是 Unix 秒，不是毫秒</td></tr><tr><td>nbf</td><td>此前不可用</td><td>检查服务器时钟偏差</td></tr><tr><td>iat</td><td>签发时间</td><td>用于判断令牌年龄</td></tr><tr><td>iss</td><td>签发者</td><td>服务端是否严格校验</td></tr><tr><td>aud</td><td>受众</td><td>是否被错误用于其他服务</td></tr><tr><td>sub</td><td>主体</td><td>通常是用户或实体标识</td></tr></tbody></table>
+      <h2 id="signature">签名边界</h2><p>本地解码工具可以安全显示 Header 和 Payload，但没有正确密钥、算法和验证规则时，不能断言 Signature 有效。把 Payload 中的 <code>role</code> 改为 <code>admin</code> 只会生成一个被篡改的令牌；安全实现应立即拒绝它。</p>
+      <div class="guide-callout"><strong>安全判断</strong><p>“JWT 解码成功”只说明格式可解析。只有服务端按预期算法、正确密钥、允许的签发者和受众完成验证后，声明才可用于授权。</p></div>
+      <h2 id="workflow">CTF 分析顺序</h2><ol><li>复制原始令牌并保留完整三段。</li><li>检查段数和 Base64URL 字符。</li><li>读取 Header，记录算法和密钥相关字段。</li><li>读取 Payload，把时间戳转成 UTC 与本地时间。</li><li>比较题目请求、响应和服务端行为，判断验证缺口。</li><li>只在授权靶场中测试假设，并记录每次修改。</li></ol>
+      <h2 id="mistakes">常见误区</h2><ul><li>把 JWT 当成加密容器，向 Payload 写入密码或密钥。</li><li>只检查 <code>exp</code>，忽略 <code>iss</code> 和 <code>aud</code>。</li><li>根据客户端显示的角色直接做权限判断。</li><li>允许库根据令牌输入自动选择任意算法。</li></ul>
+    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#shape">结构</a></li><li><a href="#header">Header</a></li><li><a href="#payload">Payload</a></li><li><a href="#signature">签名边界</a></li><li><a href="#workflow">分析顺序</a></li><li><a href="#mistakes">常见误区</a></li></ol><a class="guide-tool-link" href="../../tools/jwt-decoder/"><span>OPEN TOOL</span><strong>JWT 解码器</strong></a></aside></div>
+  </main><footer class="site-footer"><span>hexforge / guide 02</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

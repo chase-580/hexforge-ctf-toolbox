@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="CTF 编码链判断方法：根据外层特征选择 URL、Base64、Hex、Binary 或 ROT13，并逐层记录和验证输出。" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/encoding-chain/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>CTF 编码链怎么判断 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"CTF 编码链怎么判断","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / encoding-chain</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 03 / WORKFLOW</p><h1>编码链怎么判断</h1><p class="guide-deck">多层编码不是靠“把所有按钮按一遍”解决。先识别当前最外层的语法，再用输出结构判断下一步，才能保持可复核。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门至中等<br />场景：Crypto / Misc<br />更新：2026-09-18</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="outside">从最外层开始</h2><p>编码是按顺序包裹的，解码必须反向执行。若原文先 Base64、再 URL 编码，拿到的字符串最外层会出现 <code>%2B</code>、<code>%2F</code> 或 <code>%3D</code>；因此先 URL 解码，再做 Base64。</p>
+      <table><thead><tr><th>外观</th><th>优先假设</th><th>验证方式</th></tr></thead><tbody><tr><td>%41、%2F、%3D</td><td>URL 百分号编码</td><td>解码后是否出现结构字符</td></tr><tr><td>A-Za-z0-9+/ 与 =</td><td>Base64</td><td>解码后是否为文本或文件头</td></tr><tr><td>成对的 0-9a-f</td><td>Hex</td><td>两个字符还原一个字节</td></tr><tr><td>8 位 0/1 分组</td><td>Binary</td><td>每组应在 0–255</td></tr><tr><td>字母仍像单词但错位</td><td>ROT13/Caesar</td><td>替换后语言结构改善</td></tr></tbody></table>
+      <h2 id="evidence">给每一步留下证据</h2><p>推荐记录“输入摘要、执行操作、输出前 80 个字符、判断理由”。例如：</p><pre><code>Step 1  URL decode
+Input   ZmxhZyUyNTdCY2hhaW4lMjU3RA%3D%3D
+Output  ZmxhZyUyNTdCY2hhaW4lMjU3RA==
+Reason  %3D 还原为 Base64 padding
+
+Step 2  Base64 decode
+Output  flag%257Bchain%257D
+Reason  可读文本，仍含百分号序列</code></pre>
+      <p>接着进行两次 URL 解码，最终得到 <code>flag{chain}</code>。这里每一层都有格式信号，过程可以复现。</p>
+      <h2 id="score">判断输出有没有变好</h2><p>一次转换值得保留，通常因为输出出现了更明确的结构：可读语言比例提高、JSON/XML 能解析、出现文件签名、出现题目已知前缀，或字符集从高熵变成有规则的分组。只因为“工具没有报错”不算证据。</p>
+      <div class="guide-callout"><strong>失败也要保留</strong><p>记录无效分支可以防止团队成员重复尝试。同一个输入不要在没有新证据时循环 Base64、Hex 和 ROT13。</p></div>
+      <h2 id="ambiguity">处理歧义</h2><p>纯十六进制文本也可能恰好只含 Base64 字符。此时分别尝试一次，并比较输出结构。长度、上下文和题目类别都是辅助证据：网络参数优先考虑 URL 编码，文件片段优先检查魔数，JWT 段优先考虑 Base64URL。</p>
+      <h2 id="workflow">稳定流程</h2><ol><li>复制原始值并保留。</li><li>列出可见特征，不急着操作。</li><li>选择证据最强的外层转换。</li><li>执行一次，检查输出是否更有结构。</li><li>把有效步骤加入工具链，无效步骤标记后回退。</li><li>得到 Flag 后反向复核每一层。</li></ol>
+    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#outside">外层特征</a></li><li><a href="#evidence">步骤证据</a></li><li><a href="#score">输出质量</a></li><li><a href="#ambiguity">歧义</a></li><li><a href="#workflow">稳定流程</a></li></ol><a class="guide-tool-link" href="../../../#toolchain"><span>OPEN WORKSPACE</span><strong>多步骤工具链</strong></a></aside></div>
+  </main><footer class="site-footer"><span>hexforge / guide 03</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

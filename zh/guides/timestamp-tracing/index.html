@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="判断 Unix 时间戳是秒还是毫秒，处理 UTC 与本地时区，并把 CTF 日志中的事件还原到统一时间线。" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/timestamp-tracing/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>时间戳与日志还原方法 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"时间戳与日志还原方法","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / timestamps</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 07 / FORENSICS</p><h1>时间戳与日志还原</h1><p class="guide-deck">秒、毫秒和时区是最常见的三个坑。先保留原值，再统一到 UTC，最后按需要显示本地时间。</p></div><aside class="guide-meta"><strong>阅读时间约 7 分钟</strong>难度：入门<br />场景：Web / Forensics<br />更新：2026-09-18</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="unit">先判断单位</h2><p>Unix 时间戳通常表示从 1970-01-01 00:00:00 UTC 起经过的时间。当前年代的秒级值通常约 10 位，毫秒级值约 13 位，微秒级值约 16 位，但位数只是初筛。</p>
+      <table><thead><tr><th>示例</th><th>可能单位</th><th>解释</th></tr></thead><tbody><tr><td>1700000000</td><td>秒</td><td>2023-11-14 22:13:20 UTC</td></tr><tr><td>1700000000000</td><td>毫秒</td><td>同一时刻的毫秒表示</td></tr><tr><td>1700000000000000</td><td>微秒</td><td>部分数据库与日志使用</td></tr></tbody></table>
+      <p>若转换后落在 1970 年附近或远超题目年代，首先检查单位，而不是认为日志损坏。</p>
+      <h2 id="timezone">UTC 与本地时间要同时保留</h2><p>Unix 数值本身不带时区，但可读日期可能带。分析时建议把所有事件转换成 UTC，并另外记录原日志时区。仅写“09:30”没有意义，应写成包含日期和偏移的形式，例如 <code>2026-09-18T09:30:00+08:00</code>。</p>
+      <h2 id="sources">不同来源的时间语义</h2><ul><li>Web 访问日志可能记录服务器时区或明确偏移。</li><li>JWT 的 <code>iat</code>、<code>nbf</code>、<code>exp</code> 通常使用 Unix 秒。</li><li>JavaScript <code>Date.now()</code> 返回毫秒。</li><li>文件系统时间可能受文件系统精度、复制行为和时钟偏差影响。</li><li>抓包时间取决于采集设备时钟，可能与服务器日志不同步。</li></ul>
+      <h2 id="timeline">构建事件时间线</h2><p>为每条证据保留“原值、解析规则、UTC、来源、可信度”。不要只复制转换后的可读时间，因为日后无法检查单位是否选错。</p><pre><code>source: access.log
+raw:    1700000000
+rule:   Unix seconds
+utc:    2023-11-14T22:13:20Z
+note:   server clock may be +4s</code></pre>
+      <div class="guide-callout"><strong>注意时钟偏差</strong><p>如果多个来源始终相差固定秒数，可能是设备时钟不同步。先估计偏差，再判断事件先后，不要强行修改原始记录。</p></div>
+      <h2 id="mistakes">常见错误</h2><ul><li>把 13 位毫秒值按秒转换。</li><li>比较没有时区的日期字符串。</li><li>把文件“修改时间”直接当作行为发生时间。</li><li>四舍五入后丢失同一秒内的事件顺序。</li><li>根据当前电脑时区显示结果，却未在报告中说明。</li></ul>
+      <h2 id="workflow">推荐流程</h2><ol><li>保留原始数值和日志行。</li><li>根据位数与上下文提出单位假设。</li><li>转换后检查日期是否合理。</li><li>统一成 ISO 8601 UTC。</li><li>记录来源时区和可能的时钟偏差。</li><li>再按时间排序并关联事件。</li></ol>
+    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#unit">判断单位</a></li><li><a href="#timezone">时区</a></li><li><a href="#sources">时间语义</a></li><li><a href="#timeline">事件时间线</a></li><li><a href="#mistakes">常见错误</a></li><li><a href="#workflow">推荐流程</a></li></ol><a class="guide-tool-link" href="../../tools/timestamp-converter/"><span>OPEN TOOL</span><strong>Unix 时间戳转换器</strong></a></aside></div>
+  </main><footer class="site-footer"><span>hexforge / guide 07</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

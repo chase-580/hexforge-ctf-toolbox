@@ -116,6 +116,14 @@ document.querySelectorAll(".site-nav a").forEach((link) => {
   if (link.textContent.trim() === "Workspace") link.href = `${location.origin}/`;
   if (link.textContent.trim() === "Tool directory") link.href = `${location.origin}/${locale}/`;
 });
+const toolNav = document.querySelector(".site-nav");
+const languagePair = toolNav?.querySelector(".language-pair");
+if (toolNav && languagePair) {
+  const guidesLink = document.createElement("a");
+  guidesLink.href = `${location.origin}/zh/guides/`;
+  guidesLink.textContent = locale === "en" ? "中文教程" : "教程";
+  toolNav.insertBefore(guidesLink, languagePair);
+}
 const alternateLinks = [
   ["zh-CN", `${location.origin}/zh/tools/${slug}/`],
   ["en", `${location.origin}/en/tools/${slug}/`],
@@ -149,6 +157,15 @@ document.querySelector("#privacyCopy").textContent = tool.isFile
   ? (locale === "en" ? "The selected file is hashed in your browser and is never uploaded." : "所选文件只在浏览器中计算哈希，不会上传到服务器。")
   : (locale === "en" ? "Input is processed in your current browser. This MVP does not upload the text to a server." : "输入内容在当前浏览器中处理。这个 MVP 不会把文本上传到服务器。");
 document.querySelector("#relatedTitle").textContent = locale === "en" ? "Related tools" : "相关工具";
+const siteMain = document.querySelector(".site-main");
+if (siteMain) {
+  const footer = document.createElement("footer");
+  footer.className = "site-footer";
+  footer.innerHTML = locale === "en"
+    ? `<span>hexforge / local-first tools</span><span><a href="${location.origin}/en/about/">About</a> · <a href="${location.origin}/en/contact/">Contact</a> · <a href="${location.origin}/en/terms/">Terms</a> · <a href="${location.origin}/en/privacy/">Privacy</a></span>`
+    : `<span>hexforge / local-first tools</span><span><a href="${location.origin}/about/">关于</a> · <a href="${location.origin}/contact/">联系</a> · <a href="${location.origin}/terms/">条款</a> · <a href="${location.origin}/privacy/">隐私</a></span>`;
+  siteMain.appendChild(footer);
+}
 input.placeholder = copy.placeholder;
 
 const fileControl = document.createElement("div");

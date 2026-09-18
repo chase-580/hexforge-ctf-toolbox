@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Hexforge CTF 实战教程：Base64 识别、JWT 分析、编码链、哈希判断、文件取证、URL 编码、时间戳和正则提取。" />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://hexforgectf.cn/zh/guides/" />
+    <link rel="stylesheet" href="../../site.css" />
+    <title>CTF 实战教程 | Hexforge</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header"><a class="site-brand" href="../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../">工作台</a><a href="../">工具</a><a href="./">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../en/">EN</a></span></nav></header>
+      <main class="site-main">
+        <section class="guide-hero"><div><p class="eyebrow">FIELD NOTES / 08</p><h1>先识别线索，<br />再选择工具。</h1><p class="guide-deck">围绕 CTF 常见输入建立可重复的判断流程。每篇教程解释为什么这样判断、什么时候会误判，以及如何保存可复核的结果。</p></div><aside class="guide-meta"><strong>HEXFORGE GUIDES</strong>8 篇原创教程<br />面向入门与复盘<br />最后更新 2026-09-18</aside></section>
+        <section class="guide-grid" aria-label="教程列表">
+          <a class="guide-card" href="base64-identification/"><span class="guide-number">GUIDE 01 / ENCODING</span><h2>如何识别 Base64</h2><p>从字符集、长度、填充和解码结果判断，不再看到等号就盲解。</p></a>
+          <a class="guide-card" href="jwt-analysis/"><span class="guide-number">GUIDE 02 / WEB</span><h2>JWT 分析清单</h2><p>分清 Header、Payload 与 Signature，读取声明但不把“可解码”误当“可信”。</p></a>
+          <a class="guide-card" href="encoding-chain/"><span class="guide-number">GUIDE 03 / WORKFLOW</span><h2>编码链怎么判断</h2><p>从外层特征逐层剥离，用证据记录每一步，避免在循环尝试中迷路。</p></a>
+          <a class="guide-card" href="hash-comparison/"><span class="guide-number">GUIDE 04 / CRYPTO</span><h2>常见哈希的区别</h2><p>通过长度和字符范围初筛 MD5、SHA-1、SHA-256 与 SHA-512。</p></a>
+          <a class="guide-card" href="file-forensics-workflow/"><span class="guide-number">GUIDE 05 / FORENSICS</span><h2>文件取证基础流程</h2><p>从保全、哈希、文件头、元数据到字符串和嵌套容器的检查顺序。</p></a>
+          <a class="guide-card" href="url-encoding-ctf/"><span class="guide-number">GUIDE 06 / WEB</span><h2>URL 编码实战</h2><p>理解百分号字节、加号语义和双重编码，避免把路径与参数一起误解码。</p></a>
+          <a class="guide-card" href="timestamp-tracing/"><span class="guide-number">GUIDE 07 / FORENSICS</span><h2>时间戳与日志还原</h2><p>判断秒、毫秒和时区，把多个来源的事件放回同一条时间线。</p></a>
+          <a class="guide-card" href="regex-extraction/"><span class="guide-number">GUIDE 08 / TEXT</span><h2>用正则提取 CTF 线索</h2><p>用边界、分组和非贪婪匹配提取 Flag、哈希与日志字段。</p></a>
+        </section>
+        <aside class="ad-slot ad-slot-horizontal" aria-label="广告预留位"><span>ADVERTISEMENT</span><small>RESPONSIVE DISPLAY</small></aside>
+      </main>
+      <footer class="site-footer"><span>hexforge / field notes</span><span><a href="../../about/">关于</a> · <a href="../../contact/">联系</a> · <a href="../../terms/">条款</a> · <a href="../../privacy/">隐私</a></span></footer>
+    </div>
+    <script src="../../analytics-config.js"></script><script src="../../analytics.js"></script>
+  </body>
+</html>

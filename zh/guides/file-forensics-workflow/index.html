@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="CTF 文件取证基础流程：保留原件、计算哈希、检查文件头和真实类型、提取元数据、字符串与嵌套容器。" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/file-forensics-workflow/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>CTF 文件取证基础流程 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"CTF 文件取证基础流程","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / file-forensics</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 05 / FORENSICS</p><h1>文件取证基础流程</h1><p class="guide-deck">不要从双击文件开始。先固定原件和摘要，再确认真实类型，之后才进入元数据、字符串、容器和专用格式分析。</p></div><aside class="guide-meta"><strong>阅读时间约 9 分钟</strong>难度：入门至中等<br />场景：Forensics / Misc<br />更新：2026-09-18</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="preserve">第一步：保留原件</h2><p>下载题目附件后，保留只读副本，分析时对工作副本操作。立即记录文件名、大小、获取时间和 SHA-256。摘要以后可以证明分析前后的字节是否一致，也方便团队成员确认拿到的是同一份附件。</p>
+      <pre><code>original/challenge.bin   只读保存
+work/challenge.bin       分析副本
+notes/hash.txt           SHA-256 与获取时间</code></pre>
+      <h2 id="type">第二步：不要相信扩展名</h2><p><code>photo.jpg</code> 可能实际是 ZIP，<code>document.pdf</code> 也可能在末尾附加其他数据。检查文件开头的魔数、MIME 判断和扩展名是否一致。</p>
+      <table><thead><tr><th>格式</th><th>常见文件头</th><th>文本提示</th></tr></thead><tbody><tr><td>PNG</td><td>89 50 4E 47 0D 0A 1A 0A</td><td>.PNG</td></tr><tr><td>JPEG</td><td>FF D8 FF</td><td>JFIF / Exif</td></tr><tr><td>ZIP</td><td>50 4B 03 04</td><td>PK</td></tr><tr><td>PDF</td><td>25 50 44 46</td><td>%PDF</td></tr><tr><td>ELF</td><td>7F 45 4C 46</td><td>.ELF</td></tr></tbody></table>
+      <h2 id="metadata">第三步：元数据和低成本线索</h2><p>先做不会改变文件的检查：元数据、可打印字符串、压缩包目录、图片尺寸、颜色模式和尾部附加数据。CTF 的 Flag、密码提示和工具版本经常藏在注释、EXIF、文档属性或文件名中。</p>
+      <p>字符串结果需要上下文。一个看似域名的片段可能来自软件库，而不是题目线索；优先关注题目主题、异常路径、长编码串和 Flag 前缀。</p>
+      <h2 id="container">第四步：把容器逐层拆开</h2><p>Office 文档、APK、JAR、EPUB 和许多固件本质上都是容器。先列出目录结构，再提取到单独目录。每次展开都记录来源路径，避免多个同名文件混在一起。</p>
+      <div class="guide-callout"><strong>不要直接运行未知文件</strong><p>可执行文件、脚本和带宏文档应在隔离环境中分析。浏览器端哈希工具只读取字节并计算摘要，不会判断文件是否安全。</p></div>
+      <h2 id="special">第五步：根据证据选择专用方向</h2><ul><li>图片：检查色道、透明层、像素最低有效位、尾部数据和 OCR。</li><li>网络包：先看协议分布、会话和导出对象，再做内容搜索。</li><li>内存镜像：确认操作系统和采集方式，再选择匹配的分析框架。</li><li>磁盘镜像：保持只读挂载，关注分区、删除文件、时间线和浏览器痕迹。</li><li>音频：检查频谱、波形、元数据和是否存在不同声道信息。</li></ul>
+      <h2 id="report">最低限度记录</h2><ol><li>原件 SHA-256。</li><li>每个工具和关键参数。</li><li>提取文件的来源偏移或容器路径。</li><li>时间统一使用 UTC，并注明本地时区。</li><li>结论与证据分开写，保留失败分支。</li></ol>
+      <p>这个流程不是完整的司法取证规范，但足以让 CTF 分析更稳定，并减少“找到答案却无法复现”的情况。</p>
+    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#preserve">保留原件</a></li><li><a href="#type">确认类型</a></li><li><a href="#metadata">元数据</a></li><li><a href="#container">拆容器</a></li><li><a href="#special">专用方向</a></li><li><a href="#report">记录</a></li></ol><a class="guide-tool-link" href="../../tools/file-hash/"><span>OPEN TOOL</span><strong>文件 SHA-256 校验</strong></a></aside></div>
+  </main><footer class="site-footer"><span>hexforge / guide 05</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="比较 MD5、SHA-1、SHA-256、SHA-512 的长度、用途与安全性，并说明 CTF 中如何识别哈希和验证候选值。" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/hash-comparison/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>MD5、SHA-1、SHA-256 有什么区别 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"MD5、SHA-1、SHA-256 有什么区别","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / hashes</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 04 / CRYPTO</p><h1>常见哈希的区别</h1><p class="guide-deck">长度可以帮助初筛算法，但不能证明来源。哈希是单向摘要，不是可用密钥还原的加密。</p></div><aside class="guide-meta"><strong>阅读时间约 7 分钟</strong>难度：入门<br />场景：Crypto / Forensics<br />更新：2026-09-18</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="identify">先按十六进制长度初筛</h2><table><thead><tr><th>算法</th><th>摘要位数</th><th>常见十六进制长度</th><th>安全判断</th></tr></thead><tbody><tr><td>MD5</td><td>128 bit</td><td>32</td><td>已不适合抗碰撞用途</td></tr><tr><td>SHA-1</td><td>160 bit</td><td>40</td><td>已不适合抗碰撞用途</td></tr><tr><td>SHA-256</td><td>256 bit</td><td>64</td><td>常用于完整性校验</td></tr><tr><td>SHA-512</td><td>512 bit</td><td>128</td><td>输出更长，属于 SHA-2</td></tr></tbody></table>
+      <p>如果字符串使用 Base64 表示、带盐、带算法前缀，长度会不同。Linux 密码格式、bcrypt、scrypt、Argon2 等还会包含参数，因此不能套用上表直接判断。</p>
+      <h2 id="properties">三个容易混淆的性质</h2><h3>原像阻力</h3><p>给定摘要，很难找到一个输入产生它。这里的“难”依赖输入空间；四位 PIN 的空间很小，即使使用 SHA-256 也能被快速枚举。</p><h3>第二原像阻力</h3><p>给定一个输入，很难找到另一个不同输入产生相同摘要。</p><h3>碰撞阻力</h3><p>很难找到任意两个不同输入具有相同摘要。MD5 和 SHA-1 的主要问题在这里，因此不能用于现代证书签名或需要抗碰撞的安全设计。</p>
+      <h2 id="ctf">CTF 中怎么用</h2><p>拿到未知摘要后，先记录长度、字符范围和上下文。若题目提供候选明文，不需要“解密”哈希，只要使用相同算法计算候选值并比较。</p><pre><code>candidate: flag{hashes_are_one_way}
+sha256:    重新计算后与题目摘要做精确比较</code></pre><p>文件取证中也是同样逻辑：计算下载文件的 SHA-256，与发布者给出的值比较。匹配说明字节级内容一致，不说明文件一定安全。</p>
+      <div class="guide-callout"><strong>盐不会隐藏算法</strong><p>盐用于让相同密码得到不同结果并抵抗预计算表。验证时必须按同一格式把盐、参数和候选值交给对应算法，而不是简单拼接后猜测。</p></div>
+      <h2 id="mistakes">常见错误</h2><ul><li>把“在线哈希查询命中”理解成哈希被逆向；实际通常是数据库已有明文。</li><li>使用 MD5 校验可下载文件，却忽略攻击者可能同时替换文件和校验值。</li><li>只看 32 位长度就断言是 MD5；它也可能是随机标识或截断摘要。</li><li>对密码直接做一次 SHA-256；密码存储应使用专门的慢哈希方案。</li></ul>
+      <h2 id="workflow">判断清单</h2><ol><li>确认表示形式：Hex、Base64 还是带前缀格式。</li><li>记录长度和上下文。</li><li>列出可能算法，不只保留一个答案。</li><li>用已知样例或候选输入验证。</li><li>在报告中写“疑似”或“已验证”，不要混用。</li></ol>
+    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#identify">长度初筛</a></li><li><a href="#properties">安全性质</a></li><li><a href="#ctf">CTF 用法</a></li><li><a href="#mistakes">常见错误</a></li><li><a href="#workflow">判断清单</a></li></ol><a class="guide-tool-link" href="../../tools/sha256-generator/"><span>OPEN TOOL</span><strong>SHA-256 生成器</strong></a><a class="guide-tool-link" href="../../tools/file-hash/"><span>OPEN TOOL</span><strong>文件哈希校验</strong></a></aside></div>
+  </main><footer class="site-footer"><span>hexforge / guide 04</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>
