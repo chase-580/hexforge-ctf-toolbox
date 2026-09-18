@@ -155,7 +155,7 @@ document.querySelector("#toolFaqAnswer").textContent = tool.faq[locale][1];
 document.querySelector("#privacyTitle").textContent = locale === "en" ? "Privacy first" : "隐私优先";
 document.querySelector("#privacyCopy").textContent = tool.isFile
   ? (locale === "en" ? "The selected file is hashed in your browser and is never uploaded." : "所选文件只在浏览器中计算哈希，不会上传到服务器。")
-  : (locale === "en" ? "Input is processed in your current browser. This MVP does not upload the text to a server." : "输入内容在当前浏览器中处理。这个 MVP 不会把文本上传到服务器。");
+  : (locale === "en" ? "Input is processed in your current browser. The current version does not upload your text to a server." : "输入内容在当前浏览器中处理。当前版本不会将文本上传到服务器。");
 document.querySelector("#relatedTitle").textContent = locale === "en" ? "Related tools" : "相关工具";
 const siteMain = document.querySelector(".site-main");
 if (siteMain) {
