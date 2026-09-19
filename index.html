@@ -31,7 +31,7 @@
           <span>本地运行 · 无数据上传</span>
         </div>
 
-        <nav class="nav-stack" aria-label="工具分类">
+        <nav class="nav-stack" aria-label="主导航">
           <button class="nav-item is-active" type="button" data-category="all">
             <span class="nav-glyph">⌂</span>
             <span>工作台</span>
@@ -57,6 +57,22 @@
             <span>题目工作区</span>
             <span class="nav-count" id="workspaceNavCount">00</span>
           </a>
+          <span class="nav-separator" aria-hidden="true"></span>
+          <a class="nav-item nav-anchor nav-utility-link" href="zh/guides/">
+            <span class="nav-glyph">↗</span>
+            <span>实战教程</span>
+          </a>
+          <a class="nav-item nav-anchor nav-utility-link" href="zh/">
+            <span class="nav-glyph">⌕</span>
+            <span>工具目录</span>
+          </a>
+          <span class="nav-controls">
+            <button class="nav-theme-button" id="themeToggle" type="button" aria-label="切换界面亮度" title="切换界面亮度">◐</button>
+            <span class="nav-language" aria-label="语言切换">
+              <a class="is-current" href="./" hreflang="zh-CN" lang="zh-CN" aria-current="page">中</a>
+              <a href="en/" hreflang="en" lang="en">EN</a>
+            </span>
+          </span>
         </nav>
 
         <div class="sidebar-note">
@@ -74,11 +90,6 @@
       <main class="main-content">
         <header class="topbar">
           <div class="breadcrumb"><span>workspace</span><span class="slash">/</span><strong>toolbox</strong></div>
-          <div class="topbar-actions">
-            <button class="icon-button" id="themeToggle" type="button" aria-label="切换界面亮度" title="切换界面亮度">◐</button>
-            <a class="text-button" href="zh/guides/">实战教程 <span aria-hidden="true">↗</span></a>
-            <a class="text-button" href="zh/">工具目录 <span aria-hidden="true">↗</span></a>
-          </div>
         </header>
 
         <section class="hero-section" aria-labelledby="page-title">
