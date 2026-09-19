@@ -7,10 +7,15 @@
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
   <meta name="description" content="判断 Unix 时间戳是秒还是毫秒，处理 UTC 与本地时区，并把 CTF 日志中的事件还原到统一时间线。" />
   <meta name="robots" content="index,follow" />
+  <meta name="author" content="Hexforge Editorial" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="时间戳与日志还原" />
+  <meta property="og:description" content="判断 Unix 时间戳是秒还是毫秒，处理 UTC 与本地时区，并把 CTF 日志中的事件还原到统一时间线。" />
+  <meta property="og:url" content="https://hexforgectf.cn/zh/guides/timestamp-tracing/" />
   <link rel="canonical" href="https://hexforgectf.cn/zh/guides/timestamp-tracing/" />
   <link rel="stylesheet" href="../../../site.css" />
   <title>时间戳与日志还原方法 | Hexforge</title>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"时间戳与日志还原方法","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"时间戳与日志还原","description":"判断 Unix 时间戳是秒还是毫秒，处理 UTC 与本地时区，并把 CTF 日志中的事件还原到统一时间线。","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/timestamp-tracing/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"时间戳与日志还原","item":"https://hexforgectf.cn/zh/guides/timestamp-tracing/"}]}]}</script>
 </head>
 <body><div class="site-shell">
   <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
@@ -30,7 +35,7 @@ note:   server clock may be +4s</code></pre>
       <div class="guide-callout"><strong>注意时钟偏差</strong><p>如果多个来源始终相差固定秒数，可能是设备时钟不同步。先估计偏差，再判断事件先后，不要强行修改原始记录。</p></div>
       <h2 id="mistakes">常见错误</h2><ul><li>把 13 位毫秒值按秒转换。</li><li>比较没有时区的日期字符串。</li><li>把文件“修改时间”直接当作行为发生时间。</li><li>四舍五入后丢失同一秒内的事件顺序。</li><li>根据当前电脑时区显示结果，却未在报告中说明。</li></ul>
       <h2 id="workflow">推荐流程</h2><ol><li>保留原始数值和日志行。</li><li>根据位数与上下文提出单位假设。</li><li>转换后检查日期是否合理。</li><li>统一成 ISO 8601 UTC。</li><li>记录来源时区和可能的时钟偏差。</li><li>再按时间排序并关联事件。</li></ol>
-    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#unit">判断单位</a></li><li><a href="#timezone">时区</a></li><li><a href="#sources">时间语义</a></li><li><a href="#timeline">事件时间线</a></li><li><a href="#mistakes">常见错误</a></li><li><a href="#workflow">推荐流程</a></li></ol><a class="guide-tool-link" href="../../tools/timestamp-converter/"><span>OPEN TOOL</span><strong>Unix 时间戳转换器</strong></a></aside></div>
+    <h2 id="related-reading">相关阅读</h2><ul><li><a href="../jwt-analysis/">JWT 分析清单</a></li><li><a href="../file-forensics-workflow/">文件取证基础流程</a></li><li><a href="../ctf-notes-workflow/">CTF 解题记录流程</a></li></ul></article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#unit">判断单位</a></li><li><a href="#timezone">时区</a></li><li><a href="#sources">时间语义</a></li><li><a href="#timeline">事件时间线</a></li><li><a href="#mistakes">常见错误</a></li><li><a href="#workflow">推荐流程</a></li></ol><a class="guide-tool-link" href="../../tools/timestamp-converter/"><span>OPEN TOOL</span><strong>Unix 时间戳转换器</strong></a></aside></div>
   </main><footer class="site-footer"><span>hexforge / guide 07</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
 </div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
 </html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="学习识别 CTF 中的二进制文本：检查 0/1 字符、8 位分组、ASCII 与 UTF-8 字节，并排查补零、位序和乱码问题。" />
+  <meta name="robots" content="index,follow" />
+  <meta name="author" content="Hexforge Editorial" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="如何识别二进制文本" />
+  <meta property="og:description" content="学习识别 CTF 中的二进制文本：检查 0/1 字符、8 位分组、ASCII 与 UTF-8 字节，并排查补零、位序和乱码问题。" />
+  <meta property="og:url" content="https://hexforgectf.cn/zh/guides/binary-identification/" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/binary-identification/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>如何识别二进制文本：8 位字节与 UTF-8 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"如何识别二进制文本","description":"学习识别 CTF 中的二进制文本：检查 0/1 字符、8 位分组、ASCII 与 UTF-8 字节，并排查补零、位序和乱码问题。","datePublished":"2026-09-19","dateModified":"2026-09-19","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/binary-identification/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"如何识别二进制文本","item":"https://hexforgectf.cn/zh/guides/binary-identification/"}]}]}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main">
+    <div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / binary</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 09 / ENCODING</p><h1>如何识别二进制文本</h1><p class="guide-deck">只由 0 和 1 组成并不代表一定能直接转成文本。可靠的判断需要同时检查分组、字节边界、字符编码和解码后的结构。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门<br />场景：Crypto / Misc<br />更新：2026-09-19</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="signals">先判断它是不是按字节表示</h2>
+      <p>常见的“二进制文本”是把每个字节写成 8 个二进制位，例如字母 <code>A</code> 的 ASCII 值是 65，对应 <code>01000001</code>。题目通常用空格、换行或连续字符串分隔这些字节。第一步应清理空白，再确认总位数是否能被 8 整除。</p>
+      <table><thead><tr><th>现象</th><th>可能含义</th><th>需要继续验证</th></tr></thead><tbody><tr><td>只包含 0 和 1</td><td>可能是二进制表示</td><td>也可能是位掩码、数字或压缩数据</td></tr><tr><td>每 8 位一组</td><td>符合字节边界</td><td>解码后是否形成合理字节序列</td></tr><tr><td>大量以 0 开头</td><td>可能是 ASCII 文本</td><td>高位字节较多时也可能是 UTF-8</td></tr><tr><td>位数不是 8 的倍数</td><td>可能缺少前导零</td><td>不要未经证据随意补位</td></tr></tbody></table>
+      <h2 id="example">一个可复现的 CTF 示例</h2>
+      <p>下面的输入共有 13 个 8 位字节：</p>
+      <pre><code>01100110 01101100 01100001 01100111 01111011 01100010 01101001 01110100 01110011 01011111 01101111 01101011 01111101</code></pre>
+      <p>逐字节转换后得到 <code>flag{bits_ok}</code>。字符范围合理、花括号结构完整，而且与常见 Flag 格式一致，因此判断可信。把它粘贴到本站的二进制转换器即可复现。</p>
+      <h2 id="encoding">ASCII 与 UTF-8 不要混为一谈</h2>
+      <p>ASCII 只覆盖较小的字符范围，英文和常见符号通常一个字节即可表示。中文等 Unicode 字符在 UTF-8 中会占用多个字节。如果解码得到多个高位字节，不应逐字节强行显示为字符，而应先组成字节数组，再整体按 UTF-8 解码。</p>
+      <p>例如中文“中”的 UTF-8 字节是 <code>E4 B8 AD</code>，写成二进制后是三个字节。把每个字节单独解释为 ASCII，自然会得到乱码。</p>
+      <h2 id="mistakes">常见错误</h2>
+      <h3>删除前导零</h3><p><code>00001010</code> 与 <code>1010</code> 数值相同，但前者明确占一个字节。删除前导零会破坏字节边界，也可能让后续全部错位。</p>
+      <h3>把位序反过来</h3><p>通常按从左到右的最高位到最低位读取。只有题目给出位反转、LSB first 或硬件协议等证据时，才考虑反转每组位序。</p>
+      <h3>看到乱码就继续硬转</h3><p>乱码可能表示输入不是文本，也可能表示字符编码选择错误。先检查是否出现文件头、压缩数据或加密字节，不要无限尝试编码转换。</p>
+      <h2 id="workflow">稳定的判断流程</h2>
+      <ol><li>保留原始输入，并只清理明确的空格和换行。</li><li>确认字符范围、总位数和可能的 8 位分组。</li><li>按字节转换为十六进制，检查可打印字符和文件签名。</li><li>文本场景优先尝试 UTF-8，失败时再分析其他编码。</li><li>记录每次转换的输入、规则和输出，发现结构变差时及时回退。</li></ol>
+      <div class="guide-callout"><strong>安全边界</strong><p>本文只讨论授权 CTF、教学实验和本地数据分析。不要把工具用于读取或处理未经授权取得的数据。</p></div>
+    <h2 id="related-reading">相关阅读</h2><ul><li><a href="../hex-file-signatures/">文件头与十六进制</a></li><li><a href="../encoding-chain/">编码链怎么判断</a></li><li><a href="../base64-identification/">如何识别 Base64</a></li></ul></article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#signals">识别信号</a></li><li><a href="#example">CTF 示例</a></li><li><a href="#encoding">字符编码</a></li><li><a href="#mistakes">常见错误</a></li><li><a href="#workflow">判断流程</a></li></ol><a class="guide-tool-link" href="../../tools/binary-converter/"><span>OPEN TOOL</span><strong>二进制转换器</strong></a><a class="guide-tool-link" href="../hex-file-signatures/"><span>NEXT GUIDE</span><strong>文件头与十六进制</strong></a></aside></div>
+  </main>
+  <footer class="site-footer"><span>hexforge / guide 09</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

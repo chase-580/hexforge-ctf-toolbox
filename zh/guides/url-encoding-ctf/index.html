@@ -7,10 +7,15 @@
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
   <meta name="description" content="理解 URL 百分号编码、UTF-8 字节、加号与空格、双重编码和路径参数差异，并用于 CTF Web 题分析。" />
   <meta name="robots" content="index,follow" />
+  <meta name="author" content="Hexforge Editorial" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="URL 编码实战" />
+  <meta property="og:description" content="理解 URL 百分号编码、UTF-8 字节、加号与空格、双重编码和路径参数差异，并用于 CTF Web 题分析。" />
+  <meta property="og:url" content="https://hexforgectf.cn/zh/guides/url-encoding-ctf/" />
   <link rel="canonical" href="https://hexforgectf.cn/zh/guides/url-encoding-ctf/" />
   <link rel="stylesheet" href="../../../site.css" />
   <title>URL 编码在 CTF 中怎么分析 | Hexforge</title>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"URL 编码在 CTF 中怎么分析","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"URL 编码实战","description":"理解 URL 百分号编码、UTF-8 字节、加号与空格、双重编码和路径参数差异，并用于 CTF Web 题分析。","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/url-encoding-ctf/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"URL 编码实战","item":"https://hexforgectf.cn/zh/guides/url-encoding-ctf/"}]}]}</script>
 </head>
 <body><div class="site-shell">
   <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
@@ -28,7 +33,7 @@ name:  report/2026.txt</code></pre>
       <div class="guide-callout"><strong>解码次数必须来自证据</strong><p>代理、框架、路由器和业务代码可能各解码一次。CTF 中要结合请求与响应确定实际层数，而不是默认“解到没有百分号为止”。</p></div>
       <h2 id="ctf">CTF 排查方法</h2><ol><li>保留浏览器发送前的原始字符串。</li><li>在代理中查看线上的原始请求行。</li><li>单独解码目标参数，不改变其他 URL 组件。</li><li>比较一次和两次解码结果。</li><li>观察服务器返回的路径、错误信息或反射内容。</li><li>记录每个组件可能执行解码的位置。</li></ol>
       <h2 id="mistakes">常见错误</h2><ul><li>把 <code>decodeURI</code> 和 <code>decodeURIComponent</code> 当成完全相同。</li><li>忽略非法百分号序列会让不同语言或框架产生不同结果。</li><li>对已经解码的值再次解码，导致路径或过滤逻辑改变。</li><li>认为 URL 编码可以防止 XSS、SQL 注入或路径遍历；安全性取决于最终语境的验证和转义。</li></ul>
-    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#bytes">字节表示</a></li><li><a href="#context">不同语境</a></li><li><a href="#double">双重编码</a></li><li><a href="#ctf">排查方法</a></li><li><a href="#mistakes">常见错误</a></li></ol><a class="guide-tool-link" href="../../tools/url-encoder-decoder/"><span>OPEN TOOL</span><strong>URL 编码解码器</strong></a></aside></div>
+    <h2 id="related-reading">相关阅读</h2><ul><li><a href="../encoding-chain/">编码链怎么判断</a></li><li><a href="../base64-identification/">如何识别 Base64</a></li><li><a href="../jwt-analysis/">JWT 分析清单</a></li></ul></article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#bytes">字节表示</a></li><li><a href="#context">不同语境</a></li><li><a href="#double">双重编码</a></li><li><a href="#ctf">排查方法</a></li><li><a href="#mistakes">常见错误</a></li></ol><a class="guide-tool-link" href="../../tools/url-encoder-decoder/"><span>OPEN TOOL</span><strong>URL 编码解码器</strong></a></aside></div>
   </main><footer class="site-footer"><span>hexforge / guide 06</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
 </div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
 </html>

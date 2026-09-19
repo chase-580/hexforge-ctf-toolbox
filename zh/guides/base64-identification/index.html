@@ -7,10 +7,15 @@
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
   <meta name="description" content="通过字符集、长度、填充和解码结果识别 Base64，并用 CTF 示例判断标准 Base64、Base64URL 和嵌套编码。" />
   <meta name="robots" content="index,follow" />
+  <meta name="author" content="Hexforge Editorial" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="如何识别 Base64" />
+  <meta property="og:description" content="通过字符集、长度、填充和解码结果识别 Base64，并用 CTF 示例判断标准 Base64、Base64URL 和嵌套编码。" />
+  <meta property="og:url" content="https://hexforgectf.cn/zh/guides/base64-identification/" />
   <link rel="canonical" href="https://hexforgectf.cn/zh/guides/base64-identification/" />
   <link rel="stylesheet" href="../../../site.css" />
   <title>如何识别 Base64：CTF 判断流程 | Hexforge</title>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"如何识别 Base64：CTF 判断流程","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"如何识别 Base64","description":"通过字符集、长度、填充和解码结果识别 Base64，并用 CTF 示例判断标准 Base64、Base64URL 和嵌套编码。","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/base64-identification/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"如何识别 Base64","item":"https://hexforgectf.cn/zh/guides/base64-identification/"}]}]}</script>
 </head>
 <body><div class="site-shell">
   <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
@@ -36,7 +41,7 @@
       <h3>忽略空格和换行</h3><p>邮件或终端中的 Base64 可能被折行。清理空白通常安全，但不要删除字符集以内的符号。</p>
       <h2 id="workflow">推荐流程</h2>
       <ol><li>保留原始输入。</li><li>检查字符集、长度与填充。</li><li>区分标准 Base64 和 Base64URL。</li><li>解码一次并判断输出类型。</li><li>把可信结果和步骤保存到题目工作区。</li></ol>
-    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#signal">外观信号</a></li><li><a href="#example">CTF 示例</a></li><li><a href="#validate">验证结果</a></li><li><a href="#mistakes">常见错误</a></li><li><a href="#workflow">推荐流程</a></li></ol><a class="guide-tool-link" href="../../tools/base64-decoder/"><span>OPEN TOOL</span><strong>Base64 编码解码器</strong></a></aside></div>
+    <h2 id="related-reading">相关阅读</h2><ul><li><a href="../encoding-chain/">编码链怎么判断</a></li><li><a href="../binary-identification/">如何识别二进制文本</a></li><li><a href="../url-encoding-ctf/">URL 编码实战</a></li></ul></article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#signal">外观信号</a></li><li><a href="#example">CTF 示例</a></li><li><a href="#validate">验证结果</a></li><li><a href="#mistakes">常见错误</a></li><li><a href="#workflow">推荐流程</a></li></ol><a class="guide-tool-link" href="../../tools/base64-decoder/"><span>OPEN TOOL</span><strong>Base64 编码解码器</strong></a></aside></div>
   </main>
   <footer class="site-footer"><span>hexforge / guide 01</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
 </div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>

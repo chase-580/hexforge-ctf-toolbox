@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
     <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Calculate a file SHA-256 checksum locally without uploading it." />
+    <meta name="description" content="Calculate a file SHA-256 checksum locally to verify integrity and compare forensic samples without uploading the file." />
     <meta name="robots" content="index,follow" />
     <meta name="google-site-verification" content="uK6sILOXgpHWoYvzkM4QDW0dGmz6mPdEhgh1mPv1LRY" />
     <link rel="stylesheet" href="../../../site.css" />
     <link rel="canonical" href="https://hexforgectf.cn/en/tools/file-hash/" />
     <link rel="alternate" hreflang="zh-CN" href="https://hexforgectf.cn/zh/tools/file-hash/" />
     <link rel="alternate" hreflang="en" href="https://hexforgectf.cn/en/tools/file-hash/" />
-    <title>File SHA-256 Checksum | Hexforge</title>
+    <title>Local File SHA-256 Checksum | Hexforge</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://hexforgectf.cn/en/tools/file-hash/#app","name":"File SHA-256 Checksum","url":"https://hexforgectf.cn/en/tools/file-hash/","description":"Calculate a file SHA-256 checksum locally to verify integrity and compare forensic samples without uploading the file.","applicationCategory":"SecurityApplication","operatingSystem":"Any","browserRequirements":"A modern browser with JavaScript enabled","isAccessibleForFree":true,"offers":{"@type":"Offer","price":0},"inLanguage":"en"},{"@type":"BreadcrumbList","@id":"https://hexforgectf.cn/en/tools/file-hash/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge home","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"Tool directory","item":"https://hexforgectf.cn/en/"},{"@type":"ListItem","position":3,"name":"File SHA-256 Checksum","item":"https://hexforgectf.cn/en/tools/file-hash/"}]}]}</script>
   </head>
   <body data-locale="en">
     <div class="site-shell">
@@ -26,7 +27,7 @@
           <div class="tool-hero">
             <p class="eyebrow">LOCAL CTF TOOL</p>
             <h1 id="toolName">File SHA-256 Checksum</h1>
-            <p class="lede" id="toolLede">Calculate a file SHA-256 checksum locally without uploading it.</p>
+            <p class="lede" id="toolLede">Select a local file and calculate its SHA-256 digest in the browser without uploading its contents.</p>
             <div class="tool-workbench">
               <div class="workbench-top"><span id="toolInputLabel">INPUT</span><span><button id="sampleTool" type="button">Use example</button> · <button id="clearTool" type="button">Clear</button></span></div>
               <div class="workbench-grid">
@@ -35,7 +36,7 @@
                 <div class="workbench-pane output"><div class="output-head"><span id="toolOutputLabel">OUTPUT</span><button id="copyTool" type="button">Copy result</button></div><textarea id="toolOutput" readonly spellcheck="false" placeholder="Output appears here..."></textarea><div class="workbench-meta"><span id="toolOutputCount">0 chars</span><span id="toolStatus">WAITING</span></div></div>
               </div>
             </div>
-            <div class="tool-info-grid"><article class="info-block"><h2 id="toolShort">What this tool does</h2><p id="toolWhy">Process data locally in your browser.</p></article><article class="info-block"><h2 id="privacyTitle">Privacy first</h2><p id="privacyCopy">Input is processed in your current browser and is not uploaded.</p></article></div>
+            <div class="tool-info-grid"><article class="info-block"><h2 id="toolShort">Hash a file locally</h2><p id="toolWhy">File hashes help verify download integrity, compare forensic samples, or confirm whether two files are identical.</p></article><article class="info-block"><h2 id="privacyTitle">Privacy first</h2><p id="privacyCopy">Input is processed in your current browser and is not uploaded.</p></article></div>
           </div>
           <aside class="tool-aside"><h2 id="relatedTitle">Related tools</h2><ul><li><a href="../base64-decoder/">Base64</a></li><li><a href="../hex-converter/">Hex Converter</a></li><li><a href="../binary-converter/">Binary Converter</a></li><li><a href="../timestamp-converter/">Timestamp</a></li><li><a href="../file-hash/">File Hash</a></li></ul><div class="ad-slot ad-slot-rail" aria-label="Advertisement placeholder"><span>ADVERTISEMENT</span><small>300 x 250</small></div></aside>
         </section>

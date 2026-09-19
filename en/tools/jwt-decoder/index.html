@@ -1,16 +1,20 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
     <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Hexforge CTF browser tool" />
+    <meta name="description" content="Decode JWT headers, payloads, and signature sections locally for authorized CTF practice and token inspection." />
     <meta name="robots" content="index,follow" />
     <meta name="google-site-verification" content="uK6sILOXgpHWoYvzkM4QDW0dGmz6mPdEhgh1mPv1LRY" />
     <link rel="stylesheet" href="../../../site.css" />
     <link rel="canonical" href="https://hexforgectf.cn/en/tools/jwt-decoder/" />
-    <title>jwt decoder | Hexforge CTF Tool</title>
+    <link rel="alternate" hreflang="zh-CN" href="https://hexforgectf.cn/zh/tools/jwt-decoder/" />
+    <link rel="alternate" hreflang="en" href="https://hexforgectf.cn/en/tools/jwt-decoder/" />
+    <link rel="alternate" hreflang="x-default" href="https://hexforgectf.cn/en/tools/jwt-decoder/" />
+    <title>JWT Decoder for Header and Payload | Hexforge</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://hexforgectf.cn/en/tools/jwt-decoder/#app","name":"JWT Decoder","url":"https://hexforgectf.cn/en/tools/jwt-decoder/","description":"Decode JWT headers, payloads, and signature sections locally for authorized CTF practice and token inspection.","applicationCategory":"SecurityApplication","operatingSystem":"Any","browserRequirements":"A modern browser with JavaScript enabled","isAccessibleForFree":true,"offers":{"@type":"Offer","price":0},"inLanguage":"en"},{"@type":"BreadcrumbList","@id":"https://hexforgectf.cn/en/tools/jwt-decoder/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge home","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"Tool directory","item":"https://hexforgectf.cn/en/"},{"@type":"ListItem","position":3,"name":"JWT Decoder","item":"https://hexforgectf.cn/en/tools/jwt-decoder/"}]}]}</script>
   </head>
   <body data-locale="en">
     <div class="site-shell">
@@ -30,8 +34,8 @@
         <section class="tool-layout">
           <div class="tool-hero">
             <p class="eyebrow">LOCAL CTF TOOL</p>
-            <h1 id="toolName">CTF tool</h1>
-            <p class="lede" id="toolLede">A small, fast tool for CTF practice.</p>
+            <h1 id="toolName">JWT Decoder</h1>
+            <p class="lede" id="toolLede">Parse JWT headers and payloads locally to learn authentication structures and inspect token clues.</p>
             <div class="tool-workbench">
               <div class="workbench-top"><span id="toolInputLabel">INPUT</span><span><button id="sampleTool" type="button">Use example</button> · <button id="clearTool" type="button">Clear</button></span></div>
               <div class="workbench-grid">
@@ -40,7 +44,7 @@
                 <div class="workbench-pane output"><div class="output-head"><span id="toolOutputLabel">OUTPUT</span><button id="copyTool" type="button">Copy result</button></div><textarea id="toolOutput" readonly spellcheck="false" placeholder="Output appears here..."></textarea><div class="workbench-meta"><span id="toolOutputCount">0 chars</span><span id="toolStatus">WAITING</span></div></div>
               </div>
             </div>
-            <div class="tool-info-grid"><article class="info-block"><h2 id="toolShort">What this tool does</h2><p id="toolWhy">Process text locally in your browser.</p></article><article class="info-block"><h2 id="privacyTitle">Privacy first</h2><p id="privacyCopy">Input is processed in your current browser. The current version does not upload your text to a server.</p></article></div>
+            <div class="tool-info-grid"><article class="info-block"><h2 id="toolShort">Inspect a JSON Web Token</h2><p id="toolWhy">A JWT usually has Header, Payload, and Signature sections. Decoding the first two does not verify the signature or make the token trustworthy.</p></article><article class="info-block"><h2 id="privacyTitle">Privacy first</h2><p id="privacyCopy">Input is processed in your current browser. The current version does not upload your text to a server.</p></article></div>
           </div>
           <aside class="tool-aside"><h2 id="relatedTitle">Related tools</h2><ul><li><a href="../base64-decoder/">Base64</a></li><li><a href="../url-encoder-decoder/">URL Encode</a></li><li><a href="../hex-converter/">Hex Converter</a></li><li><a href="../jwt-decoder/">JWT Decoder</a></li><li><a href="../sha256-generator/">SHA-256</a></li></ul><div class="ad-slot ad-slot-rail" aria-label="Advertisement placeholder"><span>ADVERTISEMENT</span><small>300 x 250</small></div></aside>
         </section>

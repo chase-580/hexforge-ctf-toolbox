@@ -42,4 +42,8 @@
   <url><loc>https://hexforgectf.cn/zh/guides/url-encoding-ctf/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/guides/timestamp-tracing/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/guides/regex-extraction/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/binary-identification/</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/hex-file-signatures/</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/sha256-file-integrity/</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/ctf-notes-workflow/</loc><lastmod>2026-09-19</lastmod></url>
 </urlset>

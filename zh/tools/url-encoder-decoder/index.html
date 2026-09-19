@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
     <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Hexforge CTF browser tool" />
+    <meta name="description" content="在线编码或解码 URL 参数、路径与百分号字节，帮助分析 CTF 查询字符串和双重编码。输入仅在本地处理。" />
     <meta name="robots" content="index,follow" />
     <meta name="google-site-verification" content="uK6sILOXgpHWoYvzkM4QDW0dGmz6mPdEhgh1mPv1LRY" />
     <link rel="stylesheet" href="../../../site.css" />
     <link rel="canonical" href="https://hexforgectf.cn/zh/tools/url-encoder-decoder/" />
-    <title>url-encoder-decoder | Hexforge CTF 工具</title>
+    <link rel="alternate" hreflang="zh-CN" href="https://hexforgectf.cn/zh/tools/url-encoder-decoder/" />
+    <link rel="alternate" hreflang="en" href="https://hexforgectf.cn/en/tools/url-encoder-decoder/" />
+    <link rel="alternate" hreflang="x-default" href="https://hexforgectf.cn/en/tools/url-encoder-decoder/" />
+    <title>URL 在线编码解码器｜百分号编码工具 | Hexforge</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://hexforgectf.cn/zh/tools/url-encoder-decoder/#app","name":"URL 编码解码器","url":"https://hexforgectf.cn/zh/tools/url-encoder-decoder/","description":"在线编码或解码 URL 参数、路径与百分号字节，帮助分析 CTF 查询字符串和双重编码。输入仅在本地处理。","applicationCategory":"SecurityApplication","operatingSystem":"Any","browserRequirements":"A modern browser with JavaScript enabled","isAccessibleForFree":true,"offers":{"@type":"Offer","price":0},"inLanguage":"zh-CN"},{"@type":"BreadcrumbList","@id":"https://hexforgectf.cn/zh/tools/url-encoder-decoder/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"工具目录","item":"https://hexforgectf.cn/zh/"},{"@type":"ListItem","position":3,"name":"URL 编码解码器","item":"https://hexforgectf.cn/zh/tools/url-encoder-decoder/"}]}]}</script>
   </head>
   <body data-locale="zh">
     <div class="site-shell">
@@ -20,8 +24,8 @@
           <span><strong>hexforge</strong><small>CTF utility layer</small></span>
         </a>
         <nav class="site-nav" aria-label="Site navigation">
-          <a href="../../../">Workspace</a>
-          <a href="../../">Tool directory</a>
+          <a href="../../../">工作台</a>
+          <a href="../../">工具目录</a>
           <span class="language-pair"><a href="../../../zh/tools/base64-decoder/">中文</a><a href="../../../en/tools/base64-decoder/">EN</a></span>
         </nav>
       </header>
@@ -30,8 +34,8 @@
         <section class="tool-layout">
           <div class="tool-hero">
             <p class="eyebrow">LOCAL CTF TOOL</p>
-            <h1 id="toolName">CTF tool</h1>
-            <p class="lede" id="toolLede">A small, fast tool for CTF practice.</p>
+            <h1 id="toolName">URL 编码解码器</h1>
+            <p class="lede" id="toolLede">快速编码或解码 URL 参数，帮助你检查查询字符串、路径和重定向线索。</p>
             <div class="tool-workbench">
               <div class="workbench-top"><span id="toolInputLabel">INPUT</span><span><button id="sampleTool" type="button">Use example</button> · <button id="clearTool" type="button">Clear</button></span></div>
               <div class="workbench-grid">
@@ -40,9 +44,9 @@
                 <div class="workbench-pane output"><div class="output-head"><span id="toolOutputLabel">OUTPUT</span><button id="copyTool" type="button">Copy result</button></div><textarea id="toolOutput" readonly spellcheck="false" placeholder="Output appears here..."></textarea><div class="workbench-meta"><span id="toolOutputCount">0 chars</span><span id="toolStatus">WAITING</span></div></div>
               </div>
             </div>
-            <div class="tool-info-grid"><article class="info-block"><h2 id="toolShort">What this tool does</h2><p id="toolWhy">Process text locally in your browser.</p></article><article class="info-block"><h2 id="privacyTitle">Privacy first</h2><p id="privacyCopy">Input is processed in your current browser. The current version does not upload your text to a server.</p></article></div>
+            <div class="tool-info-grid"><article class="info-block"><h2 id="toolShort">处理 URL 中的特殊字符</h2><p id="toolWhy">URL 编码把空格、括号、中文和其他特殊字符转换成可在 URL 中安全传输的形式。</p></article><article class="info-block"><h2 id="privacyTitle">Privacy first</h2><p id="privacyCopy">Input is processed in your current browser. The current version does not upload your text to a server.</p></article></div>
           </div>
-          <aside class="tool-aside"><h2 id="relatedTitle">Related tools</h2><ul><li><a href="../base64-decoder/">Base64</a></li><li><a href="../url-encoder-decoder/">URL Encode</a></li><li><a href="../hex-converter/">Hex Converter</a></li><li><a href="../jwt-decoder/">JWT Decoder</a></li><li><a href="../sha256-generator/">SHA-256</a></li></ul><div class="ad-slot ad-slot-rail" aria-label="Advertisement placeholder"><span>ADVERTISEMENT</span><small>300 x 250</small></div></aside>
+          <aside class="tool-aside"><h2 id="relatedTitle">Related tools</h2><ul><li><a href="../base64-decoder/">Base64</a></li><li><a href="../url-encoder-decoder/">URL Encode</a></li><li><a href="../hex-converter/">Hex Converter</a></li><li><a href="../jwt-decoder/">JWT Decoder</a></li><li><a href="../sha256-generator/">SHA-256</a></li></ul><h2 class="tool-guide-heading">相关教程</h2><ul class="tool-guide-list"><li><a href="../../guides/url-encoding-ctf/">URL 编码实战</a></li><li><a href="../../guides/encoding-chain/">编码链怎么判断</a></li></ul><div class="ad-slot ad-slot-rail" aria-label="Advertisement placeholder"><span>ADVERTISEMENT</span><small>300 x 250</small></div></aside>
         </section>
         <section class="faq-section"><h2 id="toolFaqTitle">Common questions</h2><div class="faq-list"><details open><summary id="toolFaqQuestion">How does this tool work?</summary><p id="toolFaqAnswer">The transformation runs in your browser.</p></details></div></section>
       </main>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="建立可复现的 CTF 解题记录：保留原始输入、记录假设与结果、管理工具链和附件，并在赛后快速整理 Writeup。" />
+  <meta name="robots" content="index,follow" />
+  <meta name="author" content="Hexforge Editorial" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="CTF 解题记录怎么做" />
+  <meta property="og:description" content="建立可复现的 CTF 解题记录：保留原始输入、记录假设与结果、管理工具链和附件，并在赛后快速整理 Writeup。" />
+  <meta property="og:url" content="https://hexforgectf.cn/zh/guides/ctf-notes-workflow/" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/ctf-notes-workflow/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>CTF 解题记录怎么做：可复现的笔记流程 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"CTF 解题记录怎么做","description":"建立可复现的 CTF 解题记录：保留原始输入、记录假设与结果、管理工具链和附件，并在赛后快速整理 Writeup。","datePublished":"2026-09-19","dateModified":"2026-09-19","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/ctf-notes-workflow/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"CTF 解题记录怎么做","item":"https://hexforgectf.cn/zh/guides/ctf-notes-workflow/"}]}]}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main">
+    <div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / notes-workflow</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 12 / WORKFLOW</p><h1>CTF 解题记录怎么做</h1><p class="guide-deck">好的记录不是赛后凭记忆补写，而是在解题过程中留下可验证的证据链。它能减少重复尝试，也能让队友快速接手。</p></div><aside class="guide-meta"><strong>阅读时间约 9 分钟</strong>难度：通用<br />场景：All Categories<br />更新：2026-09-19</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="minimum">每道题至少记录五类信息</h2>
+      <ol><li><strong>上下文：</strong>题目名称、分类、附件、题目描述和 Flag 格式。</li><li><strong>原始证据：</strong>未经修改的字符串、文件哈希、截图和日志片段。</li><li><strong>假设：</strong>为什么认为它是 Base64、JWT、文件容器或某种时间戳。</li><li><strong>动作：</strong>使用的工具、参数、命令和清理规则。</li><li><strong>结果：</strong>输出、错误、结论以及下一步。</li></ol>
+      <p>只记录成功步骤会丢失重要信息。失败尝试同样有价值，因为它能说明哪些方向已经被排除，避免队友重复消耗时间。</p>
+      <h2 id="template">一个可复用的记录模板</h2>
+      <pre><code>题目：Example Token
+分类：Web
+原始输入：eyJ...
+观察：三段以点号分隔，前两段符合 Base64URL
+假设：JWT，先读取 Header 与 Payload，不验证签名
+动作：JWT Decoder，本地解析
+结果：alg=HS256，exp=1767225600
+下一步：转换 exp 并与题目时间线比对</code></pre>
+      <p>这个模板强迫你区分“观察到的事实”和“尚未验证的推测”。例如，三段结构支持 JWT 假设，但仅解码 Payload 不能证明令牌有效。</p>
+      <h2 id="raw">始终保留原始输入</h2>
+      <p>清理空格、补齐 Base64、修改文件头或调整正则前，先复制原始值。记录转换后的结果时，也要说明具体改动。否则一旦方向错误，你很难判断问题来自题目还是自己早期的处理。</p>
+      <p>文件类题目还应记录大小和 SHA-256。每次生成关键中间文件时，使用新名称保存，不要覆盖原件。</p>
+      <h2 id="chain">工具链如何记录</h2>
+      <p>多层编码题不要只写“解了几次”。应记录每一层的输入特征、使用工具和输出判断。例如：</p>
+      <pre><code>1. URL decode：出现连续 Hex 字节
+2. Hex to text：得到 Base64 字符集，长度为 4 的倍数
+3. Base64 decode：得到 flag{...}</code></pre>
+      <p>Hexforge 工具链会显示每一步的执行轨迹。确认结果可信后，可以把输出存入题目工作区，并通过导出功能保存 JSON 备份。</p>
+      <h2 id="handoff">让队友能在三分钟内接手</h2>
+      <ul><li>把当前结论写在最上方，而不是埋在长聊天记录里。</li><li>明确哪些事实已验证、哪些只是猜测。</li><li>附上可以直接运行的命令和最小输入。</li><li>标注失败原因，而不是只写“没用”。</li><li>记录下一步和当前阻塞点。</li></ul>
+      <h2 id="writeup">从解题笔记整理 Writeup</h2>
+      <p>赛后整理时，删除与结论无关的重复尝试，但保留关键判断依据。推荐结构是：题目背景、线索识别、核心原理、可复现步骤、Flag、常见误区和防御启示。截图应辅助说明，不应代替文字步骤。</p>
+      <div class="guide-callout"><strong>不要把敏感凭据写进公开 Writeup</strong><p>公开前移除真实 Token、账号、内部地址和未经授权获得的数据。本文流程仅适用于合法 CTF、靶场和自有环境。</p></div>
+      <h2 id="checklist">提交前检查</h2>
+      <ul><li>原始输入和关键附件是否仍可找到。</li><li>关键转换是否能由另一名队友复现。</li><li>Flag 来源是否有明确证据，而不是猜测。</li><li>是否清理了公开内容中的敏感信息。</li><li>工作区是否已导出备份。</li></ul>
+    <h2 id="related-reading">相关阅读</h2><ul><li><a href="../encoding-chain/">编码链怎么判断</a></li><li><a href="../regex-extraction/">用正则提取 CTF 线索</a></li><li><a href="../file-forensics-workflow/">文件取证基础流程</a></li></ul></article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#minimum">最小记录</a></li><li><a href="#template">记录模板</a></li><li><a href="#raw">保留原始输入</a></li><li><a href="#chain">工具链记录</a></li><li><a href="#handoff">队友接手</a></li><li><a href="#writeup">整理 Writeup</a></li><li><a href="#checklist">检查清单</a></li></ol><a class="guide-tool-link" href="../../../#challengeWorkspace"><span>OPEN WORKSPACE</span><strong>题目工作区</strong></a><a class="guide-tool-link" href="../../../#toolchain"><span>BUILD A PIPELINE</span><strong>多步骤工具链</strong></a></aside></div>
+  </main>
+  <footer class="site-footer"><span>hexforge / guide 12</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

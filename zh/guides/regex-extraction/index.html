@@ -7,10 +7,15 @@
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
   <meta name="description" content="用正则表达式从 CTF 文本和日志中提取 Flag、哈希、IP 和字段，理解边界、分组、贪婪匹配与性能风险。" />
   <meta name="robots" content="index,follow" />
+  <meta name="author" content="Hexforge Editorial" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="用正则提取 CTF 线索" />
+  <meta property="og:description" content="用正则表达式从 CTF 文本和日志中提取 Flag、哈希、IP 和字段，理解边界、分组、贪婪匹配与性能风险。" />
+  <meta property="og:url" content="https://hexforgectf.cn/zh/guides/regex-extraction/" />
   <link rel="canonical" href="https://hexforgectf.cn/zh/guides/regex-extraction/" />
   <link rel="stylesheet" href="../../../site.css" />
   <title>用正则提取 CTF 线索 | Hexforge</title>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用正则提取 CTF 线索","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","author":{"@type":"Organization","name":"Hexforge Editorial"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"用正则提取 CTF 线索","description":"用正则表达式从 CTF 文本和日志中提取 Flag、哈希、IP 和字段，理解边界、分组、贪婪匹配与性能风险。","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/regex-extraction/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"用正则提取 CTF 线索","item":"https://hexforgectf.cn/zh/guides/regex-extraction/"}]}]}</script>
 </head>
 <body><div class="site-shell">
   <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
@@ -25,7 +30,7 @@
       <h2 id="flags">模式标志</h2><ul><li><code>g</code>：查找全部匹配，而不只返回第一个。</li><li><code>i</code>：忽略大小写，使用前要确认题目是否区分大小写。</li><li><code>m</code>：让 <code>^</code> 和 <code>$</code> 按每一行工作。</li><li><code>s</code>：让点号匹配换行，可能显著扩大匹配范围。</li></ul>
       <h2 id="performance">避免性能陷阱</h2><p>嵌套量词和模糊回溯在长文本上可能非常慢，例如 <code>(a+)+$</code>。处理未知或超长输入时，应使用明确字符类、长度上限和简单边界，并先在小样本上测试。</p>
       <h2 id="workflow">提取流程</h2><ol><li>写出一个真实样例和一个不应匹配的反例。</li><li>先确定左、右边界。</li><li>收紧中间字符范围和长度。</li><li>检查全局、大小写和多行标志。</li><li>查看捕获组，而不只看整段高亮。</li><li>对提取出的哈希、IP、JWT 再做语义验证。</li></ol>
-    </article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#flag">Flag 模式</a></li><li><a href="#boundaries">边界</a></li><li><a href="#patterns">常见模式</a></li><li><a href="#greedy">贪婪匹配</a></li><li><a href="#flags">标志</a></li><li><a href="#performance">性能</a></li><li><a href="#workflow">提取流程</a></li></ol><a class="guide-tool-link" href="../../tools/regex-tester/"><span>OPEN TOOL</span><strong>正则表达式测试器</strong></a></aside></div>
+    <h2 id="related-reading">相关阅读</h2><ul><li><a href="../ctf-notes-workflow/">CTF 解题记录流程</a></li><li><a href="../file-forensics-workflow/">文件取证基础流程</a></li><li><a href="../url-encoding-ctf/">URL 编码实战</a></li></ul></article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#flag">Flag 模式</a></li><li><a href="#boundaries">边界</a></li><li><a href="#patterns">常见模式</a></li><li><a href="#greedy">贪婪匹配</a></li><li><a href="#flags">标志</a></li><li><a href="#performance">性能</a></li><li><a href="#workflow">提取流程</a></li></ol><a class="guide-tool-link" href="../../tools/regex-tester/"><span>OPEN TOOL</span><strong>正则表达式测试器</strong></a></aside></div>
   </main><footer class="site-footer"><span>hexforge / guide 08</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
 </div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
 </html>

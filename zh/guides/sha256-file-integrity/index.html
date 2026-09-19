@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
+  <link rel="icon" href="../../../favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="用 SHA-256 验证文件完整性：理解哈希能证明什么、如何比较摘要、如何记录取证样本，以及常见的校验误区。" />
+  <meta name="robots" content="index,follow" />
+  <meta name="author" content="Hexforge Editorial" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="用 SHA-256 验证文件完整性" />
+  <meta property="og:description" content="用 SHA-256 验证文件完整性：理解哈希能证明什么、如何比较摘要、如何记录取证样本，以及常见的校验误区。" />
+  <meta property="og:url" content="https://hexforgectf.cn/zh/guides/sha256-file-integrity/" />
+  <link rel="canonical" href="https://hexforgectf.cn/zh/guides/sha256-file-integrity/" />
+  <link rel="stylesheet" href="../../../site.css" />
+  <title>如何用 SHA-256 验证文件完整性 | Hexforge</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"用 SHA-256 验证文件完整性","description":"用 SHA-256 验证文件完整性：理解哈希能证明什么、如何比较摘要、如何记录取证样本，以及常见的校验误区。","datePublished":"2026-09-19","dateModified":"2026-09-19","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/sha256-file-integrity/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"用 SHA-256 验证文件完整性","item":"https://hexforgectf.cn/zh/guides/sha256-file-integrity/"}]}]}</script>
+</head>
+<body><div class="site-shell">
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <main class="site-main">
+    <div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / sha256-integrity</div>
+    <section class="guide-hero"><div><p class="eyebrow">GUIDE 11 / FORENSICS</p><h1>用 SHA-256 验证文件完整性</h1><p class="guide-deck">哈希值不是“文件密码”，而是内容指纹。正确使用 SHA-256，可以确认两个文件是否逐字节一致，并为后续分析建立可复核的起点。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门<br />场景：Forensics / Workflow<br />更新：2026-09-19</aside></section>
+    <div class="guide-layout"><article class="prose">
+      <h2 id="meaning">SHA-256 能证明什么</h2>
+      <p>SHA-256 会把任意长度的输入映射成 256 位摘要，通常写成 64 个十六进制字符。相同文件会产生相同摘要；哪怕只改变一个字节，结果也会明显变化。因此它适合做完整性比对和样本标识。</p>
+      <p>哈希一致说明两份输入在计算时相同，但哈希本身不能证明文件来自谁，也不能证明内容安全。只有当参考摘要来自可信渠道时，“与参考值一致”才具有来源验证意义。</p>
+      <h2 id="example">一个最小验证实验</h2>
+      <p>新建文本文件并写入：</p>
+      <pre><code>flag{hash_the_original}</code></pre>
+      <p>计算 SHA-256 并记录结果。随后只把末尾换行删除，或者把一个字母改成大写，再次计算。两个摘要会完全不同。这说明文件名相同、肉眼内容相似，都不能替代逐字节校验。</p>
+      <h2 id="methods">浏览器与命令行如何交叉验证</h2>
+      <p>本站文件校验工具通过浏览器 Web Crypto API 读取本地文件并计算摘要，文件内容不会上传。为了排除单一工具或复制错误，可以再用系统命令交叉验证：</p>
+      <pre><code># Linux / macOS
+sha256sum sample.bin
+
+# Windows PowerShell
+Get-FileHash .\sample.bin -Algorithm SHA256</code></pre>
+      <p>比较时忽略十六进制字母大小写，但不要忽略缺失字符、空格之外的符号或算法名称。MD5、SHA-1 和 SHA-256 的结果不能直接互相比较。</p>
+      <h2 id="forensics">在 CTF 取证中的记录方式</h2>
+      <ol><li>下载或取得样本后立即复制一份只读原件。</li><li>记录原文件名、字节大小、获取时间和 SHA-256。</li><li>后续解压、修复文件头或提取数据都在副本上进行。</li><li>每次产生关键中间文件时重新计算哈希并说明来源。</li><li>提交答案前保留最终文件与完整步骤，确保队友可以复现。</li></ol>
+      <h2 id="mistakes">常见误区</h2>
+      <h3>把哈希当成加密</h3><p>摘要没有解密密钥，也不是用来恢复原文的格式。对短口令进行字典猜测，是尝试不同输入后比较摘要，不是“解密哈希”。</p>
+      <h3>比较了错误算法</h3><p>64 个十六进制字符常见于 SHA-256，但仍应确认工具和题目指定的算法。不要只凭长度就断言来源。</p>
+      <h3>先修改再计算原件哈希</h3><p>如果打开样本的软件会自动改写元数据，事后计算的哈希已经不能代表最初取得的文件。先保全、先校验，再分析。</p>
+      <h3>把未知参考值当作可信</h3><p>攻击者也可以同时替换文件和网页上的哈希值。来源验证需要可信发布渠道、数字签名或独立记录配合。</p>
+      <h2 id="checklist">完整性检查清单</h2>
+      <ul><li>算法名称是否明确为 SHA-256。</li><li>摘要是否完整包含 64 个 Hex 字符。</li><li>文件大小与预期是否一致。</li><li>是否保留了未修改的原件。</li><li>是否使用第二种工具交叉验证。</li><li>参考摘要是否来自可信来源。</li></ul>
+    <h2 id="related-reading">相关阅读</h2><ul><li><a href="../hash-comparison/">常见哈希的区别</a></li><li><a href="../file-forensics-workflow/">文件取证基础流程</a></li><li><a href="../hex-file-signatures/">文件头与十六进制</a></li></ul></article><aside class="guide-toc"><p>ON THIS PAGE</p><ol><li><a href="#meaning">能证明什么</a></li><li><a href="#example">验证实验</a></li><li><a href="#methods">交叉验证</a></li><li><a href="#forensics">取证记录</a></li><li><a href="#mistakes">常见误区</a></li><li><a href="#checklist">检查清单</a></li></ol><a class="guide-tool-link" href="../../tools/file-hash/"><span>OPEN TOOL</span><strong>文件 SHA-256 校验</strong></a><a class="guide-tool-link" href="../file-forensics-workflow/"><span>RELATED GUIDE</span><strong>文件取证基础流程</strong></a></aside></div>
+  </main>
+  <footer class="site-footer"><span>hexforge / guide 11</span><span><a href="../../../about/">关于</a> · <a href="../../../contact/">联系</a> · <a href="../../../terms/">条款</a> · <a href="../../../privacy/">隐私</a></span></footer>
+</div><script src="../../../analytics-config.js"></script><script src="../../../analytics.js"></script></body>
+</html>

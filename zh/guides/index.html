@@ -9,13 +9,14 @@
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://hexforgectf.cn/zh/guides/" />
     <link rel="stylesheet" href="../../site.css" />
-    <title>CTF 实战教程 | Hexforge</title>
+    <title>CTF 实战教程：编码、JWT 与文件取证 | Hexforge</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","@id":"https://hexforgectf.cn/zh/guides/#collection","name":"Hexforge CTF 实战教程","description":"围绕编码识别、JWT、哈希、文件取证、正则和解题流程整理的原创 CTF 教程。","url":"https://hexforgectf.cn/zh/guides/","inLanguage":"zh-CN","mainEntity":{"@type":"ItemList","numberOfItems":12,"itemListElement":[{"@type":"ListItem","position":1,"url":"https://hexforgectf.cn/zh/guides/base64-identification/"},{"@type":"ListItem","position":2,"url":"https://hexforgectf.cn/zh/guides/jwt-analysis/"},{"@type":"ListItem","position":3,"url":"https://hexforgectf.cn/zh/guides/encoding-chain/"},{"@type":"ListItem","position":4,"url":"https://hexforgectf.cn/zh/guides/hash-comparison/"},{"@type":"ListItem","position":5,"url":"https://hexforgectf.cn/zh/guides/file-forensics-workflow/"},{"@type":"ListItem","position":6,"url":"https://hexforgectf.cn/zh/guides/url-encoding-ctf/"},{"@type":"ListItem","position":7,"url":"https://hexforgectf.cn/zh/guides/timestamp-tracing/"},{"@type":"ListItem","position":8,"url":"https://hexforgectf.cn/zh/guides/regex-extraction/"},{"@type":"ListItem","position":9,"url":"https://hexforgectf.cn/zh/guides/binary-identification/"},{"@type":"ListItem","position":10,"url":"https://hexforgectf.cn/zh/guides/hex-file-signatures/"},{"@type":"ListItem","position":11,"url":"https://hexforgectf.cn/zh/guides/sha256-file-integrity/"},{"@type":"ListItem","position":12,"url":"https://hexforgectf.cn/zh/guides/ctf-notes-workflow/"}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"}]}]}</script>
   </head>
   <body>
     <div class="site-shell">
       <header class="site-header"><a class="site-brand" href="../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../">工作台</a><a href="../">工具</a><a href="./">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../en/">EN</a></span></nav></header>
       <main class="site-main">
-        <section class="guide-hero"><div><p class="eyebrow">FIELD NOTES / 08</p><h1>先识别线索，<br />再选择工具。</h1><p class="guide-deck">围绕 CTF 常见输入建立可重复的判断流程。每篇教程解释为什么这样判断、什么时候会误判，以及如何保存可复核的结果。</p></div><aside class="guide-meta"><strong>HEXFORGE GUIDES</strong>8 篇原创教程<br />面向入门与复盘<br />最后更新 2026-09-18</aside></section>
+        <section class="guide-hero"><div><p class="eyebrow">FIELD NOTES / 12</p><h1>先识别线索，<br />再选择工具。</h1><p class="guide-deck">围绕 CTF 常见输入建立可重复的判断流程。每篇教程解释为什么这样判断、什么时候会误判，以及如何保存可复核的结果。</p></div><aside class="guide-meta"><strong>HEXFORGE GUIDES</strong>12 篇原创教程<br />面向入门与复盘<br />最后更新 2026-09-19</aside></section>
         <section class="guide-grid" aria-label="教程列表">
           <a class="guide-card" href="base64-identification/"><span class="guide-number">GUIDE 01 / ENCODING</span><h2>如何识别 Base64</h2><p>从字符集、长度、填充和解码结果判断，不再看到等号就盲解。</p></a>
           <a class="guide-card" href="jwt-analysis/"><span class="guide-number">GUIDE 02 / WEB</span><h2>JWT 分析清单</h2><p>分清 Header、Payload 与 Signature，读取声明但不把“可解码”误当“可信”。</p></a>
@@ -25,6 +26,10 @@
           <a class="guide-card" href="url-encoding-ctf/"><span class="guide-number">GUIDE 06 / WEB</span><h2>URL 编码实战</h2><p>理解百分号字节、加号语义和双重编码，避免把路径与参数一起误解码。</p></a>
           <a class="guide-card" href="timestamp-tracing/"><span class="guide-number">GUIDE 07 / FORENSICS</span><h2>时间戳与日志还原</h2><p>判断秒、毫秒和时区，把多个来源的事件放回同一条时间线。</p></a>
           <a class="guide-card" href="regex-extraction/"><span class="guide-number">GUIDE 08 / TEXT</span><h2>用正则提取 CTF 线索</h2><p>用边界、分组和非贪婪匹配提取 Flag、哈希与日志字段。</p></a>
+          <a class="guide-card" href="binary-identification/"><span class="guide-number">GUIDE 09 / ENCODING</span><h2>如何识别二进制文本</h2><p>从 0/1 字符、8 位分组和 UTF-8 字节判断输入，避免补零与位序误判。</p></a>
+          <a class="guide-card" href="hex-file-signatures/"><span class="guide-number">GUIDE 10 / FORENSICS</span><h2>文件头与十六进制</h2><p>通过 PNG、ZIP、PDF、ELF 和 PE 魔数识别文件，并理解字节序边界。</p></a>
+          <a class="guide-card" href="sha256-file-integrity/"><span class="guide-number">GUIDE 11 / FORENSICS</span><h2>用 SHA-256 验证文件</h2><p>正确比较文件摘要、保全原始样本，并用第二种工具进行交叉验证。</p></a>
+          <a class="guide-card" href="ctf-notes-workflow/"><span class="guide-number">GUIDE 12 / WORKFLOW</span><h2>CTF 解题记录怎么做</h2><p>用事实、假设、动作和结果建立可复现笔记，让队友可以快速接手。</p></a>
         </section>
         <aside class="ad-slot ad-slot-horizontal" aria-label="广告预留位"><span>ADVERTISEMENT</span><small>RESPONSIVE DISPLAY</small></aside>
       </main>
