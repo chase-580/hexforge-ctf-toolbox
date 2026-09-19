@@ -1,4 +1,6 @@
 (function initializeChallengeWorkspace() {
+  const english = document.documentElement.lang.toLowerCase().startsWith("en");
+  const t = (en, zh) => english ? en : zh;
   const STORAGE_KEY = "hexforge-workspaces-v1";
   const EXPORT_FORMAT = "hexforge-workspace";
   const EXPORT_VERSION = 1;
@@ -87,7 +89,7 @@
     if (!item || typeof item !== "object" || typeof item.id !== "string" || typeof item.name !== "string") return null;
     return {
       id: item.id,
-      name: item.name.slice(0, 80) || "未命名题目",
+      name: item.name.slice(0, 80) || t("Untitled challenge", "未命名题目"),
       category: ["Web", "Crypto", "Pwn", "Reverse", "Forensics", "Misc"].includes(item.category) ? item.category : "Misc",
       difficulty: ["Easy", "Medium", "Hard", "Insane"].includes(item.difficulty) ? item.difficulty : "Medium",
       tags: Array.isArray(item.tags) ? item.tags.filter((tag) => typeof tag === "string").slice(0, 12) : [],
@@ -105,7 +107,7 @@
     if (!item || typeof item !== "object" || typeof item.content !== "string") return null;
     return {
       id: typeof item.id === "string" ? item.id : createId(),
-      label: typeof item.label === "string" ? item.label.slice(0, 80) : "工具结果",
+      label: typeof item.label === "string" ? item.label.slice(0, 80) : t("Tool result", "工具结果"),
       content: item.content.slice(0, MAX_ARTIFACT_LENGTH),
       createdAt: Number(item.createdAt) || Date.now(),
     };
@@ -130,13 +132,13 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       return true;
     } catch {
-      notify("本地存储空间不足，当前修改可能无法保留。");
+      notify(t("Browser storage is full. The current change may not be saved.", "本地存储空间不足，当前修改可能无法保留。"));
       return false;
     }
   }
 
   function getDatabase() {
-    if (!globalThis.indexedDB) return Promise.reject(new Error("当前浏览器不支持附件存储"));
+    if (!globalThis.indexedDB) return Promise.reject(new Error(t("This browser does not support attachment storage", "当前浏览器不支持附件存储")));
     if (databasePromise) return databasePromise;
     databasePromise = new Promise((resolve, reject) => {
       const request = indexedDB.open(DATABASE_NAME, 1);
@@ -144,7 +146,7 @@
         if (!request.result.objectStoreNames.contains(DATABASE_STORE)) request.result.createObjectStore(DATABASE_STORE, { keyPath: "id" });
       };
       request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error || new Error("无法打开附件存储"));
+      request.onerror = () => reject(request.error || new Error(t("Could not open attachment storage", "无法打开附件存储")));
     });
     return databasePromise;
   }
@@ -156,8 +158,8 @@
       const store = transaction.objectStore(DATABASE_STORE);
       const request = action(store);
       request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error || new Error("附件存储操作失败"));
-      transaction.onerror = () => reject(transaction.error || new Error("附件存储事务失败"));
+      request.onerror = () => reject(request.error || new Error(t("Attachment storage operation failed", "附件存储操作失败")));
+      transaction.onerror = () => reject(transaction.error || new Error(t("Attachment storage transaction failed", "附件存储事务失败")));
     });
   }
 
@@ -214,7 +216,7 @@
     if (!state.challenges.length) {
       const empty = document.createElement("p");
       empty.className = "challenge-list-empty";
-      empty.textContent = "创建题目后，它们会按最近修改时间显示在这里。";
+      empty.textContent = t("Challenges will appear here, ordered by recent activity.", "创建题目后，它们会按最近修改时间显示在这里。");
       elements.list.append(empty);
       return;
     }
@@ -222,7 +224,7 @@
     if (!visibleChallenges.length) {
       const empty = document.createElement("p");
       empty.className = "challenge-list-empty";
-      empty.textContent = "没有符合当前筛选条件的题目。";
+      empty.textContent = t("No challenges match the current filters.", "没有符合当前筛选条件的题目。");
       elements.list.append(empty);
       return;
     }
@@ -266,7 +268,7 @@
     elements.tags.value = challenge.tags.join(", ");
     elements.notes.value = challenge.notes;
     elements.flag.value = challenge.flag;
-    elements.statusButton.textContent = challenge.status === "solved" ? "已解决 ✓" : "标记已解";
+    elements.statusButton.textContent = challenge.status === "solved" ? t("Solved ✓", "已解决 ✓") : t("Mark solved", "标记已解");
     elements.statusButton.classList.toggle("is-solved", challenge.status === "solved");
     elements.saveState.textContent = `SAVED · ${formatDate(challenge.updatedAt)}`;
     renderArtifacts(challenge);
@@ -279,7 +281,7 @@
     if (!challenge.artifacts.length) {
       const empty = document.createElement("p");
       empty.className = "challenge-artifacts-empty";
-      empty.textContent = "运行工具后，点击“存入题目”保存关键结果。";
+      empty.textContent = t("Run a tool, then use “Save to case” to keep an important result.", "运行工具后，点击“存入题目”保存关键结果。");
       elements.artifacts.append(empty);
       return;
     }
@@ -294,8 +296,8 @@
       const remove = document.createElement("button");
       remove.type = "button";
       remove.textContent = "×";
-      remove.title = "移除结果";
-      remove.setAttribute("aria-label", `移除 ${artifact.label}`);
+      remove.title = t("Remove result", "移除结果");
+      remove.setAttribute("aria-label", t(`Remove ${artifact.label}`, `移除 ${artifact.label}`));
       remove.dataset.artifactId = artifact.id;
       const content = document.createElement("pre");
       content.textContent = artifact.content;
@@ -327,7 +329,7 @@
     if (!challenge.attachments.length) {
       const empty = document.createElement("p");
       empty.className = "challenge-attachments-empty";
-      empty.textContent = "附件和截图只保存在当前浏览器。";
+      empty.textContent = t("Attachments and screenshots are stored only in this browser.", "附件和截图只保存在当前浏览器。");
       elements.attachments.append(empty);
       return;
     }
@@ -365,16 +367,16 @@
       const download = document.createElement("button");
       download.type = "button";
       download.textContent = "↓";
-      download.title = "下载附件";
-      download.setAttribute("aria-label", `下载 ${attachment.name}`);
+      download.title = t("Download attachment", "下载附件");
+      download.setAttribute("aria-label", t(`Download ${attachment.name}`, `下载 ${attachment.name}`));
       download.dataset.downloadAttachment = attachment.id;
       download.disabled = !blob;
       const remove = document.createElement("button");
       remove.type = "button";
       remove.textContent = "×";
-      remove.title = "删除附件";
+      remove.title = t("Delete attachment", "删除附件");
       remove.className = "remove-attachment";
-      remove.setAttribute("aria-label", `删除 ${attachment.name}`);
+      remove.setAttribute("aria-label", t(`Delete ${attachment.name}`, `删除 ${attachment.name}`));
       remove.dataset.removeAttachment = attachment.id;
       controls.append(download, remove);
       row.append(preview, copy, controls);
@@ -384,7 +386,7 @@
 
   function openCreateDialog() {
     if (state.challenges.length >= MAX_CHALLENGES) {
-      notify("本地工作区最多保存 50 个题目。");
+      notify(t("The local workspace can store up to 50 challenges.", "本地工作区最多保存 50 个题目。"));
       return;
     }
     elements.form.reset();
@@ -421,7 +423,7 @@
     render();
     elements.dialog.close();
     elements.section.scrollIntoView({ behavior: "smooth", block: "start" });
-    notify("题目工作区已创建并保存在当前浏览器。");
+    notify(t("Challenge workspace created and saved in this browser.", "题目工作区已创建并保存在当前浏览器。"));
   }
 
   function updateActive(field, value, immediate = false) {
@@ -441,7 +443,7 @@
 
   function captureArtifact(label, content) {
     if (!content) {
-      notify("当前没有可保存的结果。");
+      notify(t("There is no result to save.", "当前没有可保存的结果。"));
       return;
     }
     const truncated = content.length > MAX_ARTIFACT_LENGTH;
@@ -450,7 +452,7 @@
     if (!challenge) {
       pendingArtifact = artifact;
       openCreateDialog();
-      notify("先创建题目，当前结果会自动加入新题目。");
+      notify(t("Create a challenge first. The current result will be added automatically.", "先创建题目，当前结果会自动加入新题目。"));
       return;
     }
     challenge.artifacts.unshift(artifact);
@@ -460,7 +462,7 @@
     renderSummary();
     renderList();
     renderArtifacts(challenge);
-    notify(truncated ? "结果已截取前 20,000 字符并存入题目。" : "结果已存入当前题目。");
+    notify(truncated ? t("The first 20,000 characters were saved to the challenge.", "结果已截取前 20,000 字符并存入题目。") : t("Result saved to the active challenge.", "结果已存入当前题目。"));
   }
 
   function downloadBlob(blob, filename) {
@@ -479,14 +481,14 @@
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
-      reader.onerror = () => reject(reader.error || new Error("无法读取附件"));
+      reader.onerror = () => reject(reader.error || new Error(t("Could not read the attachment", "无法读取附件")));
       reader.readAsDataURL(blob);
     });
   }
 
   function dataUrlToBlob(dataUrl) {
     const match = typeof dataUrl === "string" && dataUrl.match(/^data:([^;,]*)(;base64)?,(.*)$/s);
-    if (!match) throw new Error("附件数据格式无效");
+    if (!match) throw new Error(t("Invalid attachment data format", "附件数据格式无效"));
     const type = match[1] || "application/octet-stream";
     const binary = match[2] ? atob(match[3]) : decodeURIComponent(match[3]);
     const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
@@ -495,12 +497,12 @@
 
   async function exportWorkspace() {
     if (!state.challenges.length) {
-      notify("当前没有可导出的题目。");
+      notify(t("There are no challenges to export.", "当前没有可导出的题目。"));
       return;
     }
     const originalText = elements.exportButton.textContent;
     elements.exportButton.disabled = true;
-    elements.exportButton.textContent = "导出中...";
+    elements.exportButton.textContent = t("Exporting…", "导出中...");
     try {
       const attachments = [];
       for (const challenge of state.challenges) {
@@ -518,9 +520,9 @@
       };
       const date = new Date().toISOString().slice(0, 10);
       downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }), `hexforge-workspace-${date}.json`);
-      notify(`已导出 ${state.challenges.length} 个题目和 ${attachments.length} 个附件。`);
+      notify(t(`Exported ${state.challenges.length} challenges and ${attachments.length} attachments.`, `已导出 ${state.challenges.length} 个题目和 ${attachments.length} 个附件。`));
     } catch (error) {
-      notify(`导出失败：${error.message}`);
+      notify(t(`Export failed: ${error.message}`, `导出失败：${error.message}`));
     } finally {
       elements.exportButton.disabled = false;
       elements.exportButton.textContent = originalText;
@@ -530,16 +532,16 @@
   async function importWorkspace(file) {
     if (!file) return;
     if (file.size > 100 * 1024 * 1024) {
-      notify("导入文件不能超过 100 MB。");
+      notify(t("The import file cannot exceed 100 MB.", "导入文件不能超过 100 MB。"));
       return;
     }
     const originalText = elements.importButton.textContent;
     elements.importButton.disabled = true;
-    elements.importButton.textContent = "导入中...";
+    elements.importButton.textContent = t("Importing…", "导入中...");
     try {
       const payload = JSON.parse(await file.text());
       if (payload?.format !== EXPORT_FORMAT || payload?.version !== EXPORT_VERSION || !Array.isArray(payload?.state?.challenges)) {
-        throw new Error("不是有效的 Hexforge 工作区文件");
+        throw new Error(t("This is not a valid Hexforge workspace file", "不是有效的 Hexforge 工作区文件"));
       }
 
       const existingChallengeIds = new Set(state.challenges.map((challenge) => challenge.id));
@@ -584,7 +586,7 @@
       });
 
       if (!importedChallenges.length) {
-        notify(skipped ? "这些题目已经存在，没有重复导入。" : "导入文件中没有可用题目。");
+        notify(skipped ? t("Those challenges already exist and were not duplicated.", "这些题目已经存在，没有重复导入。") : t("The import file contains no usable challenges.", "导入文件中没有可用题目。"));
         return;
       }
       state.challenges.push(...importedChallenges);
@@ -592,9 +594,9 @@
       state.activeId = importedChallenges.some((challenge) => challenge.id === importedActiveId) ? importedActiveId : importedChallenges[0].id;
       persist();
       render();
-      notify(`已导入 ${importedChallenges.length} 个题目和 ${importedAttachmentCount} 个附件${skipped ? `，跳过 ${skipped} 个已存在题目` : ""}。`);
+      notify(t(`Imported ${importedChallenges.length} challenges and ${importedAttachmentCount} attachments${skipped ? `; skipped ${skipped} existing challenges` : ""}.`, `已导入 ${importedChallenges.length} 个题目和 ${importedAttachmentCount} 个附件${skipped ? `，跳过 ${skipped} 个已存在题目` : ""}。`));
     } catch (error) {
-      notify(`导入失败：${error.message}`);
+      notify(t(`Import failed: ${error.message}`, `导入失败：${error.message}`));
     } finally {
       elements.importButton.disabled = false;
       elements.importButton.textContent = originalText;
@@ -609,24 +611,24 @@
   async function addAttachment(file, kind) {
     const challenge = getActiveChallenge();
     if (!challenge) {
-      notify("请先创建或选择一个题目。");
+      notify(t("Create or select a challenge first.", "请先创建或选择一个题目。"));
       return;
     }
     if (!file) return;
     if (challenge.attachments.length >= MAX_ATTACHMENTS) {
-      notify("每个题目最多保存 12 个附件和截图。");
+      notify(t("Each challenge can store up to 12 attachments and screenshots.", "每个题目最多保存 12 个附件和截图。"));
       return;
     }
     if (file.size > MAX_ATTACHMENT_SIZE) {
-      notify("单个附件不能超过 8 MB。");
+      notify(t("An attachment cannot exceed 8 MB.", "单个附件不能超过 8 MB。"));
       return;
     }
     if (getTotalAttachmentSize() + file.size > MAX_TOTAL_ATTACHMENT_SIZE) {
-      notify("工作区附件总量不能超过 64 MB。");
+      notify(t("Workspace attachments cannot exceed 64 MB in total.", "工作区附件总量不能超过 64 MB。"));
       return;
     }
     if (kind === "screenshot" && !file.type.startsWith("image/")) {
-      notify("截图只能使用图片文件。");
+      notify(t("Screenshots must be image files.", "截图只能使用图片文件。"));
       return;
     }
 
@@ -646,9 +648,9 @@
       renderSummary();
       renderList();
       renderAttachments(challenge);
-      notify(kind === "screenshot" ? "截图已保存到当前题目。" : "附件已保存到当前题目。");
+      notify(kind === "screenshot" ? t("Screenshot saved to the active challenge.", "截图已保存到当前题目。") : t("Attachment saved to the active challenge.", "附件已保存到当前题目。"));
     } catch (error) {
-      notify(`附件保存失败：${error.message}`);
+      notify(t(`Could not save attachment: ${error.message}`, `附件保存失败：${error.message}`));
     }
   }
 
@@ -686,7 +688,7 @@
     renderList();
   });
 
-  elements.name.addEventListener("input", () => updateActive("name", elements.name.value.slice(0, 80) || "未命名题目"));
+  elements.name.addEventListener("input", () => updateActive("name", elements.name.value.slice(0, 80) || t("Untitled challenge", "未命名题目")));
   elements.category.addEventListener("change", () => updateActive("category", elements.category.value, true));
   elements.difficulty.addEventListener("change", () => updateActive("difficulty", elements.difficulty.value, true));
   elements.tags.addEventListener("input", () => updateActive("tags", parseTags(elements.tags.value)));
@@ -704,19 +706,19 @@
     challenge.updatedAt = Date.now();
     persist();
     render();
-    notify(challenge.status === "solved" ? "题目已标记为解决。" : "题目已恢复为进行中。");
+    notify(challenge.status === "solved" ? t("Challenge marked as solved.", "题目已标记为解决。") : t("Challenge returned to active status.", "题目已恢复为进行中。"));
   });
 
   elements.deleteButton.addEventListener("click", () => {
     const challenge = getActiveChallenge();
-    if (!challenge || !window.confirm(`删除题目“${challenge.name}”及其本地记录？`)) return;
+    if (!challenge || !window.confirm(t(`Delete “${challenge.name}” and its local records?`, `删除题目“${challenge.name}”及其本地记录？`))) return;
     const attachmentIds = challenge.attachments.map((attachment) => attachment.id);
     state.challenges = state.challenges.filter((item) => item.id !== challenge.id);
     state.activeId = [...state.challenges].sort((a, b) => b.updatedAt - a.updatedAt)[0]?.id || null;
     persist();
     render();
     Promise.allSettled(attachmentIds.map(deleteAttachmentBlob));
-    notify("题目记录已从当前浏览器删除。");
+    notify(t("Challenge record deleted from this browser.", "题目记录已从当前浏览器删除。"));
   });
 
   elements.artifacts.addEventListener("click", (event) => {
@@ -729,7 +731,7 @@
     renderSummary();
     renderList();
     renderArtifacts(challenge);
-    notify("已移除这条保存结果。");
+    notify(t("Saved result removed.", "已移除这条保存结果。"));
   });
 
   elements.attachments.addEventListener("click", async (event) => {
@@ -741,10 +743,10 @@
       if (!attachment) return;
       try {
         const blob = await getAttachmentBlob(attachment.id);
-        if (!blob) throw new Error("附件数据不存在");
+        if (!blob) throw new Error(t("Attachment data is unavailable", "附件数据不存在"));
         downloadBlob(blob, attachment.name);
       } catch (error) {
-        notify(`下载失败：${error.message}`);
+        notify(t(`Download failed: ${error.message}`, `下载失败：${error.message}`));
       }
       return;
     }
@@ -752,7 +754,7 @@
     const removeButton = event.target.closest("[data-remove-attachment]");
     if (!removeButton) return;
     const attachment = challenge.attachments.find((item) => item.id === removeButton.dataset.removeAttachment);
-    if (!attachment || !window.confirm(`删除附件“${attachment.name}”？`)) return;
+    if (!attachment || !window.confirm(t(`Delete attachment “${attachment.name}”?`, `删除附件“${attachment.name}”？`))) return;
     challenge.attachments = challenge.attachments.filter((item) => item.id !== attachment.id);
     challenge.updatedAt = Date.now();
     persist();
@@ -760,7 +762,7 @@
     renderSummary();
     renderList();
     renderAttachments(challenge);
-    notify("附件已从当前浏览器删除。");
+    notify(t("Attachment deleted from this browser.", "附件已从当前浏览器删除。"));
   });
 
   elements.addAttachment.addEventListener("click", () => {
@@ -788,13 +790,13 @@
   elements.saveToolResult.addEventListener("click", () => {
     const output = document.querySelector("#outputText").value;
     const toolLabel = document.querySelector("#selectedToolLabel").textContent;
-    captureArtifact(`工具 · ${toolLabel}`, output);
+    captureArtifact(t(`Tool · ${toolLabel}`, `工具 · ${toolLabel}`), output);
   });
 
   elements.saveChainResult.addEventListener("click", () => {
     const output = document.querySelector("#chainOutput").value;
     const steps = document.querySelector("#chainSummary").textContent.split(" · ")[0];
-    captureArtifact(`工具链 · ${steps}`, output);
+    captureArtifact(t(`Toolchain · ${steps}`, `工具链 · ${steps}`), output);
   });
 
   render();

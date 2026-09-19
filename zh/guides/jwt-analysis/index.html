@@ -13,12 +13,15 @@
   <meta property="og:description" content="CTF JWT 分析清单：读取 Header、Payload、Signature，理解常见声明、Base64URL 和签名验证边界。" />
   <meta property="og:url" content="https://hexforgectf.cn/zh/guides/jwt-analysis/" />
   <link rel="canonical" href="https://hexforgectf.cn/zh/guides/jwt-analysis/" />
+  <link rel="alternate" hreflang="zh-CN" href="https://hexforgectf.cn/zh/guides/jwt-analysis/" />
+  <link rel="alternate" hreflang="en" href="https://hexforgectf.cn/en/guides/jwt-analysis/" />
+  <link rel="alternate" hreflang="x-default" href="https://hexforgectf.cn/en/guides/jwt-analysis/" />
   <link rel="stylesheet" href="../../../site.css" />
   <title>JWT 分析清单：解码不等于可信 | Hexforge</title>
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"JWT 分析清单","description":"CTF JWT 分析清单：读取 Header、Payload、Signature，理解常见声明、Base64URL 和签名验证边界。","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/jwt-analysis/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"JWT 分析清单","item":"https://hexforgectf.cn/zh/guides/jwt-analysis/"}]}]}</script>
 </head>
 <body><div class="site-shell">
-  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="/zh/workspace/">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/guides/jwt-analysis/">EN</a></span></nav></header>
   <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / jwt</div>
     <section class="guide-hero"><div><p class="eyebrow">GUIDE 02 / WEB</p><h1>JWT 分析清单</h1><p class="guide-deck">JWT 可以被任何人解码，真正提供完整性保证的是签名验证。分析时要把“读到了内容”和“内容可信”分开。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门至中等<br />场景：Web<br />更新：2026-09-18</aside></section>
     <div class="guide-layout"><article class="prose">

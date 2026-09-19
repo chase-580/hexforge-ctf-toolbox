@@ -1,3 +1,6 @@
+const pageLocale = document.body.dataset.locale === "en" ? "en" : "zh";
+const toolUi = (english, chinese) => pageLocale === "en" ? english : chinese;
+
 const pageTools = {
   base64: {
     id: "ENC-01",
@@ -44,14 +47,14 @@ const pageTools = {
     id: "ENC-05",
     zh: { name: "JWT 解码器", short: "查看 JSON Web Token 内容", lede: "在浏览器本地解析 JWT 的 Header 和 Payload，帮助学习认证结构和检查题目中的令牌线索。", sample: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjdGYtc3R1ZGVudCIsImFkbWluIjpmYWxzZX0.demo-signature", placeholder: "输入由点号分隔的 JWT……", why: "JWT 通常由 Header、Payload 和 Signature 三段组成。解码 Header 和 Payload 不等于验证签名，也不会证明令牌可信。" },
     en: { name: "JWT Decoder", short: "Inspect a JSON Web Token", lede: "Parse JWT headers and payloads locally to learn authentication structures and inspect token clues.", sample: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjdGYtc3R1ZGVudCIsImFkbWluIjpmYWxzZX0.demo-signature", placeholder: "Enter a dot-separated JWT...", why: "A JWT usually has Header, Payload, and Signature sections. Decoding the first two does not verify the signature or make the token trustworthy." },
-    run(value) { const parts = value.trim().split("."); if (parts.length < 2) throw new Error("JWT 至少需要 Header 和 Payload 两段"); return `header:\n${prettyJson(decodeBase64(parts[0]))}\n\npayload:\n${prettyJson(decodeBase64(parts[1]))}\n\nsignature:\n${parts[2] || "(none)"}`; },
+    run(value) { const parts = value.trim().split("."); if (parts.length < 2) throw new Error(toolUi("A JWT must contain at least a header and payload", "JWT 至少需要 Header 和 Payload 两段")); return `header:\n${prettyJson(decodeBase64(parts[0]))}\n\npayload:\n${prettyJson(decodeBase64(parts[1]))}\n\nsignature:\n${parts[2] || "(none)"}`; },
     faq: { zh: ["这个工具会验证 JWT 签名吗？", "不会。它只解码 Header 和 Payload，适合学习和本地检查，不应被当作安全验证器。"], en: ["Does this tool verify JWT signatures?", "No. It only decodes the header and payload for learning and inspection. It is not a signature verifier."] },
   },
   hash: {
     id: "ANL-01",
     zh: { name: "SHA-256 Hash 生成器", short: "生成文本的 SHA-256 摘要", lede: "在浏览器本地计算 SHA-256 摘要，用于比对文本、验证练习结果或学习哈希函数。", sample: "ctf{local_first_toolbox}", placeholder: "输入需要生成 SHA-256 摘要的文本……", why: "哈希函数把输入映射为固定长度摘要。相同输入会得到相同摘要，但摘要不是可逆加密。" },
     en: { name: "SHA-256 Hash Generator", short: "Generate a SHA-256 digest", lede: "Calculate SHA-256 locally in your browser to compare text, verify practice results, or learn hashing.", sample: "ctf{local_first_toolbox}", placeholder: "Enter text to hash with SHA-256...", why: "A hash maps input to a fixed-length digest. The same input produces the same digest, but a digest is not reversible encryption." },
-    async run(value) { if (!globalThis.crypto?.subtle) throw new Error("请通过静态服务器打开页面以使用 SHA-256"); const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)); return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join(""); },
+    async run(value) { if (!globalThis.crypto?.subtle) throw new Error(toolUi("Open this page through a web server to use SHA-256", "请通过静态服务器打开页面以使用 SHA-256")); const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)); return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join(""); },
     faq: { zh: ["SHA-256 可以解密吗？", "不能。它是单向摘要函数，工具只能对输入计算摘要，不能从摘要还原原文。"], en: ["Can SHA-256 be decrypted?", "No. SHA-256 is a one-way digest function. This tool hashes input but cannot recover the original text from a digest."] },
   },
   stats: {
@@ -92,7 +95,7 @@ function prettyJson(value) { try { return JSON.stringify(JSON.parse(value), null
 function runRegex(value) { const newline = value.indexOf("\n"); if (newline < 0) throw new Error("Put /pattern/flags on the first line and test text below it"); const expression = value.slice(0, newline).trim(); const text = value.slice(newline + 1); const parsed = expression.match(/^\/(.*)\/([dgimsuvy]*)$/); if (!parsed) throw new Error("Use the format /pattern/flags"); const flags = parsed[2].includes("g") ? parsed[2] : `${parsed[2]}g`; const matches = Array.from(text.matchAll(new RegExp(parsed[1], flags))).slice(0, 200); return matches.length ? matches.map((match, index) => `${index + 1}. [${match.index}] ${match[0]}`).join("\n") : "No matches"; }
 function showToast(message) { const toast = document.querySelector("#toolToast"); toast.textContent = message; toast.classList.add("is-visible"); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove("is-visible"), 2300); }
 
-const locale = document.body.dataset.locale === "en" ? "en" : "zh";
+const locale = pageLocale;
 const slug = location.pathname.split("/").filter(Boolean).at(-1) || "base64-decoder";
 const slugMap = { "base64-decoder": "base64", "url-encoder-decoder": "url", "hex-converter": "hex", "rot13-decoder": "rot13", "jwt-decoder": "jwt", "sha256-generator": "hash", "text-statistics": "stats", "binary-converter": "binary", "timestamp-converter": "timestamp", "regex-tester": "regex", "file-hash": "filehash" };
 const tool = pageTools[slugMap[slug]] || pageTools.base64;
@@ -114,14 +117,15 @@ document.querySelectorAll(".language-pair a").forEach((link) => {
 });
 document.querySelectorAll(".site-nav a").forEach((link) => {
   if (link.textContent.trim() === "Workspace") link.href = `${location.origin}/`;
+  if (link.textContent.trim() === "工作台") link.href = `${location.origin}/zh/workspace/`;
   if (link.textContent.trim() === "Tool directory") link.href = `${location.origin}/${locale}/`;
 });
 const toolNav = document.querySelector(".site-nav");
 const languagePair = toolNav?.querySelector(".language-pair");
 if (toolNav && languagePair) {
   const guidesLink = document.createElement("a");
-  guidesLink.href = `${location.origin}/zh/guides/`;
-  guidesLink.textContent = locale === "en" ? "中文教程" : "教程";
+  guidesLink.href = `${location.origin}/${locale}/guides/`;
+  guidesLink.textContent = locale === "en" ? "Guides" : "教程";
   toolNav.insertBefore(guidesLink, languagePair);
 }
 const alternateLinks = [

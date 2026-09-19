@@ -1,24 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256241570416471" crossorigin="anonymous"></script>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Hexforge is a browser-based CTF toolbox for security students, challenge solvers, and hands-on practice." />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Hexforge 是面向 CTF 初学者、网络安全学生和刷题用户的浏览器端网络安全工具箱。" />
     <meta name="robots" content="index,follow" />
     <meta name="google-site-verification" content="uK6sILOXgpHWoYvzkM4QDW0dGmz6mPdEhgh1mPv1LRY" />
-    <link rel="canonical" href="https://hexforgectf.cn/" />
+    <link rel="canonical" href="https://hexforgectf.cn/zh/workspace/" />
     <link rel="alternate" hreflang="zh-CN" href="https://hexforgectf.cn/zh/workspace/" />
     <link rel="alternate" hreflang="en" href="https://hexforgectf.cn/" />
     <link rel="alternate" hreflang="x-default" href="https://hexforgectf.cn/" />
-    <title>Hexforge / Local-First CTF Toolbox</title>
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://hexforgectf.cn/#website","name":"Hexforge","alternateName":["Hexforge CTF","Hexforge CTF Toolbox"],"url":"https://hexforgectf.cn/","inLanguage":["zh-CN","en"]},{"@type":"Organization","@id":"https://hexforgectf.cn/#organization","name":"Hexforge","url":"https://hexforgectf.cn/","logo":"https://hexforgectf.cn/favicon.svg","description":"A local-first CTF toolbox for encoding, decoding, hashing, text analysis, pipelines, and challenge notes."}]}</script>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Hexforge / CTF 工具箱</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://hexforgectf.cn/#website","name":"Hexforge","alternateName":["Hexforge CTF","Hexforge CTF 工具箱"],"url":"https://hexforgectf.cn/","inLanguage":["zh-CN","en"]},{"@type":"Organization","@id":"https://hexforgectf.cn/#organization","name":"Hexforge","url":"https://hexforgectf.cn/","logo":"https://hexforgectf.cn/favicon.svg","description":"在浏览器本地运行的 CTF 编码、解码、哈希、文本分析和题目记录工具箱。"}]}</script>
+    <link rel="stylesheet" href="../../styles.css" />
   </head>
   <body>
     <div class="app-shell">
-      <aside class="sidebar" aria-label="Primary navigation">
+      <aside class="sidebar" aria-label="主导航">
         <div class="brand-lockup">
           <div class="brand-mark" aria-hidden="true"><span>0x</span></div>
           <div>
@@ -29,62 +29,62 @@
 
         <div class="sidebar-status">
           <span class="status-dot" aria-hidden="true"></span>
-          <span>Runs locally · no uploads</span>
+          <span>本地运行 · 无数据上传</span>
         </div>
 
-        <nav class="nav-stack" aria-label="Primary navigation">
+        <nav class="nav-stack" aria-label="主导航">
           <button class="nav-item is-active" type="button" data-category="all">
             <span class="nav-glyph">⌂</span>
-            <span>Workspace</span>
+            <span>工作台</span>
             <span class="nav-count">11</span>
           </button>
           <button class="nav-item" type="button" data-category="encode">
             <span class="nav-glyph">↔</span>
-            <span>Encode / Decode</span>
+            <span>编码 / 解码</span>
             <span class="nav-count">06</span>
           </button>
           <button class="nav-item" type="button" data-category="analyze">
             <span class="nav-glyph">⌁</span>
-            <span>Analyze / Hash</span>
+            <span>分析 / 摘要</span>
             <span class="nav-count">05</span>
           </button>
           <a class="nav-item nav-anchor" href="#toolchain">
             <span class="nav-glyph">⛓</span>
-            <span>Toolchain</span>
+            <span>工具链</span>
             <span class="nav-count">BETA</span>
           </a>
           <a class="nav-item nav-anchor" href="#challengeWorkspace">
             <span class="nav-glyph">▣</span>
-            <span>Challenge Workspace</span>
+            <span>题目工作区</span>
             <span class="nav-count" id="workspaceNavCount">00</span>
           </a>
           <span class="nav-separator" aria-hidden="true"></span>
-          <a class="nav-item nav-anchor nav-utility-link" href="en/guides/">
+          <a class="nav-item nav-anchor nav-utility-link" href="../guides/">
             <span class="nav-glyph">↗</span>
-            <span>Guides</span>
+            <span>实战教程</span>
           </a>
-          <a class="nav-item nav-anchor nav-utility-link" href="en/">
+          <a class="nav-item nav-anchor nav-utility-link" href="../">
             <span class="nav-glyph">⌕</span>
-            <span>Tool Directory</span>
+            <span>工具目录</span>
           </a>
           <span class="nav-controls">
-            <button class="nav-theme-button" id="themeToggle" type="button" aria-label="Toggle color theme" title="Toggle color theme">◐</button>
-            <span class="nav-language" aria-label="Language switcher">
-              <a href="zh/workspace/" hreflang="zh-CN" lang="zh-CN">中文</a>
-              <a class="is-current" href="./" hreflang="en" lang="en" aria-current="page">EN</a>
+            <button class="nav-theme-button" id="themeToggle" type="button" aria-label="切换界面亮度" title="切换界面亮度">◐</button>
+            <span class="nav-language" aria-label="语言切换">
+              <a class="is-current" href="./" hreflang="zh-CN" lang="zh-CN" aria-current="page">中</a>
+              <a href="../../" hreflang="en" lang="en">EN</a>
             </span>
           </span>
         </nav>
 
         <div class="sidebar-note">
           <span class="note-kicker">TODAY'S SIGNAL</span>
-          <strong>Identify first. Solve with intent.</strong>
-          <p>Let the tools handle repetition so you can focus on the challenge.</p>
+          <strong>先定位，再解题。</strong>
+          <p>把重复动作交给工具，把时间留给题目本身。</p>
         </div>
 
         <div class="sidebar-footer">
           <span>v0.2.0 · WORKSPACE</span>
-          <a href="about/">About</a>
+          <a href="../../about/">关于项目</a>
         </div>
       </aside>
 
@@ -96,13 +96,13 @@
         <section class="hero-section" aria-labelledby="page-title">
           <div class="hero-copy">
             <div class="section-kicker"><span class="pulse-line"></span> CTF utility layer</div>
-            <h2 id="page-title">Turn clues<br /><em>into answers.</em></h2>
-            <p>Fast, private CTF utilities that run in your browser. Paste a clue, choose an operation, and keep the investigation moving.</p>
+            <h2 id="page-title">把线索<br /><em>变成答案。</em></h2>
+            <p>一组快速、私密、在浏览器里完成的安全竞赛工具。粘贴输入，选择动作，立即得到可继续分析的结果。</p>
           </div>
-          <div class="hero-readout" aria-label="Toolbox status">
+          <div class="hero-readout" aria-label="工具箱状态">
             <div class="readout-label">LOCAL PROCESSING</div>
             <div class="readout-value">100<span>%</span></div>
-            <div class="readout-foot"><span class="signal-bars"><i></i><i></i><i></i><i></i></span> Your data stays in this browser</div>
+            <div class="readout-foot"><span class="signal-bars"><i></i><i></i><i></i><i></i></span> 数据不离开当前浏览器</div>
           </div>
         </section>
 
@@ -110,11 +110,11 @@
           <div class="section-heading">
             <div>
               <p class="section-kicker">01 / PICK A TOOL</p>
-              <h3 id="workspace-title">Choose a tool</h3>
+              <h3 id="workspace-title">选择你的工具</h3>
             </div>
             <label class="search-field">
               <span aria-hidden="true">⌕</span>
-              <input id="toolSearch" type="search" placeholder="Search tools or tasks" autocomplete="off" />
+              <input id="toolSearch" type="search" placeholder="搜索工具或关键词" autocomplete="off" />
               <kbd>/</kbd>
             </label>
           </div>
@@ -124,85 +124,85 @@
               <span class="tool-card-top"><span class="tool-id">ENC-01</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">B64</span>
               <strong>Base64</strong>
-              <span>Encode or decode text</span>
+              <span>编码与解码文本</span>
             </button>
             <button class="tool-card" type="button" data-tool="url" data-category="encode">
               <span class="tool-card-top"><span class="tool-id">ENC-02</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">%2F</span>
               <strong>URL Encode</strong>
-              <span>Handle URL-safe characters</span>
+              <span>处理 URL 特殊字符</span>
             </button>
             <button class="tool-card" type="button" data-tool="hex" data-category="encode">
               <span class="tool-card-top"><span class="tool-id">ENC-03</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">0x</span>
               <strong>Hex</strong>
-              <span>Convert text and hex bytes</span>
+              <span>文本与十六进制互转</span>
             </button>
             <button class="tool-card" type="button" data-tool="rot13" data-category="encode">
               <span class="tool-card-top"><span class="tool-id">ENC-04</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">ROT</span>
               <strong>ROT13</strong>
-              <span>Apply the ROT13 substitution</span>
+              <span>快速替换字母偏移</span>
             </button>
             <button class="tool-card" type="button" data-tool="binary" data-category="encode">
               <span class="tool-card-top"><span class="tool-id">ENC-06</span><span class="tool-state">NEW</span></span>
               <span class="tool-icon">01</span>
               <strong>Binary</strong>
-              <span>Convert text and binary bytes</span>
+              <span>文本与二进制字节互转</span>
             </button>
             <button class="tool-card" type="button" data-tool="stats" data-category="analyze">
               <span class="tool-card-top"><span class="tool-id">ANL-02</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">#</span>
               <strong>Text Stats</strong>
-              <span>Count characters, words, and lines</span>
+              <span>字符、单词与行统计</span>
             </button>
             <button class="tool-card" type="button" data-tool="hash" data-category="analyze">
               <span class="tool-card-top"><span class="tool-id">ANL-01</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">SHA</span>
               <strong>Hash</strong>
-              <span>Generate a SHA-256 digest</span>
+              <span>生成 SHA-256 摘要</span>
             </button>
             <button class="tool-card" type="button" data-tool="jwt" data-category="encode">
               <span class="tool-card-top"><span class="tool-id">ENC-05</span><span class="tool-state">READY</span></span>
               <span class="tool-icon">JWT</span>
               <strong>JWT</strong>
-              <span>Inspect the header and payload</span>
+              <span>解析 Header 与 Payload</span>
             </button>
             <button class="tool-card" type="button" data-tool="timestamp" data-category="analyze">
               <span class="tool-card-top"><span class="tool-id">ANL-03</span><span class="tool-state">NEW</span></span>
               <span class="tool-icon">UTC</span>
               <strong>Timestamp</strong>
-              <span>Convert Unix timestamps and dates</span>
+              <span>Unix 时间戳与日期互转</span>
             </button>
             <button class="tool-card" type="button" data-tool="regex" data-category="analyze">
               <span class="tool-card-top"><span class="tool-id">ANL-04</span><span class="tool-state">NEW</span></span>
               <span class="tool-icon">.*</span>
               <strong>Regex</strong>
-              <span>Test regular expression matches</span>
+              <span>测试正则表达式匹配</span>
             </button>
             <button class="tool-card" type="button" data-tool="filehash" data-category="analyze">
               <span class="tool-card-top"><span class="tool-id">ANL-05</span><span class="tool-state">NEW</span></span>
               <span class="tool-icon">FILE</span>
               <strong>File Hash</strong>
-              <span>Hash a local file with SHA-256</span>
+              <span>本地计算文件 SHA-256</span>
             </button>
           </div>
 
-          <div class="directory-link-row"><a href="zh/">Browse Chinese directory ↗</a><a href="en/">Browse English directory ↗</a></div>
+          <div class="directory-link-row"><a href="../">浏览中文工具目录 ↗</a><a href="../../en/">Browse English directory ↗</a></div>
 
-          <aside class="ad-slot ad-slot-horizontal" aria-label="Advertisement">
+          <aside class="ad-slot ad-slot-horizontal" aria-label="广告预留位">
             <span>ADVERTISEMENT</span>
             <small>RESPONSIVE DISPLAY</small>
           </aside>
 
-          <p class="empty-state" id="emptyState" hidden>No matching tools. Try “base64”, “hash”, or “hex”.</p>
+          <p class="empty-state" id="emptyState" hidden>没有匹配的工具。试试 “base64”、 “hash” 或 “hex”。</p>
         </section>
 
         <section class="lab-section" aria-labelledby="lab-title">
           <div class="section-heading lab-heading">
             <div>
               <p class="section-kicker">02 / RUN A TRANSFORM</p>
-              <h3 id="lab-title">Transform Workspace</h3>
+              <h3 id="lab-title">处理工作台</h3>
             </div>
             <div class="lab-meta"><span class="live-dot"></span><span id="selectedToolLabel">Base64 encoder / decoder</span></div>
           </div>
@@ -211,31 +211,31 @@
             <div class="panel-toolbar">
               <div class="toolbar-left">
                 <span class="input-label">INPUT</span>
-                <button class="sample-button" id="sampleButton" type="button">Use example</button>
+                <button class="sample-button" id="sampleButton" type="button">填入示例</button>
               </div>
               <div class="toolbar-right">
-                <button class="small-action" id="clearButton" type="button">Clear</button>
-                <button class="small-action" id="swapButton" type="button" title="Swap input and output">Swap ↕</button>
+                <button class="small-action" id="clearButton" type="button">清空</button>
+                <button class="small-action" id="swapButton" type="button" title="交换输入与输出">交换 ↕</button>
               </div>
             </div>
             <div class="editor-grid">
               <div class="editor-column">
-                <label class="sr-only" for="inputText">Input text</label>
-                <textarea id="inputText" spellcheck="false" placeholder="Paste a string here…"></textarea>
+                <label class="sr-only" for="inputText">输入文本</label>
+                <textarea id="inputText" spellcheck="false" placeholder="在这里粘贴一段字符串……"></textarea>
                 <div class="file-control" id="fileControl" hidden>
-                  <label class="file-picker" for="fileInput">Choose file</label>
+                  <label class="file-picker" for="fileInput">选择文件</label>
                   <input id="fileInput" class="file-input" type="file" />
-                  <span id="selectedFileName">No file selected</span>
+                  <span id="selectedFileName">尚未选择文件</span>
                 </div>
-                <div class="editor-foot"><span id="inputMeta">0 chars</span><span>Ctrl / ⌘ + Enter to run</span></div>
+                <div class="editor-foot"><span id="inputMeta">0 chars</span><span>Ctrl / ⌘ + Enter 运行</span></div>
               </div>
               <div class="transform-column">
-                <button class="run-button" id="runButton" type="button"><span>Run</span><span aria-hidden="true">→</span></button>
+                <button class="run-button" id="runButton" type="button"><span>运行</span><span aria-hidden="true">→</span></button>
                 <span class="transform-hint">SAFE TO REPEAT</span>
               </div>
               <div class="editor-column output-column">
-                <div class="output-label-row"><span class="input-label">OUTPUT</span><span class="output-actions"><button class="copy-button" id="saveToolResult" type="button">Save to case</button><button class="copy-button" id="copyButton" type="button">Copy result</button></span></div>
-                <textarea id="outputText" readonly spellcheck="false" placeholder="The result will appear here…"></textarea>
+                <div class="output-label-row"><span class="input-label">OUTPUT</span><span class="output-actions"><button class="copy-button" id="saveToolResult" type="button">存入题目</button><button class="copy-button" id="copyButton" type="button">复制结果</button></span></div>
+                <textarea id="outputText" readonly spellcheck="false" placeholder="结果会出现在这里……"></textarea>
                 <div class="editor-foot"><span id="outputMeta">0 chars</span><span id="runStatus">WAITING</span></div>
               </div>
             </div>
@@ -246,7 +246,7 @@
           <div class="section-heading pipeline-heading">
             <div>
               <p class="section-kicker">03 / BUILD A PIPELINE</p>
-              <h3 id="chain-title">Toolchain</h3>
+              <h3 id="chain-title">工具链</h3>
             </div>
             <div class="lab-meta"><span class="live-dot"></span><span id="chainSummary">2 STEPS · LOCAL</span></div>
           </div>
@@ -254,26 +254,26 @@
           <div class="chain-panel">
             <div class="chain-builder">
               <div class="chain-panel-head">
-                <div><span class="input-label">PIPELINE</span><strong>Run in sequence</strong></div>
-                <div><button class="small-action" id="addChainStep" type="button">＋ Add step</button><button class="small-action" id="resetChain" type="button">Reset</button></div>
+                <div><span class="input-label">PIPELINE</span><strong>按顺序执行</strong></div>
+                <div><button class="small-action" id="addChainStep" type="button">＋ 添加步骤</button><button class="small-action" id="resetChain" type="button">重置</button></div>
               </div>
-              <div class="chain-steps" id="chainSteps" aria-label="Toolchain steps"></div>
-              <p class="chain-limit">Up to 8 steps. The pipeline configuration stays in this browser.</p>
+              <div class="chain-steps" id="chainSteps" aria-label="工具链步骤"></div>
+              <p class="chain-limit">最多 8 步。链路配置保存在当前浏览器。</p>
             </div>
 
             <div class="chain-console">
               <div class="chain-field">
-                <div class="chain-field-head"><label for="chainInput">INPUT</label><span><button id="chainSample" type="button">Use example</button> · <button id="chainClear" type="button">Clear</button></span></div>
-                <textarea id="chainInput" spellcheck="false" placeholder="Enter text to process through the full pipeline…"></textarea>
+                <div class="chain-field-head"><label for="chainInput">INPUT</label><span><button id="chainSample" type="button">填入示例</button> · <button id="chainClear" type="button">清空</button></span></div>
+                <textarea id="chainInput" spellcheck="false" placeholder="输入要经过整条工具链处理的文本……"></textarea>
                 <div class="chain-field-meta"><span id="chainInputCount">0 chars</span><span>Ctrl / Cmd + Enter</span></div>
               </div>
               <div class="chain-runbar">
                 <span id="chainStatus">WAITING</span>
-                <button class="chain-run" id="runChain" type="button"><span>Run pipeline</span><span aria-hidden="true">→</span></button>
+                <button class="chain-run" id="runChain" type="button"><span>运行工具链</span><span aria-hidden="true">→</span></button>
               </div>
               <div class="chain-field chain-output">
-                <div class="chain-field-head"><label for="chainOutput">OUTPUT</label><span><button id="saveChainResult" type="button">Save to case</button> · <button id="copyChain" type="button">Copy result</button></span></div>
-                <textarea id="chainOutput" readonly spellcheck="false" placeholder="The final result will appear here…"></textarea>
+                <div class="chain-field-head"><label for="chainOutput">OUTPUT</label><span><button id="saveChainResult" type="button">存入题目</button> · <button id="copyChain" type="button">复制结果</button></span></div>
+                <textarea id="chainOutput" readonly spellcheck="false" placeholder="最终结果会显示在这里……"></textarea>
                 <div class="chain-field-meta"><span id="chainOutputCount">0 chars</span><span>FINAL RESULT</span></div>
               </div>
             </div>
@@ -289,23 +289,23 @@
           <div class="section-heading challenge-heading">
             <div>
               <p class="section-kicker">04 / ORGANIZE A CASE</p>
-              <h3 id="challenge-title">Challenge Workspace</h3>
+              <h3 id="challenge-title">题目工作区</h3>
             </div>
             <div class="challenge-heading-actions">
               <div class="lab-meta"><span class="live-dot"></span><span id="challengeSummary">0 CHALLENGES · LOCAL</span></div>
-              <div class="challenge-data-actions"><button class="small-action" id="importWorkspaceButton" type="button">Import</button><button class="small-action" id="exportWorkspaceButton" type="button">Export</button></div>
-              <button class="new-challenge-button" id="newChallengeButton" type="button"><span aria-hidden="true">＋</span><span>New challenge</span></button>
+              <div class="challenge-data-actions"><button class="small-action" id="importWorkspaceButton" type="button">导入</button><button class="small-action" id="exportWorkspaceButton" type="button">导出</button></div>
+              <button class="new-challenge-button" id="newChallengeButton" type="button"><span aria-hidden="true">＋</span><span>新建题目</span></button>
             </div>
           </div>
 
           <div class="challenge-workbench">
-            <aside class="challenge-index" aria-label="Challenge list">
+            <aside class="challenge-index" aria-label="题目列表">
               <div class="challenge-index-head"><span class="input-label">CASES</span><span id="challengeSolvedCount">0 / 0 SOLVED</span></div>
               <div class="challenge-filters">
-                <label class="challenge-search"><span aria-hidden="true">⌕</span><input id="challengeSearch" type="search" placeholder="Search challenges or tags" autocomplete="off" /></label>
+                <label class="challenge-search"><span aria-hidden="true">⌕</span><input id="challengeSearch" type="search" placeholder="搜索题目或标签" autocomplete="off" /></label>
                 <div class="challenge-filter-row">
-                  <label><span class="sr-only">Filter by category</span><select id="challengeCategoryFilter"><option value="all">All categories</option><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
-                  <label><span class="sr-only">Filter by status</span><select id="challengeStatusFilter"><option value="all">All statuses</option><option value="active">Active</option><option value="solved">Solved</option></select></label>
+                  <label><span class="sr-only">按分类筛选</span><select id="challengeCategoryFilter"><option value="all">全部分类</option><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
+                  <label><span class="sr-only">按状态筛选</span><select id="challengeStatusFilter"><option value="all">全部状态</option><option value="active">进行中</option><option value="solved">已解决</option></select></label>
                 </div>
               </div>
               <div class="challenge-list" id="challengeList"></div>
@@ -313,31 +313,31 @@
 
             <div class="challenge-empty" id="challengeEmpty">
               <span class="challenge-empty-mark" aria-hidden="true">▣</span>
-              <strong>No challenge records yet</strong>
-              <p>Create a local case file, then keep tool results and solution notes together.</p>
-              <button class="small-action" id="emptyNewChallenge" type="button">＋ Create your first challenge</button>
+              <strong>还没有题目记录</strong>
+              <p>为当前题目建立一个本地档案，再把工具结果和解题笔记集中到这里。</p>
+              <button class="small-action" id="emptyNewChallenge" type="button">＋ 创建第一个题目</button>
             </div>
 
             <article class="challenge-editor" id="challengeEditor" hidden>
               <header class="challenge-editor-head">
                 <div>
                   <span class="input-label">ACTIVE CASE</span>
-                  <input class="challenge-title-input" id="challengeName" type="text" maxlength="80" aria-label="Challenge name" />
+                  <input class="challenge-title-input" id="challengeName" type="text" maxlength="80" aria-label="题目名称" />
                 </div>
                 <div class="challenge-editor-actions">
-                  <button class="challenge-status-button" id="challengeStatusButton" type="button">Mark solved</button>
-                  <button class="icon-action danger-action" id="deleteChallengeButton" type="button" aria-label="Delete challenge" title="Delete challenge">×</button>
+                  <button class="challenge-status-button" id="challengeStatusButton" type="button">标记已解</button>
+                  <button class="icon-action danger-action" id="deleteChallengeButton" type="button" aria-label="删除题目" title="删除题目">×</button>
                 </div>
               </header>
 
               <div class="challenge-meta-grid">
-                <label><span>Category</span><select id="challengeCategory"><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
-                <label><span>Difficulty</span><select id="challengeDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Insane</option></select></label>
-                <label class="challenge-tags-field"><span>Tags</span><input id="challengeTags" type="text" maxlength="160" placeholder="base64, web, jwt" /></label>
+                <label><span>分类</span><select id="challengeCategory"><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
+                <label><span>难度</span><select id="challengeDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Insane</option></select></label>
+                <label class="challenge-tags-field"><span>标签</span><input id="challengeTags" type="text" maxlength="160" placeholder="base64, web, jwt" /></label>
               </div>
 
               <div class="challenge-body-grid">
-                <label class="challenge-notes-field"><span class="input-label">NOTES</span><textarea id="challengeNotes" maxlength="50000" spellcheck="false" placeholder="Record hypotheses, clues, attempted methods, and next steps…"></textarea><small id="challengeSaveState">LOCAL AUTOSAVE</small></label>
+                <label class="challenge-notes-field"><span class="input-label">NOTES</span><textarea id="challengeNotes" maxlength="50000" spellcheck="false" placeholder="记录思路、线索、尝试过的方法和下一步……"></textarea><small id="challengeSaveState">LOCAL AUTOSAVE</small></label>
                 <div class="challenge-side-notes">
                   <label class="challenge-flag-field"><span class="input-label">FLAG</span><input id="challengeFlag" type="text" maxlength="500" spellcheck="false" placeholder="flag{...}" /></label>
                   <div class="challenge-artifacts-block">
@@ -346,7 +346,7 @@
                   </div>
                   <div class="challenge-attachments-block">
                     <div class="challenge-attachments-head"><span class="input-label">FILES &amp; SCREENSHOTS</span><span id="attachmentCount">0 / 12</span></div>
-                    <div class="challenge-attachment-actions"><button class="small-action" id="addAttachmentButton" type="button">＋ Attachment</button><button class="small-action" id="addScreenshotButton" type="button">▧ Screenshot</button></div>
+                    <div class="challenge-attachment-actions"><button class="small-action" id="addAttachmentButton" type="button">＋ 附件</button><button class="small-action" id="addScreenshotButton" type="button">▧ 截图</button></div>
                     <div class="challenge-attachments" id="challengeAttachments"></div>
                   </div>
                 </div>
@@ -359,24 +359,24 @@
           <div class="section-heading compact-heading">
             <div>
               <p class="section-kicker">05 / TRACE</p>
-              <h3 id="recent-title">Recent Activity</h3>
+              <h3 id="recent-title">最近使用</h3>
             </div>
-            <button class="small-action" id="clearRecentButton" type="button">Clear history</button>
+            <button class="small-action" id="clearRecentButton" type="button">清除记录</button>
           </div>
           <div class="recent-list" id="recentList">
-            <div class="recent-empty">Run a tool and your recent activity will appear here.</div>
+            <div class="recent-empty">运行一个工具后，最近操作会显示在这里。</div>
           </div>
         </section>
 
         <section class="about-section" id="about" aria-labelledby="about-title">
           <div>
             <p class="section-kicker">ABOUT THE BUILD</p>
-            <h3 id="about-title">Small, fast, and focused on repeatable work.</h3>
+            <h3 id="about-title">小而快，先把高频动作做好。</h3>
           </div>
-          <p>Hexforge is in its initial release, focused on low-risk browser transforms, local pipelines, and challenge records. Future releases will add more CTF workflows, account features, cross-device sync, and an optional paid membership for batch processing, cloud sync, an ad-free experience, and advanced tools.</p>
+          <p>Hexforge 目前处于初始版本，专注于浏览器端的低风险文本转换与本地题目归档。后续版本将持续增加更多 CTF 场景工具、跨设备同步和账号体系，并计划推出付费会员服务，为高频用户提供批量处理、云端同步、无广告体验及更多高级功能。</p>
         </section>
 
-        <footer class="footer"><span>hexforge / made for practice</span><span><a href="en/about/">About</a> · <a href="en/contact/">Contact</a> · <a href="en/terms/">Terms</a> · <a href="en/privacy/">Privacy</a></span></footer>
+        <footer class="footer"><span>hexforge / made for practice</span><span><a href="../../about/">关于</a> · <a href="../../contact/">联系</a> · <a href="../../terms/">条款</a> · <a href="../../privacy/">隐私</a></span></footer>
       </main>
     </div>
 
@@ -384,25 +384,24 @@
     <dialog class="challenge-dialog" id="challengeDialog" aria-labelledby="challenge-dialog-title">
       <form method="dialog" id="challengeForm">
         <div class="dialog-head">
-          <div><span class="input-label">NEW CASE</span><h2 id="challenge-dialog-title">Create a challenge record</h2></div>
-          <button class="icon-action" value="cancel" type="submit" aria-label="Close" title="Close">×</button>
+          <div><span class="input-label">NEW CASE</span><h2 id="challenge-dialog-title">建立题目档案</h2></div>
+          <button class="icon-action" value="cancel" type="submit" aria-label="关闭" title="关闭">×</button>
         </div>
-        <label class="dialog-field"><span>Challenge name</span><input id="newChallengeName" type="text" maxlength="80" required placeholder="Example: JWT authorization bypass" /></label>
+        <label class="dialog-field"><span>题目名称</span><input id="newChallengeName" type="text" maxlength="80" required placeholder="例如：JWT 授权绕过" /></label>
         <div class="dialog-grid">
-          <label class="dialog-field"><span>Category</span><select id="newChallengeCategory"><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
-          <label class="dialog-field"><span>Difficulty</span><select id="newChallengeDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Insane</option></select></label>
+          <label class="dialog-field"><span>分类</span><select id="newChallengeCategory"><option>Web</option><option>Crypto</option><option>Pwn</option><option>Reverse</option><option>Forensics</option><option>Misc</option></select></label>
+          <label class="dialog-field"><span>难度</span><select id="newChallengeDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Insane</option></select></label>
         </div>
-        <label class="dialog-field"><span>Tags</span><input id="newChallengeTags" type="text" maxlength="160" placeholder="Optional, comma-separated" /></label>
-        <div class="dialog-actions"><button class="small-action" value="cancel" type="submit">Cancel</button><button class="dialog-submit" id="createChallengeButton" value="default" type="submit">Create and open</button></div>
+        <label class="dialog-field"><span>标签</span><input id="newChallengeTags" type="text" maxlength="160" placeholder="可选，用逗号分隔" /></label>
+        <div class="dialog-actions"><button class="small-action" value="cancel" type="submit">取消</button><button class="dialog-submit" id="createChallengeButton" value="default" type="submit">创建并打开</button></div>
       </form>
     </dialog>
     <input id="importWorkspaceInput" type="file" accept="application/json,.json" hidden />
     <input id="workspaceAttachmentInput" type="file" hidden />
-    <script src="analytics-config.js"></script>
-    <script src="analytics.js"></script>
-    <script src="app.js"></script>
-    <script src="toolchain.js"></script>
-    <script src="workspace.js"></script>
+    <script src="../../analytics-config.js"></script>
+    <script src="../../analytics.js"></script>
+    <script src="../../app.js"></script>
+    <script src="../../toolchain.js"></script>
+    <script src="../../workspace.js"></script>
   </body>
 </html>
-

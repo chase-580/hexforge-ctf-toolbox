@@ -13,12 +13,15 @@
   <meta property="og:description" content="用 SHA-256 验证文件完整性：理解哈希能证明什么、如何比较摘要、如何记录取证样本，以及常见的校验误区。" />
   <meta property="og:url" content="https://hexforgectf.cn/zh/guides/sha256-file-integrity/" />
   <link rel="canonical" href="https://hexforgectf.cn/zh/guides/sha256-file-integrity/" />
+  <link rel="alternate" hreflang="zh-CN" href="https://hexforgectf.cn/zh/guides/sha256-file-integrity/" />
+  <link rel="alternate" hreflang="en" href="https://hexforgectf.cn/en/guides/sha256-file-integrity/" />
+  <link rel="alternate" hreflang="x-default" href="https://hexforgectf.cn/en/guides/sha256-file-integrity/" />
   <link rel="stylesheet" href="../../../site.css" />
   <title>如何用 SHA-256 验证文件完整性 | Hexforge</title>
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"用 SHA-256 验证文件完整性","description":"用 SHA-256 验证文件完整性：理解哈希能证明什么、如何比较摘要、如何记录取证样本，以及常见的校验误区。","datePublished":"2026-09-19","dateModified":"2026-09-19","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/sha256-file-integrity/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"用 SHA-256 验证文件完整性","item":"https://hexforgectf.cn/zh/guides/sha256-file-integrity/"}]}]}</script>
 </head>
 <body><div class="site-shell">
-  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="/zh/workspace/">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/guides/sha256-file-integrity/">EN</a></span></nav></header>
   <main class="site-main">
     <div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / sha256-integrity</div>
     <section class="guide-hero"><div><p class="eyebrow">GUIDE 11 / FORENSICS</p><h1>用 SHA-256 验证文件完整性</h1><p class="guide-deck">哈希值不是“文件密码”，而是内容指纹。正确使用 SHA-256，可以确认两个文件是否逐字节一致，并为后续分析建立可复核的起点。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门<br />场景：Forensics / Workflow<br />更新：2026-09-19</aside></section>

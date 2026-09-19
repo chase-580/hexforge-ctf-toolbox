@@ -13,12 +13,15 @@
   <meta property="og:description" content="CTF 编码链判断方法：根据外层特征选择 URL、Base64、Hex、Binary 或 ROT13，并逐层记录和验证输出。" />
   <meta property="og:url" content="https://hexforgectf.cn/zh/guides/encoding-chain/" />
   <link rel="canonical" href="https://hexforgectf.cn/zh/guides/encoding-chain/" />
+  <link rel="alternate" hreflang="zh-CN" href="https://hexforgectf.cn/zh/guides/encoding-chain/" />
+  <link rel="alternate" hreflang="en" href="https://hexforgectf.cn/en/guides/encoding-chain/" />
+  <link rel="alternate" hreflang="x-default" href="https://hexforgectf.cn/en/guides/encoding-chain/" />
   <link rel="stylesheet" href="../../../site.css" />
   <title>CTF 编码链怎么判断 | Hexforge</title>
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"编码链怎么判断","description":"CTF 编码链判断方法：根据外层特征选择 URL、Base64、Hex、Binary 或 ROT13，并逐层记录和验证输出。","datePublished":"2026-09-18","dateModified":"2026-09-18","inLanguage":"zh-CN","mainEntityOfPage":"https://hexforgectf.cn/zh/guides/encoding-chain/","author":{"@type":"Organization","name":"Hexforge Editorial","url":"https://hexforgectf.cn/about/"},"publisher":{"@type":"Organization","name":"Hexforge","url":"https://hexforgectf.cn/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hexforge 首页","item":"https://hexforgectf.cn/"},{"@type":"ListItem","position":2,"name":"CTF 实战教程","item":"https://hexforgectf.cn/zh/guides/"},{"@type":"ListItem","position":3,"name":"编码链怎么判断","item":"https://hexforgectf.cn/zh/guides/encoding-chain/"}]}]}</script>
 </head>
 <body><div class="site-shell">
-  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="../../../">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/">EN</a></span></nav></header>
+  <header class="site-header"><a class="site-brand" href="../../../"><span class="site-brand-mark">0x</span><span><strong>hexforge</strong><small>CTF utility layer</small></span></a><nav class="site-nav"><a href="/zh/workspace/">工作台</a><a href="../../">工具</a><a href="../">教程</a><span class="language-pair"><a class="is-current" href="./">中文</a><a href="../../../en/guides/encoding-chain/">EN</a></span></nav></header>
   <main class="site-main"><div class="tool-breadcrumb"><a href="../../../">hexforge</a> / <a href="../">guides</a> / encoding-chain</div>
     <section class="guide-hero"><div><p class="eyebrow">GUIDE 03 / WORKFLOW</p><h1>编码链怎么判断</h1><p class="guide-deck">多层编码不是靠“把所有按钮按一遍”解决。先识别当前最外层的语法，再用输出结构判断下一步，才能保持可复核。</p></div><aside class="guide-meta"><strong>阅读时间约 8 分钟</strong>难度：入门至中等<br />场景：Crypto / Misc<br />更新：2026-09-18</aside></section>
     <div class="guide-layout"><article class="prose">

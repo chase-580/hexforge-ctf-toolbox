@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://hexforgectf.cn/</loc></url>
+  <url><loc>https://hexforgectf.cn/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/</loc></url>
   <url><loc>https://hexforgectf.cn/en/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/workspace/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/privacy/</loc></url>
   <url><loc>https://hexforgectf.cn/en/privacy/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/tools/base64-decoder/</loc></url>
@@ -34,16 +35,23 @@
   <url><loc>https://hexforgectf.cn/en/contact/</loc></url>
   <url><loc>https://hexforgectf.cn/en/terms/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/guides/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/guides/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/base64-identification/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/guides/base64-identification/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/jwt-analysis/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/guides/jwt-analysis/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/encoding-chain/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/guides/encoding-chain/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/hash-comparison/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/guides/file-forensics-workflow/</loc></url>
+  <url><loc>https://hexforgectf.cn/en/guides/file-forensics-workflow/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/url-encoding-ctf/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/guides/timestamp-tracing/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/guides/regex-extraction/</loc></url>
   <url><loc>https://hexforgectf.cn/zh/guides/binary-identification/</loc><lastmod>2026-09-19</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/hex-file-signatures/</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://hexforgectf.cn/en/guides/hex-file-signatures/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/sha256-file-integrity/</loc><lastmod>2026-09-19</lastmod></url>
+  <url><loc>https://hexforgectf.cn/en/guides/sha256-file-integrity/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/ctf-notes-workflow/</loc><lastmod>2026-09-19</lastmod></url>
 </urlset>

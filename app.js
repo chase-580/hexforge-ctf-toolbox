@@ -1,9 +1,12 @@
+const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
+const ui = (english, chinese) => isEnglish ? english : chinese;
+
 const toolDefinitions = {
   base64: {
     label: "Base64 encoder / decoder",
     id: "ENC-01",
     sample: "Y3RmIHJlc2VhcmNoIGJlZ2lucyBoZXJl",
-    placeholder: "输入 Base64 或普通文本……",
+    placeholder: ui("Enter Base64 or plain text…", "输入 Base64 或普通文本……"),
     run(value) {
       if (!value) return "";
       const compact = value.replace(/\s/g, "");
@@ -22,7 +25,7 @@ const toolDefinitions = {
     label: "URL encoder / decoder",
     id: "ENC-02",
     sample: "https://example.com/search?q=ctf notes",
-    placeholder: "输入 URL 或包含特殊字符的文本……",
+    placeholder: ui("Enter a URL or text containing special characters…", "输入 URL 或包含特殊字符的文本……"),
     run(value) {
       if (!value) return "";
       if (/%[0-9a-f]{2}/i.test(value)) {
@@ -39,7 +42,7 @@ const toolDefinitions = {
     label: "Hex encoder / decoder",
     id: "ENC-03",
     sample: "63 74 66 7b 68 65 78 5f 6c 61 62 7d",
-    placeholder: "输入普通文本或十六进制字节……",
+    placeholder: ui("Enter plain text or hexadecimal bytes…", "输入普通文本或十六进制字节……"),
     run(value) {
       if (!value) return "";
       const compact = value.replace(/\s+/g, "");
@@ -53,7 +56,7 @@ const toolDefinitions = {
     label: "ROT13 transformer",
     id: "ENC-04",
     sample: "Gur synt vf va gur frperg",
-    placeholder: "输入需要进行 ROT13 替换的文本……",
+    placeholder: ui("Enter text to transform with ROT13…", "输入需要进行 ROT13 替换的文本……"),
     run(value) {
       return value.replace(/[a-zA-Z]/g, (char) => {
         const base = char <= "Z" ? 65 : 97;
@@ -65,11 +68,11 @@ const toolDefinitions = {
     label: "Binary text converter",
     id: "ENC-06",
     sample: "01100011 01110100 01100110 01111011 01100010 01101001 01110100 01110011 01111101",
-    placeholder: "输入普通文本或 8 位二进制字节……",
+    placeholder: ui("Enter plain text or 8-bit binary bytes…", "输入普通文本或 8 位二进制字节……"),
     run(value) {
       const compact = value.replace(/\s+/g, "");
       if (/^[01]+$/.test(compact)) {
-        if (compact.length % 8 !== 0) throw new Error("二进制长度必须是 8 的倍数");
+        if (compact.length % 8 !== 0) throw new Error(ui("Binary input must contain complete 8-bit bytes", "二进制长度必须是 8 的倍数"));
         const bytes = compact.match(/.{8}/g).map((byte) => parseInt(byte, 2));
         return new TextDecoder("utf-8", { fatal: true }).decode(new Uint8Array(bytes));
       }
@@ -80,7 +83,7 @@ const toolDefinitions = {
     label: "Text statistics",
     id: "ANL-02",
     sample: "The quick brown fox jumps over the lazy dog.\nctf{count_everything}",
-    placeholder: "输入文本，查看字符、单词与行统计……",
+    placeholder: ui("Enter text to count characters, words, and lines…", "输入文本，查看字符、单词与行统计……"),
     run(value) {
       const chars = value.length;
       const noSpace = value.replace(/\s/g, "").length;
@@ -94,9 +97,9 @@ const toolDefinitions = {
     label: "SHA-256 digest",
     id: "ANL-01",
     sample: "ctf{local_first_toolbox}",
-    placeholder: "输入需要生成 SHA-256 摘要的文本……",
+    placeholder: ui("Enter text to hash with SHA-256…", "输入需要生成 SHA-256 摘要的文本……"),
     async run(value) {
-      if (!globalThis.crypto?.subtle) throw new Error("请通过静态服务器打开页面以使用 SHA-256");
+      if (!globalThis.crypto?.subtle) throw new Error(ui("Open the page through a static server to use SHA-256", "请通过静态服务器打开页面以使用 SHA-256"));
       const bytes = new TextEncoder().encode(value);
       const digest = await crypto.subtle.digest("SHA-256", bytes);
       return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
@@ -106,10 +109,10 @@ const toolDefinitions = {
     label: "JWT inspector",
     id: "ENC-05",
     sample: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjdGYtc3R1ZGVudCIsImFkbWluIjpmYWxzZX0.demo-signature",
-    placeholder: "输入由点号分隔的 JWT……",
+    placeholder: ui("Enter a dot-separated JWT…", "输入由点号分隔的 JWT……"),
     run(value) {
       const parts = value.trim().split(".");
-      if (parts.length < 2) throw new Error("JWT 至少需要 Header 和 Payload 两段");
+      if (parts.length < 2) throw new Error(ui("A JWT needs at least a header and payload", "JWT 至少需要 Header 和 Payload 两段"));
       return `header:\n${prettyJson(decodeBase64Url(parts[0]))}\n\npayload:\n${prettyJson(decodeBase64Url(parts[1]))}\n\nsignature:\n${parts[2] || "(none)"}`;
     },
   },
@@ -117,7 +120,7 @@ const toolDefinitions = {
     label: "Unix timestamp converter",
     id: "ANL-03",
     sample: "1767225600",
-    placeholder: "输入 Unix 时间戳或日期，例如 1767225600 或 2026-01-01……",
+    placeholder: ui("Enter a Unix timestamp or date, such as 1767225600 or 2026-01-01…", "输入 Unix 时间戳或日期，例如 1767225600 或 2026-01-01……"),
     run(value) {
       const trimmed = value.trim();
       let date;
@@ -127,25 +130,25 @@ const toolDefinitions = {
       } else {
         date = new Date(trimmed);
       }
-      if (Number.isNaN(date.getTime())) throw new Error("无法识别日期或时间戳");
-      return `ISO 8601: ${date.toISOString()}\nUTC: ${date.toUTCString()}\n本地时间: ${date.toLocaleString("zh-CN", { hour12: false })}\nUnix 秒: ${Math.floor(date.getTime() / 1000)}\nUnix 毫秒: ${date.getTime()}`;
+      if (Number.isNaN(date.getTime())) throw new Error(ui("Could not parse the date or timestamp", "无法识别日期或时间戳"));
+      return `ISO 8601: ${date.toISOString()}\nUTC: ${date.toUTCString()}\n${ui("Local time", "本地时间")}: ${date.toLocaleString(isEnglish ? "en-US" : "zh-CN", { hour12: false })}\n${ui("Unix seconds", "Unix 秒")}: ${Math.floor(date.getTime() / 1000)}\n${ui("Unix milliseconds", "Unix 毫秒")}: ${date.getTime()}`;
     },
   },
   regex: {
     label: "Regular expression tester",
     id: "ANL-04",
     sample: "/flag\\{[^}]+\\}/gi\nnoise FLAG{first} ctf flag{second}",
-    placeholder: "第一行输入 /正则/flags，后续行输入待匹配文本……",
+    placeholder: ui("Put /pattern/flags on the first line and test text below…", "第一行输入 /正则/flags，后续行输入待匹配文本……"),
     run: runRegex,
   },
   filehash: {
     label: "File SHA-256",
     id: "ANL-05",
     sample: "",
-    placeholder: "选择文件后运行，文件不会上传……",
+    placeholder: ui("Choose a file to hash locally. It will not be uploaded…", "选择文件后运行，文件不会上传……"),
     isFile: true,
     async runFile(file) {
-      if (!globalThis.crypto?.subtle) throw new Error("当前浏览器不支持 Web Crypto");
+      if (!globalThis.crypto?.subtle) throw new Error(ui("This browser does not support Web Crypto", "当前浏览器不支持 Web Crypto"));
       const digest = await crypto.subtle.digest("SHA-256", await file.arrayBuffer());
       const hash = Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
       return `file: ${file.name}\nsize: ${file.size} bytes\ntype: ${file.type || "unknown"}\nsha256: ${hash}`;
@@ -198,11 +201,11 @@ function prettyJson(value) {
 
 function runRegex(value) {
   const newline = value.indexOf("\n");
-  if (newline < 0) throw new Error("第一行填写 /正则/flags，第二行开始填写测试文本");
+  if (newline < 0) throw new Error(ui("Put /pattern/flags on the first line and test text below", "第一行填写 /正则/flags，第二行开始填写测试文本"));
   const expression = value.slice(0, newline).trim();
   const text = value.slice(newline + 1);
   const parsed = expression.match(/^\/(.*)\/([dgimsuvy]*)$/);
-  if (!parsed) throw new Error("正则格式应为 /pattern/flags");
+  if (!parsed) throw new Error(ui("Use the format /pattern/flags", "正则格式应为 /pattern/flags"));
   const flags = parsed[2].includes("g") ? parsed[2] : `${parsed[2]}g`;
   const regex = new RegExp(parsed[1], flags);
   const matches = Array.from(text.matchAll(regex)).slice(0, 200);
@@ -267,7 +270,7 @@ function updateMeta() {
 
 function renderRecent() {
   if (!state.recent.length) {
-    elements.recentList.innerHTML = '<div class="recent-empty">运行一个工具后，最近操作会显示在这里。</div>';
+    elements.recentList.innerHTML = `<div class="recent-empty">${ui("Run a tool and your recent activity will appear here.", "运行一个工具后，最近操作会显示在这里。")}</div>`;
     return;
   }
   elements.recentList.innerHTML = state.recent.map((item) => `
@@ -299,7 +302,7 @@ async function runTool() {
   const value = elements.inputText.value;
   const file = elements.fileInput.files[0];
   if (tool.isFile ? !file : !value) {
-    showToast(tool.isFile ? "请先选择一个文件。" : "先输入一段文本，再运行工具。");
+    showToast(tool.isFile ? ui("Choose a file first.", "请先选择一个文件。") : ui("Enter some text before running the tool.", "先输入一段文本，再运行工具。"));
     (tool.isFile ? elements.fileInput : elements.inputText).focus();
     return;
   }
@@ -316,16 +319,16 @@ async function runTool() {
       input: tool.isFile ? "" : value,
       output: elements.outputText.value,
       tool: state.selectedTool,
-      time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }),
+      time: new Date().toLocaleTimeString(isEnglish ? "en-US" : "zh-CN", { hour: "2-digit", minute: "2-digit" }),
     });
     state.recent = state.recent.slice(0, 5);
     saveRecent();
     renderRecent();
   } catch (error) {
-    elements.outputText.value = `无法处理输入：${error.message}`;
+    elements.outputText.value = isEnglish ? `Unable to process input: ${error.message}` : `无法处理输入：${error.message}`;
     elements.runStatus.textContent = "ERROR";
     updateMeta();
-    showToast("输入格式不符合当前工具要求。");
+    showToast(ui("The input does not match this tool's expected format.", "输入格式不符合当前工具要求。"));
     recordToolMetric(state.selectedTool, "error");
   }
 }
@@ -359,7 +362,7 @@ elements.toolSearch.addEventListener("input", (event) => {
 
 document.querySelector("#sampleButton").addEventListener("click", () => {
   const tool = toolDefinitions[state.selectedTool];
-  if (tool.isFile) return showToast("文件工具需要从设备选择一个文件。");
+  if (tool.isFile) return showToast(ui("Choose a file from your device for this tool.", "文件工具需要从设备选择一个文件。"));
   elements.inputText.value = tool.sample;
   updateMeta();
   elements.inputText.focus();
@@ -375,13 +378,13 @@ document.querySelector("#clearButton").addEventListener("click", () => {
   elements.inputText.value = "";
   elements.outputText.value = "";
   elements.fileInput.value = "";
-  elements.selectedFileName.textContent = "尚未选择文件";
+  elements.selectedFileName.textContent = ui("No file selected", "尚未选择文件");
   elements.runStatus.textContent = "WAITING";
   updateMeta();
 });
 
 document.querySelector("#swapButton").addEventListener("click", () => {
-  if (toolDefinitions[state.selectedTool].isFile) return showToast("文件哈希结果不能交换到输入区。");
+  if (toolDefinitions[state.selectedTool].isFile) return showToast(ui("A file hash result cannot be swapped into the input field.", "文件哈希结果不能交换到输入区。"));
   const input = elements.inputText.value;
   elements.inputText.value = elements.outputText.value;
   elements.outputText.value = input;
@@ -391,21 +394,21 @@ document.querySelector("#swapButton").addEventListener("click", () => {
 
 elements.fileInput.addEventListener("change", () => {
   const file = elements.fileInput.files[0];
-  elements.selectedFileName.textContent = file ? `${file.name} · ${file.size} bytes` : "尚未选择文件";
+  elements.selectedFileName.textContent = file ? `${file.name} · ${file.size} bytes` : ui("No file selected", "尚未选择文件");
 });
 
 document.querySelector("#copyButton").addEventListener("click", async () => {
   if (!elements.outputText.value) {
-    showToast("当前没有可复制的结果。");
+    showToast(ui("There is no result to copy.", "当前没有可复制的结果。"));
     return;
   }
   try {
     await navigator.clipboard.writeText(elements.outputText.value);
-    showToast("结果已复制到剪贴板。");
+    showToast(ui("Copied to clipboard.", "结果已复制到剪贴板。"));
   } catch {
     elements.outputText.select();
     document.execCommand("copy");
-    showToast("结果已复制到剪贴板。");
+    showToast(ui("Copied to clipboard.", "结果已复制到剪贴板。"));
   }
 });
 
@@ -413,7 +416,7 @@ document.querySelector("#clearRecentButton").addEventListener("click", () => {
   state.recent = [];
   clearStoredRecent();
   renderRecent();
-  showToast("最近使用记录已清除。");
+  showToast(ui("Recent activity cleared.", "最近使用记录已清除。"));
 });
 
 elements.recentList.addEventListener("click", (event) => {
@@ -431,7 +434,7 @@ elements.recentList.addEventListener("click", (event) => {
 
 document.querySelector("#themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("is-light");
-  showToast(document.body.classList.contains("is-light") ? "已切换到深色工作台。" : "已切换到纸面模式。");
+  showToast(document.body.classList.contains("is-light") ? ui("Dark workspace enabled.", "已切换到深色工作台。") : ui("Light workspace enabled.", "已切换到纸面模式。"));
 });
 
 document.addEventListener("keydown", (event) => {

@@ -1,20 +1,22 @@
 (function initializeToolchain() {
+  const english = document.documentElement.lang.toLowerCase().startsWith("en");
+  const t = (en, zh) => english ? en : zh;
   const MAX_STEPS = 8;
   const STORAGE_KEY = "hexforge-chain-v1";
   const DEFAULT_STEPS = ["base64-decode", "rot13"];
   const DEFAULT_SAMPLE = "VXJ5eWIsIFBHUyE=";
 
   const operations = {
-    "base64-decode": { label: "Base64 解码", run: decodeBase64Text },
-    "base64-encode": { label: "Base64 编码", run: encodeBase64Text },
-    "url-decode": { label: "URL 解码", run(value) { return decodeURIComponent(value); } },
-    "url-encode": { label: "URL 编码", run(value) { return encodeURIComponent(value); } },
-    "hex-decode": { label: "Hex 解码", run: decodeHexText },
-    "hex-encode": { label: "Hex 编码", run: encodeHexText },
-    "binary-decode": { label: "Binary 解码", run: decodeBinaryText },
-    "binary-encode": { label: "Binary 编码", run: encodeBinaryText },
-    rot13: { label: "ROT13 转换", run: applyRot13 },
-    sha256: { label: "SHA-256 摘要", run: sha256 },
+    "base64-decode": { label: t("Base64 decode", "Base64 解码"), run: decodeBase64Text },
+    "base64-encode": { label: t("Base64 encode", "Base64 编码"), run: encodeBase64Text },
+    "url-decode": { label: t("URL decode", "URL 解码"), run(value) { return decodeURIComponent(value); } },
+    "url-encode": { label: t("URL encode", "URL 编码"), run(value) { return encodeURIComponent(value); } },
+    "hex-decode": { label: t("Hex decode", "Hex 解码"), run: decodeHexText },
+    "hex-encode": { label: t("Hex encode", "Hex 编码"), run: encodeHexText },
+    "binary-decode": { label: t("Binary decode", "Binary 解码"), run: decodeBinaryText },
+    "binary-encode": { label: t("Binary encode", "Binary 编码"), run: encodeBinaryText },
+    rot13: { label: t("ROT13 transform", "ROT13 转换"), run: applyRot13 },
+    sha256: { label: t("SHA-256 digest", "SHA-256 摘要"), run: sha256 },
   };
 
   const elements = {
@@ -65,7 +67,7 @@
       number.textContent = String(index + 1).padStart(2, "0");
 
       const select = document.createElement("select");
-      select.setAttribute("aria-label", `第 ${index + 1} 步工具`);
+      select.setAttribute("aria-label", t(`Tool for step ${index + 1}`, `第 ${index + 1} 步工具`));
       Object.entries(operations).forEach(([id, operation]) => {
         const option = document.createElement("option");
         option.value = id;
@@ -79,9 +81,9 @@
         clearResult("CHANGED");
       });
 
-      const up = makeStepButton("↑", "上移一步", index === 0, () => moveStep(index, index - 1));
-      const down = makeStepButton("↓", "下移一步", index === chain.length - 1, () => moveStep(index, index + 1));
-      const remove = makeStepButton("×", "删除步骤", chain.length === 1, () => removeStep(index));
+      const up = makeStepButton("↑", t("Move up", "上移一步"), index === 0, () => moveStep(index, index - 1));
+      const down = makeStepButton("↓", t("Move down", "下移一步"), index === chain.length - 1, () => moveStep(index, index + 1));
+      const remove = makeStepButton("×", t("Remove step", "删除步骤"), chain.length === 1, () => removeStep(index));
       remove.classList.add("remove-step");
       row.append(number, select, up, down, remove);
       elements.steps.append(row);
@@ -131,7 +133,7 @@
 
   async function runChain() {
     if (!elements.input.value) {
-      showToast("请先输入需要处理的文本。");
+      showToast(t("Enter text to process first.", "请先输入需要处理的文本。"));
       elements.input.focus();
       return;
     }
@@ -152,7 +154,7 @@
           trace.push({ index, label: operation.label, output: current, duration: performance.now() - stepStarted, status: "DONE" });
         } catch (error) {
           trace.push({ index, label: operation.label, output: error.message, duration: performance.now() - stepStarted, status: "ERROR" });
-          throw new Error(`第 ${index + 1} 步失败：${error.message}`);
+          throw new Error(t(`Step ${index + 1} failed: ${error.message}`, `第 ${index + 1} 步失败：${error.message}`));
         }
       }
       elements.output.value = current;
@@ -211,7 +213,7 @@
 
   function decodeBase64Text(value) {
     const compact = value.replace(/\s/g, "").replace(/-/g, "+").replace(/_/g, "/");
-    if (!compact || compact.length % 4 === 1 || !/^[A-Za-z0-9+/]*={0,2}$/.test(compact)) throw new Error("无效的 Base64 输入");
+    if (!compact || compact.length % 4 === 1 || !/^[A-Za-z0-9+/]*={0,2}$/.test(compact)) throw new Error(t("Invalid Base64 input", "无效的 Base64 输入"));
     const padded = compact.padEnd(Math.ceil(compact.length / 4) * 4, "=");
     const binary = atob(padded);
     return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(binary, (char) => char.charCodeAt(0)));
@@ -223,7 +225,7 @@
 
   function decodeHexText(value) {
     const compact = value.replace(/(?:0x)|[\s,:-]/gi, "");
-    if (!compact || !/^(?:[0-9a-fA-F]{2})+$/.test(compact)) throw new Error("Hex 必须由完整的两位字节组成");
+    if (!compact || !/^(?:[0-9a-fA-F]{2})+$/.test(compact)) throw new Error(t("Hex input must contain complete two-digit bytes", "Hex 必须由完整的两位字节组成"));
     return new TextDecoder("utf-8", { fatal: true }).decode(new Uint8Array(compact.match(/.{2}/g).map((byte) => parseInt(byte, 16))));
   }
 
@@ -233,7 +235,7 @@
 
   function decodeBinaryText(value) {
     const compact = value.replace(/\s+/g, "");
-    if (!compact || !/^[01]+$/.test(compact) || compact.length % 8 !== 0) throw new Error("Binary 必须由完整的 8 位字节组成");
+    if (!compact || !/^[01]+$/.test(compact) || compact.length % 8 !== 0) throw new Error(t("Binary input must contain complete 8-bit bytes", "Binary 必须由完整的 8 位字节组成"));
     return new TextDecoder("utf-8", { fatal: true }).decode(new Uint8Array(compact.match(/.{8}/g).map((byte) => parseInt(byte, 2))));
   }
 
@@ -245,13 +247,13 @@
   }
 
   async function sha256(value) {
-    if (!globalThis.crypto?.subtle) throw new Error("当前浏览器不支持 Web Crypto");
+    if (!globalThis.crypto?.subtle) throw new Error(t("This browser does not support Web Crypto", "当前浏览器不支持 Web Crypto"));
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
     return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
   }
 
   elements.add.addEventListener("click", () => {
-    if (chain.length >= MAX_STEPS) return showToast("一条工具链最多包含 8 个步骤。");
+    if (chain.length >= MAX_STEPS) return showToast(t("A pipeline can contain up to 8 steps.", "一条工具链最多包含 8 个步骤。"));
     chain.push("rot13");
     saveChain();
     renderSteps();
@@ -277,14 +279,14 @@
     elements.input.focus();
   });
   elements.copy.addEventListener("click", async () => {
-    if (!elements.output.value) return showToast("当前没有可复制的工具链结果。");
+    if (!elements.output.value) return showToast(t("There is no pipeline result to copy.", "当前没有可复制的工具链结果。"));
     try {
       await navigator.clipboard.writeText(elements.output.value);
     } catch {
       elements.output.select();
       document.execCommand("copy");
     }
-    showToast("工具链结果已复制到剪贴板。");
+    showToast(t("Pipeline result copied to the clipboard.", "工具链结果已复制到剪贴板。"));
   });
   elements.run.addEventListener("click", runChain);
   elements.input.addEventListener("input", updateCounts);
