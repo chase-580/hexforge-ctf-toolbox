@@ -1,132 +1,74 @@
-# Hexforge CTF 工具箱 MVP
+# Hexforge
 
-一个纯 HTML / CSS / JavaScript 的 CTF 网络安全工具箱 MVP。无需构建工具，直接打开 `index.html` 即可使用。
+**A local-first browser toolbox for CTF decoding, analysis, repeatable pipelines, and challenge notes.**
 
-## 1. 用户需求分析
+[Open Hexforge](https://hexforgectf.cn/) · [Browse the guides](https://hexforgectf.cn/en/guides/) · [Report an issue](https://github.com/chase-580/hexforge-ctf-toolbox/issues)
 
-### 核心用户
+![Hexforge workspace](docs/hexforge-workspace.png)
 
-- CTF 初学者：需要低门槛、看得懂、能立刻验证结果的工具。
-- 刷题用户：需要快速处理 Base64、URL、Hex、ROT13、文本统计和 Hash 等重复动作。
-- 有经验的选手：希望工具响应快、输入输出清晰，并且不会把题目内容上传到第三方。
+Hexforge keeps common CTF work in one focused interface. Text transformations, hashes, challenge records, and toolchain steps run in the browser so challenge data does not need to be pasted into a remote API.
 
-### 关键场景
+## What is included
 
-1. 从题目中复制一段字符串。
-2. 快速定位合适的工具。
-3. 在同一个页面完成处理并复制结果。
-4. 对照输入和输出继续尝试，必要时恢复最近一次操作。
+- 11 browser tools: Base64, URL encoding, hex, binary, ROT13, text statistics, SHA-256, JWT inspection, Unix timestamps, regex, and file SHA-256.
+- A visual toolchain for combining up to eight reversible operations with an inspectable execution trace.
+- A local challenge workspace for notes, flags, saved results, tags, attachments, and JSON backup.
+- Dedicated English and Chinese tool pages with canonical URLs and language alternates.
+- Ten original English field guides covering identification, verification, common errors, and practical CTF workflows.
+- Safe tool links that identify the selected tool without including input, output, flags, or challenge data.
 
-### MVP 需要验证的假设
+![Hexforge field guides](docs/hexforge-guides.png)
 
-- 用户是否愿意把它作为做题时的固定入口。
-- 哪些工具使用频率最高，是否需要继续扩充密码学、编码、取证类工具。
-- “本地处理、不上传数据”是否能成为产品信任点。
-- 用户是否愿意为批量处理、工具链、题目收藏、历史记录同步和无广告体验付费。
+## Privacy model
 
-## 2. 当前 MVP 范围
+Core transforms execute locally with browser APIs. Workspace records use `localStorage` and `IndexedDB` on the current device. Hexforge does not send tool input, output, notes, flags, or attachments to its server.
 
-- 工具搜索与分类筛选。
-- Base64 编码/解码。
-- URL 编码/解码。
-- Hex 文本与十六进制转换。
-- ROT13 转换。
-- 文本字符、单词、行和唯一字符统计。
-- SHA-256 摘要生成。
-- 示例输入、运行、复制、清空、交换输入输出。
-- 最近 5 次操作保存在浏览器 `localStorage` 中。
-- 响应式布局、键盘快捷键和亮度模式切换。
+The public site uses Cloudflare Web Analytics and may use Google advertising services as described in the [privacy policy](https://hexforgectf.cn/en/privacy/). Those services measure visits and ad delivery; they are separate from tool content.
 
-第二阶段已增加：
+## Run locally
 
-- `/zh/` 中文工具目录。
-- `/en/` English tool directory。
-- 7 个双语独立工具页：Base64、URL、Hex、ROT13、JWT、SHA-256、文本统计。
-- 每个工具页独立的标题、描述、canonical、hreflang、FAQ 和相关工具链接。
-- `robots.txt` 与 `sitemap.xml`。
+No build step or package installation is required. Serve the repository with any static web server:
 
-第三阶段已增加：
-
-- Binary、Unix 时间戳、正则表达式和文件 SHA-256 工具。
-- 工作台现包含 11 个工具，JWT 也可直接在工作台运行。
-- 双语目录支持本地收藏，并按收藏和最近访问自动排序。
-- 工具成功/错误次数只保存在浏览器本地，不包含输入内容。
-- 修复独立工具页初始化中断的问题。
-
-第四阶段已增加：
-
-- 本地题目工作区：创建并切换最多 50 个题目档案。
-- 保存题目分类、难度、标签、笔记、Flag 和解决状态。
-- 普通工具与工具链结果可直接存入当前题目，每题最多保留 30 条结果。
-- 支持按关键词、分类和解决状态筛选题目。
-- 支持 JSON 备份导出与非破坏式合并导入，附件也会包含在备份中。
-- 每题可在 IndexedDB 中保存最多 12 个附件或截图，单个文件最多 8 MB。
-- 工作区数据仅保存在当前浏览器，不上传到服务器。
-
-## 3. 统计接入
-
-代码已经预留：
-
-- `analytics-config.js`：填入 Cloudflare Web Analytics beacon token。
-- `analytics.js`：只有配置了真实 token 时才加载 Cloudflare beacon，不会向线上发送占位符。
-- `privacy/` 与 `en/privacy/`：说明本地处理、localStorage 和匿名访问统计。
-- 首页、双语目录和所有工具页都加载统计入口。
-
-### Cloudflare Web Analytics
-
-对于 Cloudflare Pages 项目，优先进入 `Workers & Pages > hexforge-ctf-toolbox > Metrics`，在 Web Analytics 区域选择 Enable。Cloudflare 会在下一次部署时自动注入 beacon。
-
-如果改用 Web Analytics 页面手动添加站点，主机名填写 `hexforgectf.cn`，不要包含 `https://` 或路径。创建后可将生成的 token 填入：
-
-```js
-window.HEXFORGE_CONFIG = Object.freeze({
-  cloudflareWebAnalyticsToken: "你的真实 token",
-});
+```bash
+python -m http.server 8765
 ```
 
-### Google Search Console
+Then open `http://127.0.0.1:8765/`. A web server is recommended because some browsers restrict Web Crypto and clipboard features on `file://` pages.
 
-正式站点使用 `https://hexforgectf.cn/`。推荐在 Search Console 添加 Domain property `hexforgectf.cn` 并通过 Cloudflare DNS TXT 记录验证。验证后提交：
+## Useful routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | English workspace |
+| `/en/` | English tool directory |
+| `/en/guides/` | Practical English CTF guides |
+| `/zh/workspace/` | Chinese workspace |
+| `/zh/` | Chinese tool directory |
+| `/sitemap.xml` | Search engine sitemap |
+
+## Project structure
 
 ```text
-https://hexforgectf.cn/sitemap.xml
+index.html                 English workspace
+app.js / toolchain.js      Workspace and pipeline logic
+workspace.js               Local challenge records
+en/tools/                  English tool pages
+en/guides/                 English field guides
+zh/                        Chinese workspace, tools, and guides
+site.css / styles.css      Shared interface styles
+analytics.js               Privacy-aware analytics bridge
 ```
 
-## 4. 运行方式
+## Roadmap
 
-直接双击 `index.html`，或用任意静态文件服务器打开目录。若浏览器禁止 `file://` 页面调用 Web Crypto，SHA-256 工具需要通过静态服务器访问；其余工具不受影响。
+The current release establishes the free local toolbox and educational content. Planned work includes richer file workflows, reusable pipeline presets, optional account sync, and a paid membership for advanced productivity features. Core single-item transforms will remain useful without an account.
 
-主要路径：
+## Responsible use
 
-- `/zh/`
-- `/en/`
-- `/zh/tools/base64-decoder/`
-- `/en/tools/base64-decoder/`
+Hexforge is designed for CTFs, training labs, your own systems, and other explicitly authorized work. It performs transformations and inspection in the browser; it is not an exploit runner or a substitute for permission.
 
-当前版本只依赖浏览器原生 API，所有转换都在当前浏览器中完成。
+Security issues can be reported privately through [GitHub Security Advisories](https://github.com/chase-580/hexforge-ctf-toolbox/security/advisories/new). Product feedback and reproducible bugs are welcome in [GitHub Issues](https://github.com/chase-580/hexforge-ctf-toolbox/issues).
 
-## 5. 后续迭代顺序
+## Contributing
 
-### P0：验证使用频率（已完成基础版本）
-
-- 已增加 JWT 解码、Binary、时间戳、正则测试和文件哈希。
-- 已增加输入格式说明、错误提示、工具收藏与最近使用排序。
-- 已增加浏览器本地工具计数；Cloudflare Web Analytics 暂不支持自定义事件，后续接入独立事件端点时再做汇总分析。
-
-### P1：提高留存（已完成基础版本）
-
-- 题目工作区基础版已完成：保存题目信息、标签、笔记、Flag、状态和工具结果。
-- 工具链基础版已完成：支持最多 8 步、明确的编码/解码方向、顺序调整、执行轨迹和本地保存。
-- 工作区导入导出、题目筛选和本地附件已完成；通用工具输入输出文件能力待扩展。
-- 账号登录与跨设备同步。
-
-### P2：商业化
-
-- 免费层：单次文本处理和基础工具。
-- Pro 会员：批量处理、文件处理、工具链、历史同步、无广告和高级工具。
-- AdSense：只放在公开的内容页和工具介绍页，避免干扰实际工作台。
-- 付费前先验证高频功能，不要先做复杂支付系统。
-
-## 6. 安全边界
-
-本 MVP 只提供浏览器端的文本转换和摘要计算，不执行用户输入，不发起网络请求，也不提供漏洞利用或攻击功能。后续加入文件解析、网络请求或第三方 API 时，需要单独设计输入限制、隐私说明和错误隔离。
+Small, focused pull requests are preferred. Include a reproducible input and expected output for tool changes, and cite primary specifications when adding format-specific behavior. Do not include real credentials, private challenge material, or user data in issues or test fixtures.

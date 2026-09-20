@@ -8,3 +8,12 @@
   beacon.dataset.cfBeacon = JSON.stringify({ token });
   document.head.appendChild(beacon);
 })();
+
+window.hexforgeTrack = function trackHexforgeEvent(name, properties = {}) {
+  const detail = Object.freeze({ name, properties: { ...properties } });
+  document.dispatchEvent(new CustomEvent("hexforge:analytics", { detail }));
+
+  if (typeof window.gtag === "function") {
+    window.gtag("event", name, properties);
+  }
+};

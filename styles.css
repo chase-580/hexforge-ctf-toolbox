@@ -113,7 +113,7 @@ kbd { min-width: 19px; padding: 2px 5px; border: 1px solid var(--line); color: v
 .panel-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #303630; }
 .toolbar-left, .toolbar-right, .output-label-row { display: flex; align-items: center; gap: 13px; }
 .output-label-row { justify-content: space-between; }
-.output-actions { display: flex; align-items: center; gap: 13px; }
+.output-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 13px; }
 .input-label { color: #9da69d; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; font-weight: 700; }
 .sample-button, .small-action, .copy-button { padding: 0; border: 0; color: #9da69d; background: transparent; font-size: 10px; }
 .sample-button:hover, .small-action:hover, .copy-button:hover { color: var(--signal); }

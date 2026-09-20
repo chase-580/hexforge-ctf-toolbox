@@ -1,3 +1,5 @@
 .npm-cache/
 .tmp.patch
 tool-page-template.html
+.wrangler/
+qa-*.png

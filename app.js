@@ -156,6 +156,20 @@ const toolDefinitions = {
   },
 };
 
+const toolSlugs = Object.freeze({
+  base64: "base64-decoder",
+  url: "url-encoder-decoder",
+  hex: "hex-converter",
+  rot13: "rot13-decoder",
+  binary: "binary-converter",
+  stats: "text-statistics",
+  hash: "sha256-generator",
+  jwt: "jwt-decoder",
+  timestamp: "timestamp-converter",
+  regex: "regex-tester",
+  filehash: "file-hash",
+});
+
 const state = {
   selectedTool: "base64",
   recent: readRecent(),
@@ -410,6 +424,26 @@ document.querySelector("#copyButton").addEventListener("click", async () => {
     document.execCommand("copy");
     showToast(ui("Copied to clipboard.", "结果已复制到剪贴板。"));
   }
+});
+
+document.querySelector("#shareToolLink").addEventListener("click", async () => {
+  const origin = location.origin === "null" ? "https://hexforgectf.cn" : location.origin;
+  const locale = isEnglish ? "en" : "zh";
+  const url = `${origin}/${locale}/tools/${toolSlugs[state.selectedTool]}/`;
+  try {
+    await navigator.clipboard.writeText(url);
+  } catch {
+    const helper = document.createElement("textarea");
+    helper.value = url;
+    helper.style.position = "fixed";
+    helper.style.opacity = "0";
+    document.body.appendChild(helper);
+    helper.select();
+    document.execCommand("copy");
+    helper.remove();
+  }
+  window.hexforgeTrack?.("copy_tool_link", { tool: toolSlugs[state.selectedTool], locale });
+  showToast(ui("Tool link copied. No input or output was included.", "工具链接已复制，不包含输入或输出内容。"));
 });
 
 document.querySelector("#clearRecentButton").addEventListener("click", () => {

@@ -152,6 +152,11 @@ document.querySelector("#toolId").textContent = tool.id;
 document.querySelector("#runTool").innerHTML = locale === "en" ? "Run <span>→</span>" : "运行 <span>→</span>";
 document.querySelector("#sampleTool").textContent = locale === "en" ? "Use example" : "填入示例";
 document.querySelector("#copyTool").textContent = locale === "en" ? "Copy result" : "复制结果";
+const copyToolLink = document.createElement("button");
+copyToolLink.id = "copyToolLink";
+copyToolLink.type = "button";
+copyToolLink.textContent = locale === "en" ? "Copy tool link" : "复制工具链接";
+document.querySelector("#copyTool").before(copyToolLink);
 document.querySelector("#clearTool").textContent = locale === "en" ? "Clear" : "清空";
 document.querySelector("#toolFaqTitle").textContent = locale === "en" ? "Common questions" : "常见问题";
 document.querySelector("#toolFaqQuestion").textContent = tool.faq[locale][0];
@@ -161,6 +166,30 @@ document.querySelector("#privacyCopy").textContent = tool.isFile
   ? (locale === "en" ? "The selected file is hashed in your browser and is never uploaded." : "所选文件只在浏览器中计算哈希，不会上传到服务器。")
   : (locale === "en" ? "Input is processed in your current browser. The current version does not upload your text to a server." : "输入内容在当前浏览器中处理。当前版本不会将文本上传到服务器。");
 document.querySelector("#relatedTitle").textContent = locale === "en" ? "Related tools" : "相关工具";
+const guideLinks = {
+  base64: [["base64-identification", "Base64 identification", "Base64 识别"], ["encoding-chain", "Encoding chains", "编码链判断"]],
+  url: [["encoding-chain", "Encoding chains", "编码链判断"], ["cyberchef-alternative", "Build a focused decoding workflow", "URL 编码实战"]],
+  hex: [["hex-file-signatures", "File signatures and magic bytes", "文件签名与魔数"], ["file-forensics-workflow", "File forensics workflow", "文件取证流程"]],
+  rot13: [["rot13-caesar-cipher", "ROT13 and Caesar cipher identification", "ROT13 与凯撒密码"]],
+  binary: [["encoding-chain", "Encoding chains", "编码链判断"]],
+  jwt: [["jwt-analysis", "JWT analysis checklist", "JWT 分析清单"]],
+  hash: [["sha256-file-integrity", "SHA-256 file integrity", "SHA-256 文件完整性"]],
+  timestamp: [["unix-timestamp-analysis", "Unix timestamp analysis", "时间戳与日志还原"]],
+  regex: [["regex-flag-extraction", "Extract CTF flags with regex", "使用正则提取 Flag"]],
+  filehash: [["sha256-file-integrity", "SHA-256 file integrity", "SHA-256 文件完整性"], ["file-forensics-workflow", "File forensics workflow", "文件取证流程"]],
+};
+const zhGuideSlugs = { "cyberchef-alternative": "url-encoding-ctf", "rot13-caesar-cipher": "encoding-chain", "unix-timestamp-analysis": "timestamp-tracing", "regex-flag-extraction": "regex-extraction" };
+const relatedGuides = guideLinks[slugMap[slug]] || [];
+if (relatedGuides.length) {
+  const guideOrigin = location.origin === "null" ? "https://hexforgectf.cn" : location.origin;
+  const section = document.createElement("section");
+  section.className = "related-guides";
+  section.innerHTML = `<h2>${locale === "en" ? "Related guides" : "相关教程"}</h2><ul>${relatedGuides.map(([guideSlug, enLabel, zhLabel]) => {
+    const localizedSlug = locale === "en" ? guideSlug : (zhGuideSlugs[guideSlug] || guideSlug);
+    return `<li><a href="${guideOrigin}/${locale}/guides/${localizedSlug}/">${locale === "en" ? enLabel : zhLabel}</a></li>`;
+  }).join("")}</ul>`;
+  document.querySelector(".tool-aside .ad-slot")?.before(section);
+}
 const siteMain = document.querySelector(".site-main");
 if (siteMain) {
   const footer = document.createElement("footer");
@@ -200,6 +229,24 @@ document.querySelector("#runTool").addEventListener("click", run);
 document.querySelector("#sampleTool").addEventListener("click", () => { if (tool.isFile) return showToast(locale === "en" ? "Choose a file from your device." : "请从设备中选择文件。"); input.value = copy.sample; updateCount(); input.focus(); });
 document.querySelector("#clearTool").addEventListener("click", () => { input.value = ""; output.value = ""; fileInput.value = ""; fileName.textContent = locale === "en" ? "No file selected" : "尚未选择文件"; status.textContent = "WAITING"; updateCount(); });
 document.querySelector("#copyTool").addEventListener("click", async () => { if (!output.value) return showToast(locale === "en" ? "There is no result to copy." : "当前没有可复制的结果。"); try { await navigator.clipboard.writeText(output.value); showToast(locale === "en" ? "Copied to clipboard." : "结果已复制到剪贴板。"); } catch { output.select(); document.execCommand("copy"); showToast(locale === "en" ? "Copied to clipboard." : "结果已复制到剪贴板。"); } });
+copyToolLink.addEventListener("click", async () => {
+  const origin = location.origin === "null" ? "https://hexforgectf.cn" : location.origin;
+  const url = `${origin}/${locale}/tools/${slug}/`;
+  try {
+    await navigator.clipboard.writeText(url);
+  } catch {
+    const helper = document.createElement("textarea");
+    helper.value = url;
+    helper.style.position = "fixed";
+    helper.style.opacity = "0";
+    document.body.appendChild(helper);
+    helper.select();
+    document.execCommand("copy");
+    helper.remove();
+  }
+  window.hexforgeTrack?.("copy_tool_link", { tool: slug, locale });
+  showToast(locale === "en" ? "Tool link copied. No input or output was included." : "工具链接已复制，不包含输入或输出内容。");
+});
 input.addEventListener("input", updateCount);
 input.addEventListener("keydown", (event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") run(); });
 fileInput.addEventListener("change", () => { const file = fileInput.files[0]; fileName.textContent = file ? `${file.name} · ${file.size} bytes` : (locale === "en" ? "No file selected" : "尚未选择文件"); });

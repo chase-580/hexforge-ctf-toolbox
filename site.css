@@ -85,7 +85,8 @@ button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visib
 .workbench-pane.output { background: #181c18; }
 .workbench-pane textarea { flex: 1; min-height: 190px; resize: vertical; border: 0; outline: 0; color: #edf0e9; background: transparent; font-family: "Cascadia Code", Consolas, monospace; font-size: 12px; line-height: 1.75; }
 .workbench-pane textarea::placeholder { color: #626b62; }
-.output-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: #9da69d; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; }
+.output-head { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px 10px; color: #9da69d; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; }
+.output-head > span:first-child { margin-right: auto; }
 .output-head button { border: 0; color: #8ca2ff; background: transparent; font-size: 9px; cursor: pointer; }
 .output-head button:hover { color: #c1ccff; }
 .workbench-meta { display: flex; justify-content: space-between; gap: 10px; padding-top: 12px; color: #626b62; font-family: "Cascadia Code", Consolas, monospace; font-size: 8px; }

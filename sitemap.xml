@@ -46,8 +46,12 @@
   <url><loc>https://hexforgectf.cn/zh/guides/file-forensics-workflow/</loc></url>
   <url><loc>https://hexforgectf.cn/en/guides/file-forensics-workflow/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/url-encoding-ctf/</loc></url>
-  <url><loc>https://hexforgectf.cn/zh/guides/timestamp-tracing/</loc></url>
-  <url><loc>https://hexforgectf.cn/zh/guides/regex-extraction/</loc></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/timestamp-tracing/</loc><lastmod>2026-09-20</lastmod></url>
+  <url><loc>https://hexforgectf.cn/en/guides/unix-timestamp-analysis/</loc><lastmod>2026-09-20</lastmod></url>
+  <url><loc>https://hexforgectf.cn/zh/guides/regex-extraction/</loc><lastmod>2026-09-20</lastmod></url>
+  <url><loc>https://hexforgectf.cn/en/guides/regex-flag-extraction/</loc><lastmod>2026-09-20</lastmod></url>
+  <url><loc>https://hexforgectf.cn/en/guides/rot13-caesar-cipher/</loc><lastmod>2026-09-20</lastmod></url>
+  <url><loc>https://hexforgectf.cn/en/guides/cyberchef-alternative/</loc><lastmod>2026-09-20</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/binary-identification/</loc><lastmod>2026-09-19</lastmod></url>
   <url><loc>https://hexforgectf.cn/zh/guides/hex-file-signatures/</loc><lastmod>2026-09-19</lastmod></url>
   <url><loc>https://hexforgectf.cn/en/guides/hex-file-signatures/</loc><lastmod>2026-09-20</lastmod></url>
